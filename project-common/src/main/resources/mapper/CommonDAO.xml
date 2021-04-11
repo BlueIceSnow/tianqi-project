@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianqi.common.dao.IBaseDAO">
+    <sql id="commonCol">
+        id,
+        name,
+        is_delete,
+        create_user,
+        create_time
+        update_user,
+        update_time,
+        tent_id
+    </sql>
+</mapper>
+
