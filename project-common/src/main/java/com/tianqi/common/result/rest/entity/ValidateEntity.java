@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author yuantianqi
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidateEntity {
+public class ValidateEntity implements Serializable {
     private String fields;
     private String message;
 }

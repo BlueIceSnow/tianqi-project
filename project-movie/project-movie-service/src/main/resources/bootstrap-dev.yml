@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: @project.artifactId@
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      config:
+        server-addr: 47.96.238.166:8848
+        file-extension: yaml
+        group: ${spring.profiles.active}
+        namespace: def2c741-902f-4be8-b173-835204b0f6fd
+        prefix: ${spring.application.name}
+      discovery:
+        server-addr: 47.96.238.166:8848
+        group: ${spring.profiles.active}
+        namespace: ${spring.cloud.nacos.config.namespace}
+        service: ${spring.application.name}-${spring.profiles.active}
+  profiles:
+    active: dev
+
+logging:
+  level:
+    com.tianqi: debug
+    root: debug
+    com.client.Client: debug

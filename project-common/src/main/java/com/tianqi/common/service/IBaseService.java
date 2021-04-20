@@ -37,7 +37,7 @@ public interface IBaseService<DO extends BaseDO> {
      * @param size   每页大小
      * @return
      */
-    ResultEntity<DO> listPageEntity(DO entity, int page, int size);
+    ResultEntity<List<DO>> listPageEntity(DO entity, int page, int size);
 
     /**
      * 保存实体
@@ -63,7 +63,7 @@ public interface IBaseService<DO extends BaseDO> {
      * @param id
      * @return
      */
-    ResultEntity<DO> removeByPage(DO entity, int page, int size, String id);
+    ResultEntity<List<DO>> removeByPage(DO entity, int page, int size, String id);
 
     /**
      * 删除实体

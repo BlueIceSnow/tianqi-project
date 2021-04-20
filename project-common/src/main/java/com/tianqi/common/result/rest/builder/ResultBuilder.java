@@ -1,5 +1,6 @@
 package com.tianqi.common.result.rest.builder;
 
+import com.tianqi.common.enums.BaseEnum;
 import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.result.rest.entity.RestEntity;
@@ -13,13 +14,13 @@ import java.util.List;
  * @author yuantianqi
  */
 public abstract class ResultBuilder<T, Builder extends ResultBuilder> {
-    private StatusEnum status;
+    private BaseEnum status;
     private List<ValidateEntity> validates = new ArrayList<>();
     private BaseException error;
     private RestEntity<T> data;
 
 
-    public Builder withStatus(StatusEnum status) {
+    public Builder withStatus(BaseEnum status) {
         this.status = status;
         return (Builder) this;
     }

@@ -12,14 +12,14 @@ import java.util.List;
  */
 public class PageResultBuilder<T> extends ResultBuilder<T , PageResultBuilder<T>> {
     private long total;
-    private List<T> rows;
+    private T rows;
 
     public PageResultBuilder<T> withTotal(long total) {
         this.total = total;
         return this;
     }
 
-    public PageResultBuilder<T> withRows(List<T> rows) {
+    public PageResultBuilder<T> withRows(T rows) {
         this.rows = rows;
         return this;
     }

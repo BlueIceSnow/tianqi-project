@@ -2,8 +2,8 @@ package com.tianqi.common.result.rest.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +11,12 @@ import java.util.List;
  */
 @Data
 @AllArgsConstructor
-public class PageResultEntity<T> implements RestEntity<T> {
+public class PageResultEntity<T> implements RestEntity<T> , Serializable {
     private long total;
-    private List<T> rows;
+    private T rows;
+
+    @Override
+    public T doOrDto() {
+        return rows;
+    }
 }

@@ -70,11 +70,11 @@ public abstract class BaseService<DAO extends IBaseDAO<DO>, DO extends BaseDO>
      * @return
      */
     @Override
-    public ResultEntity<DO> listPageEntity(DO entity, int page, int size) {
+    public ResultEntity<List<DO>> listPageEntity(DO entity, int page, int size) {
         PageHelper.startPage(page, size);
         List<DO> result = dao.select(entity);
         PageInfo<DO> pageInfo = new PageInfo<>(result);
-        return RestResult.<DO>builderPage()
+        return RestResult.<List<DO>>builderPage()
                 .withTotal(pageInfo.getTotal())
                 .withRows(pageInfo.getList())
                 .withStatus(StatusEnum.OK)
@@ -139,14 +139,14 @@ public abstract class BaseService<DAO extends IBaseDAO<DO>, DO extends BaseDO>
      * @return
      */
     @Override
-    public ResultEntity<DO> removeByPage(DO entity, int page, int size, String id) {
+    public ResultEntity<List<DO>> removeByPage(DO entity, int page, int size, String id) {
 
         int i = dao.deleteByPrimaryKey(id);
         if (i != 0) {
-            ResultEntity<DO> doPageResult = listPageEntity(entity, page, size);
+            ResultEntity<List<DO>> doPageResult = listPageEntity(entity, page, size);
             return doPageResult;
         }
-        return RestResult.<DO>builderPage()
+        return RestResult.<List<DO>>builderPage()
                 .withStatus(StatusEnum.DELETE_ERROR)
                 .withTotal(0)
                 .withRows(new ArrayList<>())

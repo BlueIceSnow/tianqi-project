@@ -18,7 +18,13 @@ public enum StatusEnum implements BaseEnum {
     SERVER_ERROR(500, "服务器错误"),
     VALIDATE_PARAM_ERROR(403, "参数校验存在问题"),
     PARAM_PARSE_ERROR(404, "参数解析错误"),
-    BUS_ERROR(501,"业务错误！");
+    BUS_ERROR(501, "业务错误！");
     private final int code;
     private final String msg;
+
+
+    @Override
+    public BaseEnum[] enumValues() {
+        return StatusEnum.values();
+    }
 }

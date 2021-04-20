@@ -2,8 +2,9 @@ package com.tianqi.common.result.rest.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * @author yuantianqi
@@ -11,7 +12,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RestResultEntity<T> implements RestEntity<T> {
+public class RestResultEntity<T> implements RestEntity<T>, Serializable {
     private boolean isOk;
     private T row;
+
+    @Override
+    public T doOrDto() {
+        return row;
+    }
 }
