@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: yuantianqi
@@ -24,5 +25,10 @@ public class AuthDemoFallback extends AbstractDemoFallback {
         return RpcResult.<List<UserDO>>builder()
                 .withStatus(StatusEnum.BUS_ERROR)
                 .withResult(new ArrayList<>()).build();
+    }
+
+    @Override
+    public Map<String, Object> checkToken(String value) {
+        return null;
     }
 }

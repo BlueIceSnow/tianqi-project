@@ -1,13 +1,14 @@
 package com.tianqi.common.handler.serialize;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
+import com.tianqi.common.enums.BaseEnum;
 import com.tianqi.common.exception.BaseException;
-import com.tianqi.common.enums.StatusEnum;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -22,10 +23,11 @@ public class CustomBeanSerializerModifier extends BeanSerializerModifier {
 
     @Override
     public JsonSerializer<?> modifyEnumSerializer(SerializationConfig config, JavaType valueType, BeanDescription beanDesc, JsonSerializer<?> serializer) {
-        if (valueType.getRawClass().equals(StatusEnum.class)) {
+        if (!CollectionUtil.isEmpty(valueType.getInterfaces())
+                && valueType.getInterfaces().get(0).getRawClass().getTypeName()
+                .equals(BaseEnum.class.getTypeName())) {
             return new CustomSerializer.StatusSerializer();
         }
-
         return super.modifyEnumSerializer(config, valueType, beanDesc, serializer);
     }
 
@@ -55,7 +57,7 @@ public class CustomBeanSerializerModifier extends BeanSerializerModifier {
             if (isTimestamp(writer)) {
                 writer.assignNullSerializer(new CustomNullJsonSerializer.NullStringJsonSerializer());
             }
-            if (isBooleanType(writer)){
+            if (isBooleanType(writer)) {
                 writer.assignNullSerializer(new CustomNullJsonSerializer.NullBooleanJsonSerializer());
             }
         }

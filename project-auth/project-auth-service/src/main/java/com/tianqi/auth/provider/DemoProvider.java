@@ -7,9 +7,11 @@ import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.result.rpc.RpcResult;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: yuantianqi
@@ -17,7 +19,7 @@ import java.util.List;
  * @Description:
  */
 @RestController
-public class DemoProvider implements IDemoApi {
+public class DemoProvider{
     private IUserService userService;
 
     @Autowired
@@ -25,7 +27,6 @@ public class DemoProvider implements IDemoApi {
         this.userService = userService;
     }
 
-    @Override
     public RpcResultEntity<List<UserDO>> listAll() {
 //        int i = 1 / 0;
 //        try {

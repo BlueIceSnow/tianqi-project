@@ -5,8 +5,12 @@ import com.tianqi.auth.pojo.UserDO;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: yuantianqi
@@ -18,4 +22,14 @@ public interface IDemoApi {
 
     @GetMapping("user/listAll")
     RpcResultEntity<List<UserDO>> listAll();
+
+    /**
+     * 校验token
+     *
+     * @param value token
+     * @return
+     */
+    @RequestMapping(value = "/oauth/check_token")
+    @ResponseBody
+    Map<String, Object> checkToken(@RequestParam("token") String value);
 }

@@ -19,12 +19,9 @@ spring:
   profiles:
     active: dev
 
-logging:
-  level:
-   - com.tianqi: debug
-   - root: debug
-   - com.client.Client: debug
-
-feign:
-  httpclient:
-    connection-timeout: 2000
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"

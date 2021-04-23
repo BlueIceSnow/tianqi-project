@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: @project.artifactId@
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      config:
+        server-addr: 47.96.238.166:8848
+        file-extension: yaml
+        group: ${spring.profiles.active}
+        namespace: def2c741-902f-4be8-b173-835204b0f6fd
+        prefix: ${spring.application.name}
+      discovery:
+        server-addr: 47.96.238.166:8848
+        group: ${spring.profiles.active}
+        namespace: ${spring.cloud.nacos.config.namespace}
+    gateway:
+      routes:
+        - id: project-auth-service-${spring.profiles.active}
+          uri: lb://project-auth-service-${spring.profiles.active}
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+          order: 0
+        - id: project-movie-service-${spring.profiles.active}
+          uri: lb://project-movie-service-${spring.profiles.active}
+          predicates:
+            - Path=/movie/**
+          filters:
+            - StripPrefix=1
+          order: 1
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+  profiles:
+    active: dev
+
+
+client:
+  username: demo-gateway
+  password: 123456
+feign:
+  hystrix:
+    enabled: true
+
+hystrix:
+  command:
+    default:
+      fallback:
+        enabled: true
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000

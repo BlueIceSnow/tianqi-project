@@ -1,0 +1,64 @@
+server:
+  port: 8000
+mybatis:
+  base-packages: com.tianqi.gateway.dao
+  type-aliases-package: com.tianqi.gateway.pojo
+  mapper-locations: classpath:mapper/*.xml
+
+spring:
+  redis:
+    host: 47.96.238.166
+    password: tq123456
+    database: 0
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/Demo
+  profiles:
+    active: dev
+  cloud:
+    gateway:
+      routes:
+        - id: project-auth-service-${spring.profiles.active}
+          uri: lb://project-auth-service-${spring.profiles.active}
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+          order: 0
+        - id: project-movie-service-${spring.profiles.active}
+          uri: lb://project-movie-service-${spring.profiles.active}
+          predicates:
+            - Path=/movie/**
+          filters:
+            - StripPrefix=1
+          order: 1
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+logging:
+  level:
+    com.tianqi: debug
+feign:
+  hystrix:
+    enabled: true
+  httpclient:
+    connection-timeout: 30000
+
+
+hystrix:
+  command:
+    default:
+      fallback:
+        enabled: true
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000
+client:
+  username: demo-gateway
+  password: 123456
+

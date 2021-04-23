@@ -1,7 +1,5 @@
 package com.tianqi.auth.config;
 
-import com.alibaba.cloud.nacos.NacosConfigAutoConfiguration;
-import com.alibaba.nacos.api.config.ConfigService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
