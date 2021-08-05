@@ -1,15 +1,13 @@
 package com.tianqi.common.controller.impl;
 
-import com.tianqi.common.pojo.BaseDO;
 import com.tianqi.common.controller.IBaseController;
+import com.tianqi.common.pojo.BaseDO;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.IBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 
 /**
@@ -17,7 +15,7 @@ import java.util.List;
  *
  * @author yuantianqi
  */
-public abstract class BaseController<Service extends IBaseService, DO extends BaseDO>
+public abstract class BaseController<Service extends IBaseService<DO>, DO extends BaseDO>
         implements IBaseController<DO> {
     protected Service service;
 
@@ -37,14 +35,12 @@ public abstract class BaseController<Service extends IBaseService, DO extends Ba
     }
 
     @Override
-    public ResultEntity<DO> listPageEntity(DO entity, int page, int size) {
-        int i = 11/0;
+    public ResultEntity<List<DO>> listPageEntity(DO entity, int page, int size) {
         return service.listPageEntity(entity, page, size);
     }
 
     @Override
     public ResultEntity<DO> save(@Validated DO entity) {
-        entity.setId(Timestamp.from(Instant.now()).toString());
         return service.save(entity);
     }
 
@@ -55,7 +51,7 @@ public abstract class BaseController<Service extends IBaseService, DO extends Ba
 
     @GetMapping("page/{id}")
     @Override
-    public ResultEntity<DO> removeByPage(DO entity, int page, int size, String id) {
+    public ResultEntity<List<DO>> removeByPage(DO entity, int page, int size, String id) {
         return service.removeByPage(entity, page, size, id);
     }
 

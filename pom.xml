@@ -34,9 +34,8 @@
         <spring.cloud.alibaba.version>2.2.1.RELEASE</spring.cloud.alibaba.version>
         <mysql.connecter.version>8.0.22</mysql.connecter.version>
         <hutool.version>5.5.7</hutool.version>
-        <tk.mapper.version>2.1.5</tk.mapper.version>
+        <mybatis.plus.version>3.4.3</mybatis.plus.version>
         <fastjson.version>1.2.76</fastjson.version>
-        <pagehelper.version>1.3.0</pagehelper.version>
         <swagger.version>2.9.2</swagger.version>
         <swagger.ui.version>2.9.2</swagger.ui.version>
     </properties>
@@ -76,19 +75,14 @@
                 <version>${hutool.version}</version>
             </dependency>
             <dependency>
-                <groupId>tk.mybatis</groupId>
-                <artifactId>mapper-spring-boot-starter</artifactId>
-                <version>${tk.mapper.version}</version>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.plus.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>${pagehelper.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
@@ -118,8 +112,8 @@
             <artifactId>hutool-all</artifactId>
         </dependency>
         <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper-spring-boot-starter</artifactId>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

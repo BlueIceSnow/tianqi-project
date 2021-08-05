@@ -1,7 +1,7 @@
 package com.tianqi.common.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tianqi.common.dao.IBaseDAO;
 import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.pojo.BaseDO;
@@ -37,7 +37,7 @@ public abstract class BaseService<DAO extends IBaseDAO<DO>, DO extends BaseDO>
      */
     @Override
     public ResultEntity<DO> getEntity(String id) {
-        DO aDo = dao.selectByPrimaryKey(id);
+        DO aDo = dao.selectById(id);
         return RestResult.<DO>builder()
                 .withData(aDo)
                 .isOk(true)
@@ -53,7 +53,7 @@ public abstract class BaseService<DAO extends IBaseDAO<DO>, DO extends BaseDO>
      */
     @Override
     public ResultEntity<List<DO>> listEntity(DO entity) {
-        List<DO> entities = dao.select(entity);
+        List<DO> entities = dao.selectList(new QueryWrapper<>(entity));
         return RestResult.<List<DO>>builder()
                 .withData(entities)
                 .withStatus(StatusEnum.OK)
@@ -71,12 +71,10 @@ public abstract class BaseService<DAO extends IBaseDAO<DO>, DO extends BaseDO>
      */
     @Override
     public ResultEntity<List<DO>> listPageEntity(DO entity, int page, int size) {
-        PageHelper.startPage(page, size);
-        List<DO> result = dao.select(entity);
-        PageInfo<DO> pageInfo = new PageInfo<>(result);
+        Page<DO> result = dao.selectPage(Page.of(page, size), new QueryWrapper<>(entity));
         return RestResult.<List<DO>>builderPage()
-                .withTotal(pageInfo.getTotal())
-                .withRows(pageInfo.getList())
+                .withTotal(result.getTotal())
+                .withRows(result.getRecords())
                 .withStatus(StatusEnum.OK)
                 .build();
     }
@@ -89,7 +87,7 @@ public abstract class BaseService<DAO extends IBaseDAO<DO>, DO extends BaseDO>
      */
     @Override
     public ResultEntity<DO> save(DO entity) {
-        int i = dao.insertSelective(entity);
+        int i = dao.insert(entity);
         if (i != 0) {
             return RestResult.<DO>builder()
                     .withData(entity)
@@ -113,7 +111,7 @@ public abstract class BaseService<DAO extends IBaseDAO<DO>, DO extends BaseDO>
     @Override
     public ResultEntity<DO> update(DO entity) {
 
-        int i = dao.updateByPrimaryKeySelective(entity);
+        int i = dao.updateById(entity);
         if (i != 0) {
             return RestResult.<DO>builder()
                     .withData(entity)
@@ -141,7 +139,7 @@ public abstract class BaseService<DAO extends IBaseDAO<DO>, DO extends BaseDO>
     @Override
     public ResultEntity<List<DO>> removeByPage(DO entity, int page, int size, String id) {
 
-        int i = dao.deleteByPrimaryKey(id);
+        int i = dao.deleteById(id);
         if (i != 0) {
             ResultEntity<List<DO>> doPageResult = listPageEntity(entity, page, size);
             return doPageResult;
@@ -161,7 +159,7 @@ public abstract class BaseService<DAO extends IBaseDAO<DO>, DO extends BaseDO>
      */
     @Override
     public ResultEntity<List<DO>> remove(DO entity, String id) {
-        int i = dao.deleteByPrimaryKey(id);
+        int i = dao.deleteById(id);
         if (i != 0) {
             ResultEntity<List<DO>> listRestResult = listEntity(entity);
             return listRestResult;

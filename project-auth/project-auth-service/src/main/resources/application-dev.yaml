@@ -1,10 +1,12 @@
 server:
   port: 8001
-mybatis:
-  base-packages: com.tianqi.auth.dao
+mybatis-plus:
   type-aliases-package: com.tianqi.auth.pojo
   mapper-locations: classpath:mapper/*.xml
+  type-enums-package: com.tianqi.common.enums
 spring:
+  application:
+    name: @project.artifactId@
   redis:
     host: 47.96.238.166
     password: tq123456
@@ -14,7 +16,14 @@ spring:
     username: root
     password: 123456
     url: jdbc:mysql://localhost:3306/Demo
-
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      discovery:
+        group: dev
+        namespace: def2c741-902f-4be8-b173-835204b0f6fd
+      username: nacos
+      password: nacos
 logging:
   level:
     com.tianqi: debug

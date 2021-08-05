@@ -1,6 +1,5 @@
 package com.tianqi.movie.config;
 
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -9,13 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.web.client.RestTemplate;
-
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 
 /**
  * @Author: yuantianqi
@@ -29,12 +22,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private RestTemplate restTemplate;
 
     @Bean
-    public ResourceServerTokenServices resourceServerTokenServices(){
+    public ResourceServerTokenServices resourceServerTokenServices() {
         RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
         remoteTokenServices.setClientId("demo-aa");
         remoteTokenServices.setClientSecret("123456");
 //        remoteTokenServices.setAccessTokenConverter(jwtAccessTokenConverter());
-        remoteTokenServices.setCheckTokenEndpointUrl("http://project-auth-service-dev/oauth/check_token");
+        remoteTokenServices.setCheckTokenEndpointUrl(
+                "http://project-auth-service-dev/oauth/check_token");
         remoteTokenServices.setRestTemplate(restTemplate);
         return remoteTokenServices;
     }
@@ -58,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @LoadBalanced
-    public RestTemplate restTemplate(){
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 }

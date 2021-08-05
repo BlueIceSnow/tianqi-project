@@ -1,13 +1,11 @@
 package com.tianqi.movie.pojo;
 
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.tianqi.common.pojo.BaseDO;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
-
-import com.tianqi.common.pojo.BaseDO;
+import java.io.Serializable;
 
 /**
  * User表：
@@ -15,12 +13,12 @@ import com.tianqi.common.pojo.BaseDO;
  * @author yuantianqi
  * @since 2021-04-11 18:37:06
  */
-@Table(name = "user")
+@TableName(value = "user")
 @Data
 public class UserDO extends BaseDO implements Serializable {
     private static final long serialVersionUID = -75691601687488824L;
 
-    @Column(name = "username")
+    @TableField(value = "username")
     private String username;
 
 }

@@ -1,11 +1,12 @@
 server:
   port: 8000
-mybatis:
-  base-packages: com.tianqi.gateway.dao
+mybatis-plus:
   type-aliases-package: com.tianqi.gateway.pojo
   mapper-locations: classpath:mapper/*.xml
-
+  type-enums-package: com.tianqi.common.enums
 spring:
+  application:
+    name: @project.artifactId@
   redis:
     host: 47.96.238.166
     password: tq123456
@@ -18,6 +19,13 @@ spring:
   profiles:
     active: dev
   cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      server-addr: 127.0.0.1:8848
+      discovery:
+        group: dev
+        namespace: def2c741-902f-4be8-b173-835204b0f6fd
     gateway:
       routes:
         - id: project-auth-service-${spring.profiles.active}
