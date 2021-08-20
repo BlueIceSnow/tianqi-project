@@ -1,5 +1,6 @@
 package com.tianqi.movie.api;
 
+import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.movie.api.fallback.AbstractDemoFallback;
 import com.tianqi.movie.pojo.UserDO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -12,9 +13,9 @@ import java.util.List;
  * @Date: 2021/4/17 17:46
  * @Description:
  */
-@FeignClient(name = "project-movie-service-dev", fallback = AbstractDemoFallback.class)
+@FeignClient(name = "project-movie-service", fallback = AbstractDemoFallback.class)
 public interface IDemoApi {
 
     @GetMapping("user/listAll")
-    List<UserDO> listAll(UserDO userDO);
+    ResultEntity<List<UserDO>> listAll(UserDO userDO);
 }

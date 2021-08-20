@@ -16,12 +16,13 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 public class ResourceConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.resourceId("demo-aa");
+        resources.resourceId("demo-movie");
         super.configure(resources);
     }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/**").access("#oauth2.hasScope('read')");
+        http.authorizeRequests().antMatchers("/**")
+                .access("#oauth2.hasScope('read')");
     }
 }

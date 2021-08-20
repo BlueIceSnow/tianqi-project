@@ -2,8 +2,8 @@ package com.tianqi.gateway.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tianqi.auth.api.IDemoApi;
+import com.tianqi.common.enums.AuthEnums;
 import com.tianqi.common.result.rest.RestResult;
-import com.tianqi.gateway.enums.AuthEnums;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -50,16 +49,19 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         String authentication = request.getHeaders().getFirst("Authorization");
         byte[] resultBytes = mapper.writeValueAsString(RestResult.builder()
-                .withData(new HashMap<>()).isOk(false).withStatus(AuthEnums.AUTH_FAIL).build())
+                .withData(new HashMap<>()).isOk(false).withStatus(AuthEnums.LOGIN_FAIL)
+                .build())
                 .getBytes(StandardCharsets.UTF_8);
         DataBuffer wrap = exchange.getResponse().bufferFactory().wrap(resultBytes);
         if (StringUtils.isEmpty(authentication)) {
-            exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+            exchange.getResponse().getHeaders()
+                    .setContentType(MediaType.APPLICATION_JSON);
             return exchange.getResponse().writeWith(Flux.just(wrap));
         }
         // 拥有用户的TOKEN
         try {
-            Map<String, Object> checkResult = demoApi.checkToken(authentication.replace("Bearer ", ""));
+            Map<String, Object> checkResult =
+                    demoApi.checkToken(authentication.replace("Bearer ", ""));
 
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -1,17 +1,17 @@
 package com.tianqi.auth.provider;
 
-import com.tianqi.auth.api.IDemoApi;
-import com.tianqi.auth.pojo.UserDO;
-import com.tianqi.auth.service.IUserService;
+import com.tianqi.auth.pojo.TqUserDO;
+import com.tianqi.auth.service.ITqUserService;
 import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.result.rpc.RpcResult;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: yuantianqi
@@ -19,23 +19,28 @@ import java.util.Map;
  * @Description:
  */
 @RestController
-public class DemoProvider{
-    private IUserService userService;
+public class DemoProvider {
+    private ITqUserService userService;
 
     @Autowired
-    public void setUserService(IUserService userService) {
+    public void setUserService(ITqUserService userService) {
         this.userService = userService;
     }
 
-    public RpcResultEntity<List<UserDO>> listAll() {
+    @GetMapping("user/listAll")
+    public RpcResultEntity<List<TqUserDO>> listAll() {
+        final Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication);
 //        int i = 1 / 0;
 //        try {
 //            Thread.sleep(30000);
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        List<UserDO> userDOS = userService.listEntity(new UserDO()).getData().doOrDto();
-        return RpcResult.<List<UserDO>>builder().withStatus(StatusEnum.OK).withResult(userDOS).build();
-//        return RestResult.<List<UserDO>>builderPage().withStatus(StatusEnum.OK).withRows().build();
+        List<TqUserDO> userDOS =
+                userService.listEntity(new TqUserDO()).getData().doOrDto();
+        return RpcResult.<List<TqUserDO>>builder().withStatus(StatusEnum.OK)
+                .withResult(userDOS).build();
     }
 }

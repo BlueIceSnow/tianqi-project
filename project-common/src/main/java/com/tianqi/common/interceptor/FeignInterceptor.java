@@ -5,6 +5,10 @@ import feign.RequestTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author: yuantianqi
@@ -20,10 +24,17 @@ public class FeignInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
-        System.out.println(requestTemplate);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setBasicAuth(username, password);
-        String token = httpHeaders.getFirst("Authorization");
-        requestTemplate.header("Authorization",token);
+        HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder
+                .currentRequestAttributes())).getRequest();
+        String token = "";
+        if (requestTemplate.feignTarget().name().equals("project-auth-service")) {
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setBasicAuth(username, password);
+            token = httpHeaders.getFirst("Authorization");
+        } else {
+            token = request.getHeader("Authorization");
+        }
+        requestTemplate.header("Authorization", token);
+
     }
 }

@@ -24,19 +24,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public ResourceServerTokenServices resourceServerTokenServices() {
         RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
-        remoteTokenServices.setClientId("demo-aa");
+        remoteTokenServices.setClientId("demo-auth");
         remoteTokenServices.setClientSecret("123456");
 //        remoteTokenServices.setAccessTokenConverter(jwtAccessTokenConverter());
         remoteTokenServices.setCheckTokenEndpointUrl(
-                "http://project-auth-service-dev/oauth/check_token");
+                "http://project-auth-service/oauth/check_token");
         remoteTokenServices.setRestTemplate(restTemplate);
         return remoteTokenServices;
     }
-//
+
 //    @Bean
 //    public TokenStore tokenStore() {
-//        JwtTokenStore jwtTokenStore = new JwtTokenStore(jwtAccessTokenConverter());
-//        return jwtTokenStore;
+//        return new JwtTokenStore(jwtAccessTokenConverter());
 //    }
 //
 //    @SneakyThrows

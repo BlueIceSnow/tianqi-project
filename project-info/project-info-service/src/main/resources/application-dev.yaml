@@ -1,0 +1,52 @@
+server:
+  port: 8003
+mybatis-plus:
+  # XML mapper文件所在位置
+  mapper-locations: classpath:mapper/*.xml
+  # POJO包起别名
+  type-aliases-package: com.tianqi.info.pojo
+  # 枚举所在包，可以保存枚举的值到数据库，结合@EnumValue使用
+  type-enums-package: com.tianqi.common.enums
+spring:
+  application:
+    name: @project.artifactId@
+  redis:
+    host: 47.96.238.166
+    password: tq123456
+    database: 0
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/Demo
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      server-addr: 127.0.0.1:8848
+      discovery:
+        group: dev
+        namespace: def2c741-902f-4be8-b173-835204b0f6fd
+
+logging:
+  level:
+    com.tianqi: debug
+feign:
+  hystrix:
+    enabled: false
+  httpclient:
+    connection-timeout: 30000
+
+
+hystrix:
+  command:
+    default:
+      fallback:
+        enabled: true
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000
+client:
+  username: demo-info
+  password: 123456

@@ -47,7 +47,7 @@ public class BaseDO implements Serializable {
      * 创建用户
      */
     @TableField(value = "create_user")
-    private String createUser;
+    private Long createUser;
     /**
      * 创建时间
      */
@@ -57,7 +57,7 @@ public class BaseDO implements Serializable {
      * 更新用户
      */
     @TableField(value = "update_user")
-    private String updateUser;
+    private Long updateUser;
     /**
      * 更新时间
      */
@@ -67,7 +67,7 @@ public class BaseDO implements Serializable {
      * 所属租户
      */
     @TableField(value = "tent_id")
-    private String tentId;
+    private Integer tentId;
 
     /**
      * 排序

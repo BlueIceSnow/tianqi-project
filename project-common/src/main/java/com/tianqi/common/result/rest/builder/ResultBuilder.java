@@ -1,7 +1,6 @@
 package com.tianqi.common.result.rest.builder;
 
 import com.tianqi.common.enums.BaseEnum;
-import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.result.rest.entity.RestEntity;
 import com.tianqi.common.result.rest.entity.ResultEntity;
@@ -43,7 +42,7 @@ public abstract class ResultBuilder<T, Builder extends ResultBuilder> {
         return (Builder) this;
     }
 
-    public Builder withData(RestEntity<T> data) {
+    protected Builder withData(RestEntity<T> data) {
         this.data = data;
         return (Builder) this;
     }

@@ -26,7 +26,8 @@ public class Swagger2Config {
                 .title("MovieApplication")
                 .description("MovieApplication接口")
                 .version("1.0.0")
-                .contact(new Contact("yuantianqi", "http://xtianqix.gitee.io", "1820846241@qq.com"))
+                .contact(new Contact("yuantianqi", "http://xtianqix.gitee.io",
+                        "1820846241@qq.com"))
                 .build();
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo)

@@ -1,9 +1,9 @@
 package com.tianqi.movie.service.impl;
 
-import com.tianqi.movie.pojo.UserDO;
-import com.tianqi.movie.dao.IUserDAO;
-import com.tianqi.movie.service.IUserService;
 import com.tianqi.common.service.impl.BaseService;
+import com.tianqi.movie.dao.IUserDAO;
+import com.tianqi.movie.pojo.UserDO;
+import com.tianqi.movie.service.IUserService;
 import org.springframework.stereotype.Service;
 
 /**

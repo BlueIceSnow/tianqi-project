@@ -1,7 +1,7 @@
 package com.tianqi.movie.service;
 
-import com.tianqi.movie.pojo.UserDO;
 import com.tianqi.common.service.IBaseService;
+import com.tianqi.movie.pojo.UserDO;
 
 /**
  * (User)表服务接口
