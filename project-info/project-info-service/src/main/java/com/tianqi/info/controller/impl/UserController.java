@@ -1,7 +1,7 @@
 package com.tianqi.info.controller.impl;
 
 import com.tianqi.auth.api.IDemoApi;
-import com.tianqi.common.controller.impl.BaseController;
+import com.tianqi.client.controller.impl.BaseController;
 import com.tianqi.common.enums.BaseEnum;
 import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.result.rest.RestResult;

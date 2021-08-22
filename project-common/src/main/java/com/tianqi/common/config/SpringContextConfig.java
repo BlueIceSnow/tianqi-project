@@ -14,7 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringContextConfig implements ApplicationContextAware {
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(ApplicationContext applicationContext)
+            throws BeansException {
         SpringUtil.setApplicationContext(applicationContext);
     }
 

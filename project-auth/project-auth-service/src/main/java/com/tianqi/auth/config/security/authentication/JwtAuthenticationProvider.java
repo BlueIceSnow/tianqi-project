@@ -3,6 +3,7 @@ package com.tianqi.auth.config.security.authentication;
 import com.tianqi.auth.config.security.IJwtSecurityMetaService;
 import com.tianqi.auth.config.security.authorization.JwtAuthority;
 import com.tianqi.auth.pojo.TqUserDO;
+import com.tianqi.common.pojo.JwtUserClaims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @Author: yuantianqi
@@ -39,7 +42,15 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
                     securityMetaService.loadAuthorities(username);
             final JwtAuthenticationToken authenticationToken =
                     new JwtAuthenticationToken(jwtAuthorities);
-            authenticationToken.setDetails(realUser);
+
+            final JwtUserClaims jwtUserClaims =
+                    new JwtUserClaims(realUser.getId(), realUser.getName(),
+                            realUser.getUsername(),
+                            jwtAuthorities.stream().map(JwtAuthority::getAuthority)
+                                    .collect(Collectors.toList()),
+                            UUID.randomUUID().toString());
+            
+            authenticationToken.setDetails(jwtUserClaims);
             authenticationToken.setAuthenticated(true);
             return authenticationToken;
         }

@@ -1,10 +1,13 @@
 package com.tianqi.auth.config.security.hook;
 
+import cn.hutool.core.date.DateField;
 import com.tianqi.common.enums.AuthEnums;
 import com.tianqi.common.exception.BaseException;
+import com.tianqi.common.pojo.JwtUserClaims;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.util.ResponseUtil;
+import com.tianqi.common.util.SignUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -50,9 +53,11 @@ public class JwtLoginHandler implements AuthenticationFailureHandler,
         if (log.isDebugEnabled()) {
             log.debug("login success");
         }
+        final String sign = SignUtil
+                .sign((JwtUserClaims) authentication.getDetails(), 1, DateField.HOUR);
         final ResultEntity<Object> loginSuccess = RestResult.builder()
-                .withError(new BaseException("username or password not match!"))
                 .withStatus(AuthEnums.LOGIN_SUCCESS)
+                .withData(sign)
                 .build();
         ResponseUtil.resJson(response, loginSuccess);
     }

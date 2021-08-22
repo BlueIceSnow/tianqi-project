@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,19 +27,25 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
 
+    private static final List<String> IGNORE_PROCESSOR_EX =
+            Collections.singletonList(
+                    "org.springframework.security.access.AccessDeniedException");
+
     /**
      * 校验出现错误
      *
      * @param validateEx
      * @return
      */
-    @ExceptionHandler(value = {MethodArgumentNotValidException.class, BindException.class})
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class,
+            BindException.class})
     public ResultEntity validateHandler(Exception validateEx) {
 
         BindingResult bindingResult = null;
         if (validateEx instanceof MethodArgumentNotValidException) {
-            bindingResult = ((MethodArgumentNotValidException) validateEx).getBindingResult();
-        }else{
+            bindingResult =
+                    ((MethodArgumentNotValidException) validateEx).getBindingResult();
+        } else {
             bindingResult = (BindingResult) validateEx;
         }
         List<ObjectError> allErrors = bindingResult.getAllErrors();
@@ -66,7 +73,8 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(value = JsonMappingException.class)
     public ResultEntity jsonParseHandler(JsonMappingException jsonParseEx) {
 
-        List<String> errorField = jsonParseEx.getPath().stream().map(JsonMappingException.Reference::getFieldName)
+        List<String> errorField = jsonParseEx.getPath().stream()
+                .map(JsonMappingException.Reference::getFieldName)
                 .collect(Collectors.toList());
         ValidateEntity validateEntity = new ValidateEntity();
         validateEntity.setFields(errorField.get(0));
@@ -98,7 +106,11 @@ public class GlobalExceptionAdvice {
      * @return
      */
     @ExceptionHandler(value = Exception.class)
-    public ResultEntity exception(Exception exception) {
+    public ResultEntity exception(Exception exception) throws Exception {
+        if (IGNORE_PROCESSOR_EX.contains(exception.getClass().getName())) {
+            throw exception;
+        }
+
         BaseException baseException = new BaseException(exception.getMessage());
         baseException.setStackTrace(exception.getStackTrace());
         return RestResult.builder()

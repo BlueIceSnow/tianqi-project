@@ -3,14 +3,12 @@ package com.tianqi.common.result.rest.builder;
 import com.tianqi.common.result.rest.entity.PageResultEntity;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 
-import java.util.List;
-
 /**
  * @Author: yuantianqi
  * @Date: 2021/4/10 15:32
  * @Description:
  */
-public class PageResultBuilder<T> extends ResultBuilder<T , PageResultBuilder<T>> {
+public class PageResultBuilder<T> extends ResultBuilder<T, PageResultBuilder<T>> {
     private long total;
     private T rows;
 

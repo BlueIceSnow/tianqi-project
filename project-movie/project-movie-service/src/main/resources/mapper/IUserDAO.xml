@@ -6,7 +6,7 @@
     </resultMap>
 
     <sql id="columns">
-        <include refid="com.tianqi.common.dao.IBaseDAO.commonCol"/>
+        <include refid="IBaseDAO.commonCol"/>
         username
 
     </sql>

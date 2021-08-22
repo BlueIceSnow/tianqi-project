@@ -79,10 +79,14 @@ public class SpringUtil {
      */
     @SuppressWarnings("unchecked")
     public static <T> T getBean(TypeReference<T> reference) {
-        final ParameterizedType parameterizedType = (ParameterizedType) reference.getType();
+        final ParameterizedType parameterizedType =
+                (ParameterizedType) reference.getType();
         final Class<T> rawType = (Class<T>) parameterizedType.getRawType();
-        final Class<?>[] genericTypes = Arrays.stream(parameterizedType.getActualTypeArguments()).map(type -> (Class<?>) type).toArray(Class[]::new);
-        final String[] beanNames = applicationContext.getBeanNamesForType(ResolvableType.forClassWithGenerics(rawType, genericTypes));
+        final Class<?>[] genericTypes =
+                Arrays.stream(parameterizedType.getActualTypeArguments())
+                        .map(type -> (Class<?>) type).toArray(Class[]::new);
+        final String[] beanNames = applicationContext.getBeanNamesForType(
+                ResolvableType.forClassWithGenerics(rawType, genericTypes));
         return getBean(beanNames[0], rawType);
     }
 
@@ -153,7 +157,8 @@ public class SpringUtil {
      * @since 5.4.2
      */
     public static <T> void registerBean(String beanName, T bean) {
-        ConfigurableApplicationContext context = (ConfigurableApplicationContext) applicationContext;
+        ConfigurableApplicationContext context =
+                (ConfigurableApplicationContext) applicationContext;
         context.getBeanFactory().registerSingleton(beanName, bean);
     }
 }

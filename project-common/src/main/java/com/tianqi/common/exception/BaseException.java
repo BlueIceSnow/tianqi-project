@@ -24,8 +24,9 @@ public class BaseException extends RuntimeException {
         List<StackTraceElement> elements = new ArrayList<>();
         if (stackTrace != null && stackTrace.length != 0) {
             String[] packages = stackTrace[0].getClassName().split("\\.");
-            String pkgName = new StringBuffer(packages[0]).append(".").append(packages[1]).toString();
-            if (pkgName.contains("com.tianqi")){
+            String pkgName = new StringBuffer(packages[0]).append(".").append(packages[1])
+                    .toString();
+            if (pkgName.contains("com.tianqi")) {
                 for (StackTraceElement stackTraceElement : stackTrace) {
                     if (stackTraceElement.getClassName().contains(pkgName)) {
                         elements.add(stackTraceElement);
@@ -33,6 +34,6 @@ public class BaseException extends RuntimeException {
                 }
             }
         }
-        return elements.toArray(new StackTraceElement[]{});
+        return elements.toArray(new StackTraceElement[] {});
     }
 }

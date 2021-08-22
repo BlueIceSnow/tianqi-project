@@ -3,7 +3,7 @@ server:
 mybatis-plus:
   type-aliases-package: com.tianqi.auth.pojo
   mapper-locations: classpath:mapper/*.xml
-  type-enums-package: com.tianqi.common.enums
+  type-enums-package: com.tianqi.auth.enums
 spring:
   application:
     name: @project.artifactId@

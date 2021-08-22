@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.tianqi.common.enums.BooleanEnum;
+import com.tianqi.common.handler.type.JsonObjectHandler;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -34,7 +35,7 @@ public class BaseDO implements Serializable {
      * 扩展字段
      */
     @TableField(value = "ext_field", typeHandler =
-            com.tianqi.common.handler.type.JsonObjectHandler.class)
+            JsonObjectHandler.class)
     private JSONObject extField;
 
     /**

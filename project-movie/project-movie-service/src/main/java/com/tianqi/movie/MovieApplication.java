@@ -12,7 +12,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @author yuantianqi
  * @since 2021-04-11 18:37:17
  */
-@SpringBootApplication(scanBasePackages = {"com.tianqi.common", "com.tianqi.movie"})
+@SpringBootApplication(scanBasePackages = {"com.tianqi.common",
+        "com.tianqi.client", "com.tianqi.movie"})
 @EnableFeignClients(basePackages = "com.tianqi.*.api")
 //@EnableCircuitBreaker
 @MapperScan("com.tianqi.movie.dao")

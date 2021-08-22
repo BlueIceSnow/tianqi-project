@@ -22,7 +22,10 @@ import java.util.List;
 public class CustomBeanSerializerModifier extends BeanSerializerModifier {
 
     @Override
-    public JsonSerializer<?> modifyEnumSerializer(SerializationConfig config, JavaType valueType, BeanDescription beanDesc, JsonSerializer<?> serializer) {
+    public JsonSerializer<?> modifyEnumSerializer(SerializationConfig config,
+                                                  JavaType valueType,
+                                                  BeanDescription beanDesc,
+                                                  JsonSerializer<?> serializer) {
         if (!CollectionUtil.isEmpty(valueType.getInterfaces())
                 && valueType.getInterfaces().get(0).getRawClass().getTypeName()
                 .equals(BaseEnum.class.getTypeName())) {
@@ -32,7 +35,9 @@ public class CustomBeanSerializerModifier extends BeanSerializerModifier {
     }
 
     @Override
-    public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc, JsonSerializer<?> serializer) {
+    public JsonSerializer<?> modifySerializer(SerializationConfig config,
+                                              BeanDescription beanDesc,
+                                              JsonSerializer<?> serializer) {
         if (beanDesc.getType().getRawClass().equals(BaseException.class)) {
             return new CustomSerializer.BaseExceptionSerializer();
         }
@@ -49,16 +54,20 @@ public class CustomBeanSerializerModifier extends BeanSerializerModifier {
             // 判断字段的类型，如果是数组或集合则注册nullSerializer
             if (isArrayType(writer)) {
                 // 给writer注册一个自己的nullSerializer
-                writer.assignNullSerializer(new CustomNullJsonSerializer.NullArrayJsonSerializer());
+                writer.assignNullSerializer(
+                        new CustomNullJsonSerializer.NullArrayJsonSerializer());
             }
             if (isStringType(writer)) {
-                writer.assignNullSerializer(new CustomNullJsonSerializer.NullStringJsonSerializer());
+                writer.assignNullSerializer(
+                        new CustomNullJsonSerializer.NullStringJsonSerializer());
             }
             if (isTimestamp(writer)) {
-                writer.assignNullSerializer(new CustomNullJsonSerializer.NullStringJsonSerializer());
+                writer.assignNullSerializer(
+                        new CustomNullJsonSerializer.NullStringJsonSerializer());
             }
             if (isBooleanType(writer)) {
-                writer.assignNullSerializer(new CustomNullJsonSerializer.NullBooleanJsonSerializer());
+                writer.assignNullSerializer(
+                        new CustomNullJsonSerializer.NullBooleanJsonSerializer());
             }
         }
         return beanProperties;
@@ -77,7 +86,8 @@ public class CustomBeanSerializerModifier extends BeanSerializerModifier {
      */
     private boolean isStringType(BeanPropertyWriter writer) {
         Class<?> clazz = writer.getType().getRawClass();
-        return CharSequence.class.isAssignableFrom(clazz) || Character.class.isAssignableFrom(clazz);
+        return CharSequence.class.isAssignableFrom(clazz) ||
+                Character.class.isAssignableFrom(clazz);
     }
 
     /**

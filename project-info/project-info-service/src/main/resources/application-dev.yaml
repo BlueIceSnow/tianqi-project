@@ -6,7 +6,7 @@ mybatis-plus:
   # POJO包起别名
   type-aliases-package: com.tianqi.info.pojo
   # 枚举所在包，可以保存枚举的值到数据库，结合@EnumValue使用
-  type-enums-package: com.tianqi.common.enums
+  type-enums-package: com.tianqi.auth.enums
 spring:
   application:
     name: @project.artifactId@

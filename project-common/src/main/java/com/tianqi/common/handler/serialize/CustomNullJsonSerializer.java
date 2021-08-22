@@ -80,7 +80,8 @@ public class CustomNullJsonSerializer {
         @Override
         public void serialize(Object value, JsonGenerator jsonGenerator,
                               SerializerProvider serializerProvider) throws IOException {
-            jsonGenerator.writeObject(DateUtil.format(Date.from(Instant.now()), "yyyy-MM-dd HH:mm:ss"));
+            jsonGenerator.writeObject(
+                    DateUtil.format(Date.from(Instant.now()), "yyyy-MM-dd HH:mm:ss"));
         }
     }
 

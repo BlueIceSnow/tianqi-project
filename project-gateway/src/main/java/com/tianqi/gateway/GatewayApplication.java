@@ -11,7 +11,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @Date: 2021/4/22 08:47
  * @Description:
  */
-@SpringBootApplication(scanBasePackages = {"com.tianqi.common", "com.tianqi.gateway"})
+@SpringBootApplication(scanBasePackages = {"com.tianqi.client", "com.tianqi.gateway"})
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = {"com.tianqi.*.api"})
 @EnableCircuitBreaker

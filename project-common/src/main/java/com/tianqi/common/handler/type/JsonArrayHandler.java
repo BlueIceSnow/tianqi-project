@@ -15,22 +15,26 @@ import java.sql.SQLException;
  */
 public class JsonArrayHandler extends BaseTypeHandler<JSONArray> {
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, JSONArray parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, JSONArray parameter,
+                                    JdbcType jdbcType) throws SQLException {
         ps.setString(i, JSON.toJSONString(parameter));
     }
 
     @Override
-    public JSONArray getNullableResult(ResultSet rs, String columnName) throws SQLException {
+    public JSONArray getNullableResult(ResultSet rs, String columnName)
+            throws SQLException {
         return JSON.parseArray(rs.getString(columnName));
     }
 
     @Override
-    public JSONArray getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+    public JSONArray getNullableResult(ResultSet rs, int columnIndex)
+            throws SQLException {
         return JSON.parseArray(rs.getString(columnIndex));
     }
 
     @Override
-    public JSONArray getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+    public JSONArray getNullableResult(CallableStatement cs, int columnIndex)
+            throws SQLException {
         return JSON.parseArray(cs.getString(columnIndex));
     }
 }

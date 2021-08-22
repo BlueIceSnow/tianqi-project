@@ -1,7 +1,7 @@
 package com.tianqi.movie.controller.impl;
 
 import com.tianqi.auth.api.IDemoApi;
-import com.tianqi.common.controller.impl.BaseController;
+import com.tianqi.common.controller.impl.BaseControllerImpl;
 import com.tianqi.common.enums.BaseEnum;
 import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.result.rest.RestResult;
@@ -12,6 +12,7 @@ import com.tianqi.movie.pojo.UserDO;
 import com.tianqi.movie.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("user")
 @Slf4j
-public class UserController extends BaseController<IUserService, UserDO>
+public class UserController extends BaseControllerImpl<IUserService, UserDO>
         implements IUserController {
 
     @Autowired
@@ -38,16 +39,18 @@ public class UserController extends BaseController<IUserService, UserDO>
     private HttpServletRequest request;
 
     @Override
-    public ResultEntity<List<com.tianqi.auth.pojo.UserDO>> testFeign() {
+    @PreAuthorize("hasRole('BLUE')")
+    public ResultEntity<List<com.tianqi.auth.pojo.TqUserDO>> testFeign() {
         log.debug("debug信息");
-        RpcResultEntity<List<com.tianqi.auth.pojo.UserDO>> rpcResultEntity =
+        RpcResultEntity<List<com.tianqi.auth.pojo.TqUserDO>> rpcResultEntity =
                 demoApi.listAll();
         final RpcResultEntity<List<com.tianqi.info.pojo.UserDO>> listResultEntity =
                 iDemoApi.listAll(new com.tianqi.info.pojo.UserDO());
-        List<com.tianqi.auth.pojo.UserDO> result = rpcResultEntity.getResult();
+        List<com.tianqi.auth.pojo.TqUserDO> result = rpcResultEntity.getResult();
         BaseEnum status = rpcResultEntity.getStatus();
 
-        return RestResult.<List<com.tianqi.auth.pojo.UserDO>>builder()
+        return RestResult.<List<com.tianqi.auth.pojo.TqUserDO>>builder()
                 .withStatus(StatusEnum.OK).withData(result).build();
     }
 }
+

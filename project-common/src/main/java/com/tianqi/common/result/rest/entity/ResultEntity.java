@@ -1,7 +1,6 @@
 package com.tianqi.common.result.rest.entity;
 
 import com.tianqi.common.enums.BaseEnum;
-import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Data;

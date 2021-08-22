@@ -1,7 +1,7 @@
 package com.tianqi.info.dao;
 
-import com.tianqi.info.pojo.UserDO;
 import com.tianqi.common.dao.IBaseDAO;
+import com.tianqi.info.pojo.UserDO;
 
 /**
  * (User)表数据库访问层

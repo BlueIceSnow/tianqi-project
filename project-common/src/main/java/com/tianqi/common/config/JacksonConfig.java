@@ -29,7 +29,8 @@ public class JacksonConfig {
         simpleModule.setDeserializerModifier(new CustomBeanDeSerializerModifier());
         objectMapper.registerModule(simpleModule);
         SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
-        serializerProvider.setNullValueSerializer(new CustomNullJsonSerializer.NullObjectJsonSerializer());
+        serializerProvider.setNullValueSerializer(
+                new CustomNullJsonSerializer.NullObjectJsonSerializer());
         return objectMapper;
     }
 }

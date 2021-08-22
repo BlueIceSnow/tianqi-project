@@ -8,12 +8,14 @@ package com.tianqi.common.enums;
 public interface BaseEnum {
     /**
      * 获取code码
+     *
      * @return
      */
     int getCode();
 
     /**
      * 获取消息信息
+     *
      * @return
      */
     String getMsg();

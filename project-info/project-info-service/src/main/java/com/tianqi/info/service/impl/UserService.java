@@ -3,7 +3,7 @@ package com.tianqi.info.service.impl;
 import com.tianqi.info.pojo.UserDO;
 import com.tianqi.info.dao.IUserDAO;
 import com.tianqi.info.service.IUserService;
-import com.tianqi.common.service.impl.BaseService;
+import com.tianqi.client.service.impl.BaseService;
 import org.springframework.stereotype.Service;
 
 /**

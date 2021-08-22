@@ -21,5 +21,5 @@ public interface IUserController extends IBaseController<UserDO> {
      * @return
      */
     @GetMapping("testFeign")
-    ResultEntity<List<com.tianqi.auth.pojo.UserDO>> testFeign();
+    ResultEntity<List<com.tianqi.auth.pojo.TqUserDO>> testFeign();
 }

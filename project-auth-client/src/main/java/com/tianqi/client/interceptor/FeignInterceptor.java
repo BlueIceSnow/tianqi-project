@@ -1,4 +1,4 @@
-package com.tianqi.common.interceptor;
+package com.tianqi.client.interceptor;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

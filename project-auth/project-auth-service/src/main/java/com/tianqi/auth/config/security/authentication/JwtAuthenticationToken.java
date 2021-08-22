@@ -1,6 +1,6 @@
 package com.tianqi.auth.config.security.authentication;
 
-import com.tianqi.auth.pojo.TqUserDO;
+import com.tianqi.common.pojo.JwtUserClaims;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -20,8 +20,8 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     }
 
     @Override
-    public TqUserDO getDetails() {
-        return (TqUserDO) super.getDetails();
+    public JwtUserClaims getDetails() {
+        return (JwtUserClaims) super.getDetails();
     }
 
     @Override

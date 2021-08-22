@@ -12,7 +12,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @author yuantianqi
  * @since 2021-04-11 18:37:17
  */
-@SpringBootApplication(scanBasePackages = {"com.tianqi.common", "com.tianqi.info"})
+@SpringBootApplication(scanBasePackages = {"com.tianqi.client", "com.tianqi.info"})
 @EnableFeignClients(basePackages = "com.tianqi.*.api")
 //@EnableCircuitBreaker
 @MapperScan("com.tianqi.info.dao")

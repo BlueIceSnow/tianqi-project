@@ -1,8 +1,8 @@
 package com.tianqi.info.controller;
 
+import com.tianqi.common.controller.IBaseController;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.info.pojo.UserDO;
-import com.tianqi.common.controller.IBaseController;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
@@ -17,6 +17,7 @@ public interface IUserController extends IBaseController<UserDO> {
 
     /**
      * 测试Feign调用
+     *
      * @return
      */
     @GetMapping("testFeign")

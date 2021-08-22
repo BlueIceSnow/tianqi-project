@@ -3,8 +3,9 @@ package com.tianqi.common.util;
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.lang.UUID;
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tianqi.common.constant.SystemConstant;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.pojo.JwtUserClaims;
 import io.jsonwebtoken.Claims;
@@ -16,6 +17,9 @@ import io.jsonwebtoken.jackson.io.JacksonDeserializer;
 import io.jsonwebtoken.lang.Maps;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.util.StringUtils;
 import sun.security.rsa.RSAPrivateCrtKeyImpl;
 import sun.security.rsa.RSAPublicKeyImpl;
 
@@ -28,7 +32,8 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: yuantianqi
@@ -44,6 +49,8 @@ public class SignUtil {
             "/Users/yuantianqi/Desktop/keys/pub.key";
     public static final String AUDIENCE = "USER";
     public static final String ISSUER = "WWW.YTQ.COM";
+    public static final String TOKEN_REDIS_KEY_PREFIX =
+            SystemConstant.REDIS_PREFIX + "TOKEN:JTI:";
 
     static {
         final KeyPair secretKey = Keys.keyPairFor(SignatureAlgorithm.RS256);
@@ -53,42 +60,43 @@ public class SignUtil {
         final byte[] aPublicEncoded = aPublic.getEncoded();
         final File privateFile = new File(PRIVATE_KEY_PATH);
         final File publicFile = new File(PUBLIC_KEY_PATH);
-        if (!privateFile.exists()) {
-            privateFile.getParentFile().mkdirs();
+        if (!privateFile.exists() && !publicFile.exists()) {
+            if (!privateFile.exists()) {
+                privateFile.getParentFile().mkdirs();
+            }
+            if (!publicFile.exists()) {
+                publicFile.getParentFile().mkdirs();
+            }
+            try (FileOutputStream outputStream =
+                         new FileOutputStream(privateFile)) {
+                outputStream.write(aPrivateEncoded);
+            } catch (IOException e) {
+                throw new BaseException("generator private key file error");
+            }
+            try (FileOutputStream outputStream =
+                         new FileOutputStream(publicFile)) {
+                outputStream.write(aPublicEncoded);
+            } catch (IOException e) {
+                throw new BaseException("generator public key file error");
+            }
         }
-        if (!publicFile.exists()) {
-            publicFile.getParentFile().mkdirs();
-        }
-        try (FileOutputStream outputStream =
-                     new FileOutputStream(privateFile)) {
-            outputStream.write(aPrivateEncoded);
-        } catch (IOException e) {
-            throw new BaseException("generator private key file error");
-        }
-        try (FileOutputStream outputStream =
-                     new FileOutputStream(publicFile)) {
-            outputStream.write(aPublicEncoded);
-        } catch (IOException e) {
-            throw new BaseException("generator public key file error");
-        }
-
     }
 
     public static void main(String[] args) {
-        final JwtUserClaims blue =
-                new JwtUserClaims(1L, "blue", "1820846241", new ArrayList<>(),
-                        UUID.randomUUID().toString());
-        final String sign = sign(blue, 5, DateField.SECOND);
-        log.info("sign content: {}", sign);
-        try {
-            Thread.sleep(5000);
-            final JwtUserClaims jwtUserClaims = parseSign(sign);
-            log.info("parse sign content: {}", JSON.toJSONString(jwtUserClaims));
-        } catch (InterruptedException exception) {
-            log.error("thread sleep error");
-        } catch (ExpiredJwtException expiredJwtException) {
-            log.error("sign is expired");
-        }
+////        final JwtUserClaims blue =
+////                new JwtUserClaims(1L, "blue", "1820846241", new ArrayList<>(),
+////                        UUID.randomUUID().toString());
+//        final String sign = sign(blue, 5, DateField.SECOND);
+//        log.info("sign content: {}", sign);
+//        try {
+//            Thread.sleep(5000);
+//            final JwtUserClaims jwtUserClaims = parseSign(sign);
+//            log.info("parse sign content: {}", JSON.toJSONString(jwtUserClaims));
+//        } catch (InterruptedException exception) {
+//            log.error("thread sleep error");
+//        } catch (ExpiredJwtException expiredJwtException) {
+//            log.error("sign is expired");
+//        }
     }
 
     /**
@@ -157,9 +165,25 @@ public class SignUtil {
      */
     public static String sign(JwtUserClaims userClaims, int time, DateField dateField) {
         final RSAPrivateKey rsaPrivateKey = readPrivateKey();
+        final Date expireDate = DateUtil.date()
+                .offset(dateField, time).toJdkDate();
+        if (userClaims.getJti() != null) {
+            final StringRedisTemplate redisTemplate =
+                    SpringUtil.getBean(StringRedisTemplate.class);
+            final ObjectMapper mapper = SpringUtil.getBean(ObjectMapper.class);
+            final ValueOperations<String, String> stringValueOperations =
+                    redisTemplate.opsForValue();
+            try {
+                stringValueOperations.set(TOKEN_REDIS_KEY_PREFIX + userClaims.getJti(),
+                        mapper.writeValueAsString(userClaims),
+                        expireDate.getTime(),
+                        TimeUnit.MILLISECONDS);
+            } catch (JsonProcessingException e) {
+                log.error("user sign is error, user claims convert to json error");
+            }
+        }
         final Claims claims = Jwts.claims();
-        claims.setExpiration(DateUtil.date()
-                .offset(dateField, time).toJdkDate())
+        claims.setExpiration(expireDate)
                 .setAudience(AUDIENCE)
                 .setIssuer(ISSUER);
         final String sign = Jwts.builder()
@@ -186,6 +210,15 @@ public class SignUtil {
                 .build()
                 .parseClaimsJws(sign)
                 .getBody().get("sub", JwtUserClaims.class);
+        if (userClaims.getJti() != null) {
+            final StringRedisTemplate redisTemplate =
+                    SpringUtil.getBean(StringRedisTemplate.class);
+            final String jti = redisTemplate.opsForValue()
+                    .get(TOKEN_REDIS_KEY_PREFIX + userClaims.getJti());
+            if (StringUtils.isEmpty(jti)) {
+                throw new ExpiredJwtException(null, null, "jwt token is expire");
+            }
+        }
         return userClaims;
     }
 }

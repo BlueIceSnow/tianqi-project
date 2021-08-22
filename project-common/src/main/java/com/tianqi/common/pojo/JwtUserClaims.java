@@ -1,6 +1,6 @@
 package com.tianqi.common.pojo;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +12,6 @@ import java.util.List;
  * @Description:
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class JwtUserClaims {
     /**
@@ -29,6 +28,12 @@ public class JwtUserClaims {
     private String username;
 
     /**
+     * 密码
+     */
+    @JsonIgnore
+    private String password;
+
+    /**
      * 角色列表
      */
     private List<String> roles;
@@ -37,4 +42,13 @@ public class JwtUserClaims {
      * JWT 唯一 ID（JWT ID）
      */
     private String jti;
+
+    public JwtUserClaims(Long id, String name, String username, List<String> roles,
+                         String jti) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.roles = roles;
+        this.jti = jti;
+    }
 }

@@ -1,6 +1,6 @@
 package com.tianqi.auth.config.security.authentication;
 
-import com.tianqi.auth.pojo.TqUserDO;
+import com.tianqi.common.pojo.JwtUserClaims;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -30,10 +30,10 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
                 new JwtAuthenticationToken(null);
         final String username = request.getParameter(USERNAME);
         final String password = request.getParameter(PASSWORD);
-        final TqUserDO userDO = new TqUserDO();
-        userDO.setUsername(username);
-        userDO.setPassword(password);
-        authenticationToken.setDetails(userDO);
+        JwtUserClaims jwtUserClaims = new JwtUserClaims();
+        jwtUserClaims.setUsername(username);
+        jwtUserClaims.setPassword(password);
+        authenticationToken.setDetails(jwtUserClaims);
         return getAuthenticationManager().authenticate(authenticationToken);
     }
 

@@ -10,6 +10,7 @@ import java.io.Serializable;
 public interface RestEntity<T> extends Serializable {
     /**
      * 获取业务数据
+     *
      * @return
      */
     T doOrDto();

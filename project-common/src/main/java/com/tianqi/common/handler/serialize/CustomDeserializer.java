@@ -1,11 +1,9 @@
 package com.tianqi.common.handler.serialize;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.tianqi.common.enums.BaseEnum;
-import com.tianqi.common.enums.StatusEnum;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AssignableTypeFilter;
@@ -21,23 +19,27 @@ import java.util.Set;
 public class CustomDeserializer {
     public static class StatusDeSerializer extends JsonDeserializer<BaseEnum> {
         @Override
-        public BaseEnum deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+        public BaseEnum deserialize(JsonParser jsonParser,
+                                    DeserializationContext deserializationContext)
+                throws IOException {
 
             jsonParser.nextFieldName();
             int code = jsonParser.nextIntValue(0);
             jsonParser.nextFieldName();
             String msg = jsonParser.nextTextValue();
             jsonParser.nextFieldName();
-            ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+            ClassPathScanningCandidateComponentProvider provider =
+                    new ClassPathScanningCandidateComponentProvider(false);
             provider.addIncludeFilter(new AssignableTypeFilter(BaseEnum.class));
-            Set<BeanDefinition> components = provider.findCandidateComponents("com/tianqi");
+            Set<BeanDefinition> components =
+                    provider.findCandidateComponents("com/tianqi");
             for (BeanDefinition component : components) {
                 try {
                     Class cls = Class.forName(component.getBeanClassName());
                     Object[] enumConstants = cls.getEnumConstants();
                     for (Object enumConstant : enumConstants) {
                         BaseEnum cast = BaseEnum.class.cast(enumConstant);
-                        if (cast.getCode() == code && cast.getMsg().equals(msg)){
+                        if (cast.getCode() == code && cast.getMsg().equals(msg)) {
                             return cast;
                         }
                     }
