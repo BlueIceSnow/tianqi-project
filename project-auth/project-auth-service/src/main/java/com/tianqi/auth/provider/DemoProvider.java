@@ -1,7 +1,5 @@
 package com.tianqi.auth.provider;
 
-import com.tianqi.auth.pojo.TqUserDO;
-import com.tianqi.auth.service.ITqUserService;
 import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.result.rpc.RpcResult;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;

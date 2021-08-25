@@ -64,11 +64,6 @@ public class BaseDO implements Serializable {
      */
     @TableField(value = "update_time")
     private Timestamp updateTime;
-    /**
-     * 所属租户
-     */
-    @TableField(value = "tent_id")
-    private Integer tentId;
 
     /**
      * 排序

@@ -7,6 +7,8 @@ import com.tianqi.info.api.IDemoApi;
 import com.tianqi.info.pojo.UserDO;
 import com.tianqi.info.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
  * @Description:
  */
 @RestController
+@RequestMapping("service")
 public class DemoProvider implements IDemoApi {
     private IUserService userService;
 
@@ -26,6 +29,7 @@ public class DemoProvider implements IDemoApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('BLUE')")
     public RpcResultEntity<List<UserDO>> listAll(UserDO userDO) {
         final List<UserDO> userDOS = userService.listEntity(userDO)
                 .getData().doOrDto();

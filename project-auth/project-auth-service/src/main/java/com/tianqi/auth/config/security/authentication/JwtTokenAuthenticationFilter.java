@@ -19,7 +19,7 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
     private final static String PASSWORD = "password";
 
     public JwtTokenAuthenticationFilter() {
-        setFilterProcessesUrl("/doLogin");
+        setFilterProcessesUrl("/token");
     }
 
     @Override

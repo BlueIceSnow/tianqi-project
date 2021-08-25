@@ -1,9 +1,9 @@
 package com.tianqi.client.interceptor;
 
+import com.tianqi.client.constant.SystemConstant;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -26,15 +26,7 @@ public class FeignInterceptor implements RequestInterceptor {
     public void apply(RequestTemplate requestTemplate) {
         HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder
                 .currentRequestAttributes())).getRequest();
-        String token = "";
-        if (requestTemplate.feignTarget().name().equals("project-auth-service")) {
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setBasicAuth(username, password);
-            token = httpHeaders.getFirst("Authorization");
-        } else {
-            token = request.getHeader("Authorization");
-        }
-        requestTemplate.header("Authorization", token);
-
+        final String authorization = request.getHeader(SystemConstant.HEADER_TOKEN);
+        requestTemplate.header(SystemConstant.HEADER_TOKEN, authorization);
     }
 }

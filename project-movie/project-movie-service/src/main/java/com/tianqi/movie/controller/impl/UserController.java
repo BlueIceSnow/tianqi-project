@@ -3,7 +3,7 @@ package com.tianqi.movie.controller.impl;
 import com.tianqi.auth.api.IDemoApi;
 import com.tianqi.common.controller.impl.BaseControllerImpl;
 import com.tianqi.common.enums.BaseEnum;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.BooleanEnum;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
@@ -40,17 +40,19 @@ public class UserController extends BaseControllerImpl<IUserService, UserDO>
 
     @Override
     @PreAuthorize("hasRole('BLUE')")
-    public ResultEntity<List<com.tianqi.auth.pojo.TqUserDO>> testFeign() {
+    public ResultEntity<List<com.tianqi.info.pojo.UserDO>> testFeign() {
         log.debug("debug信息");
-        RpcResultEntity<List<com.tianqi.auth.pojo.TqUserDO>> rpcResultEntity =
-                demoApi.listAll();
+//        RpcResultEntity<List<com.tianqi.auth.pojo.TqUserDO>> rpcResultEntity =
+//                demoApi.listAll();
+        final com.tianqi.info.pojo.UserDO userDO = new com.tianqi.info.pojo.UserDO();
+        userDO.setDeleted(BooleanEnum.TRUE);
         final RpcResultEntity<List<com.tianqi.info.pojo.UserDO>> listResultEntity =
-                iDemoApi.listAll(new com.tianqi.info.pojo.UserDO());
-        List<com.tianqi.auth.pojo.TqUserDO> result = rpcResultEntity.getResult();
-        BaseEnum status = rpcResultEntity.getStatus();
+                iDemoApi.listAll(userDO);
+        List<com.tianqi.info.pojo.UserDO> result = listResultEntity.getResult();
+        BaseEnum status = listResultEntity.getStatus();
 
-        return RestResult.<List<com.tianqi.auth.pojo.TqUserDO>>builder()
-                .withStatus(StatusEnum.OK).withData(result).build();
+        return RestResult.<List<com.tianqi.info.pojo.UserDO>>builder()
+                .withStatus(status).withData(result).build();
     }
 }
 

@@ -1,7 +1,6 @@
 package com.tianqi.gateway.fallback;
 
 import com.tianqi.auth.api.fallback.AbstractDemoFallback;
-import com.tianqi.auth.pojo.TqUserDO;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
 import org.springframework.stereotype.Component;
 

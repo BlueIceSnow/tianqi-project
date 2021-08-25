@@ -1,11 +1,11 @@
 package com.tianqi.movie.config;
 
+import com.tianqi.client.annotation.TqSecurityEnable;
 import com.tianqi.client.config.security.WebSecurityConfiguration;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
  * @Date: 2021/4/20 21:29
  * @Description:
  */
-@EnableWebSecurity
+@TqSecurityEnable
 public class WebSecurityConfig extends WebSecurityConfiguration {
     /**
      * 配置权限认证相关

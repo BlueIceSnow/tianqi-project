@@ -69,6 +69,10 @@ public class CustomBeanSerializerModifier extends BeanSerializerModifier {
                 writer.assignNullSerializer(
                         new CustomNullJsonSerializer.NullBooleanJsonSerializer());
             }
+            if (isNumberType(writer)) {
+                writer.assignNullSerializer(
+                        new CustomNullJsonSerializer.NullNumberJsonSerializer());
+            }
         }
         return beanProperties;
     }

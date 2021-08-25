@@ -1,7 +1,6 @@
 package com.tianqi.auth.config.security;
 
 import com.tianqi.auth.config.security.authorization.JwtAuthority;
-import com.tianqi.auth.pojo.TqUserDO;
 import org.springframework.security.access.ConfigAttribute;
 
 import java.util.List;

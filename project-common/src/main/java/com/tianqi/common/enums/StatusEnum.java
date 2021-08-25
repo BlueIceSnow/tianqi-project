@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum StatusEnum implements BaseEnum {
+public enum StatusEnum implements BaseEnum<Integer, String> {
     OK(200, "成功！"),
     OPTION_ERROR(401, "操作失败"),
     DELETE_ERROR(402, "删除失败"),
@@ -24,7 +24,17 @@ public enum StatusEnum implements BaseEnum {
 
 
     @Override
-    public BaseEnum[] enumValues() {
+    public Integer getKey() {
+        return this.code;
+    }
+
+    @Override
+    public String getValue() {
+        return this.msg;
+    }
+
+    @Override
+    public BaseEnum<Integer, String>[] enumValues() {
         return StatusEnum.values();
     }
 }

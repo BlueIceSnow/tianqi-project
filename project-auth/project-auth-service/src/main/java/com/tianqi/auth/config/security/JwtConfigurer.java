@@ -23,11 +23,11 @@ public class JwtConfigurer<H extends HttpSecurityBuilder<H>> extends
     @Override
     protected RequestMatcher createLoginProcessingUrlMatcher(
             final String loginProcessingUrl) {
-        return new AntPathRequestMatcher(loginProcessingUrl, HttpMethod.GET);
+        return new AntPathRequestMatcher(loginProcessingUrl, HttpMethod.POST);
     }
 
     @Override
     public JwtConfigurer<H> loginProcessingUrl(final String loginProcessingUrl) {
-        return super.loginProcessingUrl("/doLogin");
+        return super.loginProcessingUrl("/token");
     }
 }

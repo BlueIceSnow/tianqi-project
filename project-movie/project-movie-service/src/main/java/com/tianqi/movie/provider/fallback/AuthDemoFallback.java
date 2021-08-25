@@ -1,7 +1,6 @@
 package com.tianqi.movie.provider.fallback;
 
 import com.tianqi.auth.api.fallback.AbstractDemoFallback;
-import com.tianqi.auth.pojo.TqUserDO;
 import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.result.rpc.RpcResult;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;

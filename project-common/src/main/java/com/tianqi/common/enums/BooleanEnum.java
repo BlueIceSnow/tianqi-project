@@ -9,7 +9,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum BooleanEnum {
+public enum BooleanEnum implements BaseEnum<Integer, Boolean> {
     /**
      * 真
      */
@@ -21,4 +21,20 @@ public enum BooleanEnum {
     public final Integer name;
     @EnumValue
     public final boolean value;
+
+
+    @Override
+    public Integer getKey() {
+        return name;
+    }
+
+    @Override
+    public Boolean getValue() {
+        return value;
+    }
+
+    @Override
+    public BaseEnum<Integer, Boolean>[] enumValues() {
+        return BooleanEnum.values();
+    }
 }

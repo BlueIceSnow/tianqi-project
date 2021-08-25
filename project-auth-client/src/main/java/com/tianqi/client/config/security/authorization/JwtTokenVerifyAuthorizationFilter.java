@@ -2,6 +2,7 @@ package com.tianqi.client.config.security.authorization;
 
 import com.tianqi.client.config.security.hook.JwtAccessDeniedHandler;
 import com.tianqi.client.config.security.hook.JwtAuthenticationEntryPoint;
+import com.tianqi.client.constant.SystemConstant;
 import com.tianqi.common.pojo.JwtUserClaims;
 import com.tianqi.common.util.SignUtil;
 import io.jsonwebtoken.JwtException;
@@ -46,7 +47,7 @@ public class JwtTokenVerifyAuthorizationFilter extends OncePerRequestFilter {
                                     final HttpServletResponse response,
                                     final FilterChain filterChain)
             throws ServletException, IOException {
-        final String token = request.getParameter("token");
+        final String token = request.getHeader(SystemConstant.HEADER_TOKEN);
         if (!StringUtils.isEmpty(token)) {
             JwtUserClaims jwtUserClaims = null;
             try {

@@ -7,6 +7,7 @@ import com.tianqi.common.enums.BaseEnum;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.Set;
@@ -22,12 +23,16 @@ public class CustomDeserializer {
         public BaseEnum deserialize(JsonParser jsonParser,
                                     DeserializationContext deserializationContext)
                 throws IOException {
-
             jsonParser.nextFieldName();
-            int code = jsonParser.nextIntValue(0);
+            jsonParser.nextValue();
+            String key = jsonParser.getValueAsString();
             jsonParser.nextFieldName();
-            String msg = jsonParser.nextTextValue();
+            jsonParser.nextValue();
+            String value = jsonParser.getValueAsString();
             jsonParser.nextFieldName();
+            if (StringUtils.isEmpty(key) || StringUtils.isEmpty(value)) {
+                return null;
+            }
             ClassPathScanningCandidateComponentProvider provider =
                     new ClassPathScanningCandidateComponentProvider(false);
             provider.addIncludeFilter(new AssignableTypeFilter(BaseEnum.class));
@@ -39,7 +44,8 @@ public class CustomDeserializer {
                     Object[] enumConstants = cls.getEnumConstants();
                     for (Object enumConstant : enumConstants) {
                         BaseEnum cast = BaseEnum.class.cast(enumConstant);
-                        if (cast.getCode() == code && cast.getMsg().equals(msg)) {
+                        if (cast.getKey().toString().equals(key) &&
+                                cast.getValue().toString().equals(value)) {
                             return cast;
                         }
                     }
