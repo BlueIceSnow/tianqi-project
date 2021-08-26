@@ -4,14 +4,12 @@
     <resultMap type="com.tianqi.auth.pojo.TqAuthOrgRoleRelationDO" id="TqAuthOrgRoleRelationMap">
         <result property="roleId" column="role_id" jdbcType="INTEGER"/>
         <result property="orgId" column="org_id" jdbcType="INTEGER"/>
-        <result property="appKey" column="app_key" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="columns">
         <include refid="com.tianqi.common.dao.IBaseDAO.commonCol"/>
         role_id
         ,org_id
-        ,app_key
 
     </sql>
 

@@ -8,20 +8,25 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * TqAuthTenantApplicationRelation表：租户应用关联表
+ * TqAuthUserOrgRelation表：用户组织关联表
  *
  * @author yuantianqi
  * @since 2021-08-26 14:35:52
  */
-@TableName(value = "tq_auth_tenant_application_relation")
+@TableName(value = "tq_auth_user_org_relation")
 @Data
-public class TqAuthTenantApplicationRelationDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -58839604726506068L;
+public class TqAuthUserOrgRelationDO extends BaseDO implements Serializable {
+    private static final long serialVersionUID = -89498435640455610L;
     /**
-     * 应用Key
+     * 角色组ID
      */
-    @TableField(value = "application_key")
-    private String applicationKey;
+    @TableField(value = "user_id")
+    private Integer userId;
+    /**
+     * 组织ID
+     */
+    @TableField(value = "org_id")
+    private Integer orgId;
     /**
      * 租户ID
      */

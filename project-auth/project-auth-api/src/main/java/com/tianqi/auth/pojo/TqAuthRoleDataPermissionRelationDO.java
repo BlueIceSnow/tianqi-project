@@ -11,12 +11,12 @@ import java.io.Serializable;
  * TqAuthRoleDataPermissionRelation表：角色数据权限关联表
  *
  * @author yuantianqi
- * @since 2021-08-25 19:45:29
+ * @since 2021-08-26 14:35:51
  */
 @TableName(value = "tq_auth_role_data_permission_relation")
 @Data
 public class TqAuthRoleDataPermissionRelationDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -99378827576033833L;
+    private static final long serialVersionUID = -19850976179780173L;
     /**
      * 角色组ID
      */
@@ -27,10 +27,5 @@ public class TqAuthRoleDataPermissionRelationDO extends BaseDO implements Serial
      */
     @TableField(value = "data_permission_id")
     private Integer dataPermissionId;
-    /**
-     * 租户Key
-     */
-    @TableField(value = "app_key")
-    private String appKey;
 
 }

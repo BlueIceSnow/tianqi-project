@@ -12,12 +12,12 @@ import java.io.Serializable;
  * TqAuthUser表：用户表
  *
  * @author yuantianqi
- * @since 2021-08-25 19:45:41
+ * @since 2021-08-26 14:35:52
  */
 @TableName(value = "tq_auth_user")
 @Data
 public class TqAuthUserDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -95519903876269249L;
+    private static final long serialVersionUID = -87238848511299658L;
     /**
      * 用户类型：A-管理员;T-租户;U-用户
      */
@@ -38,5 +38,10 @@ public class TqAuthUserDO extends BaseDO implements Serializable {
      */
     @TableField(value = "state")
     private BooleanEnum state;
+    /**
+     * 租户ID
+     */
+    @TableField(value = "tenant_id")
+    private Integer tenantId;
 
 }

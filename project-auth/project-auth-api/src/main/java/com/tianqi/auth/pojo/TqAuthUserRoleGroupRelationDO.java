@@ -11,12 +11,12 @@ import java.io.Serializable;
  * TqAuthUserRoleGroupRelation表：用户角色组关联表
  *
  * @author yuantianqi
- * @since 2021-08-25 19:45:43
+ * @since 2021-08-26 14:35:53
  */
 @TableName(value = "tq_auth_user_role_group_relation")
 @Data
 public class TqAuthUserRoleGroupRelationDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -41951223303286758L;
+    private static final long serialVersionUID = -97233723483827026L;
     /**
      * 角色组ID
      */
@@ -27,10 +27,5 @@ public class TqAuthUserRoleGroupRelationDO extends BaseDO implements Serializabl
      */
     @TableField(value = "user_id")
     private Integer userId;
-    /**
-     * 租户Key
-     */
-    @TableField(value = "app_key")
-    private String appKey;
 
 }

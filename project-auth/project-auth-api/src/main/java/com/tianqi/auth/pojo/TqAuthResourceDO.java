@@ -11,16 +11,16 @@ import java.io.Serializable;
  * TqAuthResource表：资源表
  *
  * @author yuantianqi
- * @since 2021-08-25 19:45:24
+ * @since 2021-08-26 14:35:50
  */
 @TableName(value = "tq_auth_resource")
 @Data
 public class TqAuthResourceDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -56981782719877686L;
+    private static final long serialVersionUID = -74602067585168895L;
     /**
-     * 租户Key
+     * 应用ID
      */
-    @TableField(value = "app_key")
-    private String appKey;
+    @TableField(value = "app_id")
+    private Integer appId;
 
 }

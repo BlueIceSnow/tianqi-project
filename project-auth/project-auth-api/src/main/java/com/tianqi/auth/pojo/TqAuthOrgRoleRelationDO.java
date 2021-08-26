@@ -11,12 +11,12 @@ import java.io.Serializable;
  * TqAuthOrgRoleRelation表：组织角色关联表
  *
  * @author yuantianqi
- * @since 2021-08-25 19:45:22
+ * @since 2021-08-26 14:35:50
  */
 @TableName(value = "tq_auth_org_role_relation")
 @Data
 public class TqAuthOrgRoleRelationDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -63689965818239068L;
+    private static final long serialVersionUID = 166484097980174987L;
     /**
      * 角色组ID
      */
@@ -27,10 +27,5 @@ public class TqAuthOrgRoleRelationDO extends BaseDO implements Serializable {
      */
     @TableField(value = "org_id")
     private Integer orgId;
-    /**
-     * 应用Key
-     */
-    @TableField(value = "app_key")
-    private String appKey;
 
 }

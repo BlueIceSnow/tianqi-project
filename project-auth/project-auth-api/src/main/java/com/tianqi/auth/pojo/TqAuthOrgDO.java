@@ -11,21 +11,26 @@ import java.io.Serializable;
  * TqAuthOrg表：组织架构表
  *
  * @author yuantianqi
- * @since 2021-08-25 19:45:19
+ * @since 2021-08-26 14:35:49
  */
 @TableName(value = "tq_auth_org")
 @Data
 public class TqAuthOrgDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -27667638084624831L;
+    private static final long serialVersionUID = 337795242626334746L;
     /**
      * 组织编码
      */
     @TableField(value = "org_code")
     private String orgCode;
     /**
-     * 应用Key
+     * 租户ID
      */
-    @TableField(value = "app_key")
-    private String appKey;
+    @TableField(value = "tenant_id")
+    private Integer tenantId;
+    /**
+     * 应用ID
+     */
+    @TableField(value = "app_id")
+    private Integer appId;
 
 }

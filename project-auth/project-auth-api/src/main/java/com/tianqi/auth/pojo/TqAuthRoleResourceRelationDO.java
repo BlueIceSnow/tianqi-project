@@ -11,12 +11,12 @@ import java.io.Serializable;
  * TqAuthRoleResourceRelation表：角色资源关联表
  *
  * @author yuantianqi
- * @since 2021-08-25 19:45:33
+ * @since 2021-08-26 14:35:51
  */
 @TableName(value = "tq_auth_role_resource_relation")
 @Data
 public class TqAuthRoleResourceRelationDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -83461044213359941L;
+    private static final long serialVersionUID = 185410307159588359L;
     /**
      * 角色组ID
      */
@@ -27,10 +27,5 @@ public class TqAuthRoleResourceRelationDO extends BaseDO implements Serializable
      */
     @TableField(value = "resource_id")
     private Integer resourceId;
-    /**
-     * 租户Key
-     */
-    @TableField(value = "app_key")
-    private String appKey;
 
 }

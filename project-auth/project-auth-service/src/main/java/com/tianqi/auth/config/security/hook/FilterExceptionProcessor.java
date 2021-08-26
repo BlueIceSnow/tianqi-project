@@ -24,7 +24,6 @@ public class FilterExceptionProcessor extends OncePerRequestFilter {
                                     final HttpServletResponse response,
                                     final FilterChain filterChain)
             throws ServletException, IOException {
-
         try {
             filterChain.doFilter(request, response);
         } catch (Exception ex) {

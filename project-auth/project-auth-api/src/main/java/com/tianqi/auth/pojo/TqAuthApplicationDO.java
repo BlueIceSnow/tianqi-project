@@ -11,12 +11,12 @@ import java.io.Serializable;
  * TqAuthApplication表：应用表
  *
  * @author yuantianqi
- * @since 2021-08-25 19:45:11
+ * @since 2021-08-26 14:35:40
  */
 @TableName(value = "tq_auth_application")
 @Data
 public class TqAuthApplicationDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = 581445231116753850L;
+    private static final long serialVersionUID = 523405568059856529L;
     /**
      * APP唯一标识
      */
