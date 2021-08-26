@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.tianqi.common.enums.BooleanEnum;
 import com.tianqi.common.pojo.BaseDO;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -13,12 +15,19 @@ import java.sql.Timestamp;
  * TqAuthTenant表：租户表
  *
  * @author yuantianqi
- * @since 2021-08-26 14:35:52
+ * @since 2021-08-26 14:57:19
  */
-@TableName(value = "tq_auth_tenant")
 @Data
+@Builder
+@EqualsAndHashCode(callSuper = false)
+@TableName(value = "tq_auth_tenant")
 public class TqAuthTenantDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -59910346201991512L;
+    private static final long serialVersionUID = -19075357049938635L;
+    /**
+     * 租户Key
+     */
+    @TableField(value = "tenant_key")
+    private String tenantKey;
     /**
      * 管理者用户ID
      */

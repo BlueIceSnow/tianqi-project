@@ -3,14 +3,12 @@
 <mapper namespace="com.tianqi.auth.dao.ITqAuthRoleDAO">
     <resultMap type="com.tianqi.auth.pojo.TqAuthRoleDO" id="TqAuthRoleMap">
         <result property="mutualExclusionRoles" column="mutual_exclusion_roles" jdbcType="VARCHAR"/>
-        <result property="tenantId" column="tenant_id" jdbcType="INTEGER"/>
         <result property="appId" column="app_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="columns">
         <include refid="com.tianqi.common.dao.IBaseDAO.commonCol"/>
         mutual_exclusion_roles
-        ,tenant_id
         ,app_id
 
     </sql>

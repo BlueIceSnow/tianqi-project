@@ -4,7 +4,6 @@
     <resultMap type="com.tianqi.auth.pojo.TqAuthUserOrgRelationDO" id="TqAuthUserOrgRelationMap">
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
         <result property="orgId" column="org_id" jdbcType="INTEGER"/>
-        <result property="tenantId" column="tenant_id" jdbcType="INTEGER"/>
         <result property="appId" column="app_id" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -12,7 +11,6 @@
         <include refid="com.tianqi.common.dao.IBaseDAO.commonCol"/>
         user_id
         ,org_id
-        ,tenant_id
         ,app_id
 
     </sql>

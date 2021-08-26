@@ -2,16 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tianqi.auth.dao.ITqAuthOrgDAO">
     <resultMap type="com.tianqi.auth.pojo.TqAuthOrgDO" id="TqAuthOrgMap">
-        <result property="orgCode" column="org_code" jdbcType="VARCHAR"/>
-        <result property="tenantId" column="tenant_id" jdbcType="INTEGER"/>
         <result property="appId" column="app_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="columns">
         <include refid="com.tianqi.common.dao.IBaseDAO.commonCol"/>
-        org_code
-        ,tenant_id
-        ,app_id
+        app_id
 
     </sql>
 

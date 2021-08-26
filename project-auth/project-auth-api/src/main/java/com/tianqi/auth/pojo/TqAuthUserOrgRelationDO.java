@@ -3,7 +3,9 @@ package com.tianqi.auth.pojo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.tianqi.common.pojo.BaseDO;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -11,12 +13,14 @@ import java.io.Serializable;
  * TqAuthUserOrgRelation表：用户组织关联表
  *
  * @author yuantianqi
- * @since 2021-08-26 14:35:52
+ * @since 2021-08-26 14:57:21
  */
-@TableName(value = "tq_auth_user_org_relation")
 @Data
+@Builder
+@EqualsAndHashCode(callSuper = false)
+@TableName(value = "tq_auth_user_org_relation")
 public class TqAuthUserOrgRelationDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -89498435640455610L;
+    private static final long serialVersionUID = -10595163741720066L;
     /**
      * 角色组ID
      */
@@ -27,11 +31,6 @@ public class TqAuthUserOrgRelationDO extends BaseDO implements Serializable {
      */
     @TableField(value = "org_id")
     private Integer orgId;
-    /**
-     * 租户ID
-     */
-    @TableField(value = "tenant_id")
-    private Integer tenantId;
     /**
      * 应用ID
      */

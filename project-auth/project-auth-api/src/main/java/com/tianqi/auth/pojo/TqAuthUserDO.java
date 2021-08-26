@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.tianqi.common.enums.BooleanEnum;
 import com.tianqi.common.pojo.BaseDO;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -12,12 +14,14 @@ import java.io.Serializable;
  * TqAuthUser表：用户表
  *
  * @author yuantianqi
- * @since 2021-08-26 14:35:52
+ * @since 2021-08-26 14:57:20
  */
-@TableName(value = "tq_auth_user")
 @Data
+@Builder
+@EqualsAndHashCode(callSuper = false)
+@TableName(value = "tq_auth_user")
 public class TqAuthUserDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -87238848511299658L;
+    private static final long serialVersionUID = 525523701855113569L;
     /**
      * 用户类型：A-管理员;T-租户;U-用户
      */
@@ -38,10 +42,5 @@ public class TqAuthUserDO extends BaseDO implements Serializable {
      */
     @TableField(value = "state")
     private BooleanEnum state;
-    /**
-     * 租户ID
-     */
-    @TableField(value = "tenant_id")
-    private Integer tenantId;
 
 }

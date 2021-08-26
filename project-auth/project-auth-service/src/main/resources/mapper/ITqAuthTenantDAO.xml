@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tianqi.auth.dao.ITqAuthTenantDAO">
     <resultMap type="com.tianqi.auth.pojo.TqAuthTenantDO" id="TqAuthTenantMap">
+        <result property="tenantKey" column="tenant_key" jdbcType="VARCHAR"/>
         <result property="mgrId" column="mgr_id" jdbcType="INTEGER"/>
         <result property="effectTime" column="effect_time" jdbcType="TIMESTAMP"/>
         <result property="expiryTime" column="expiry_time" jdbcType="TIMESTAMP"/>
@@ -10,7 +11,8 @@
 
     <sql id="columns">
         <include refid="com.tianqi.common.dao.IBaseDAO.commonCol"/>
-        mgr_id
+        tenant_key
+        ,mgr_id
         ,effect_time
         ,expiry_time
         ,state

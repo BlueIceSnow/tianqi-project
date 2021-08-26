@@ -6,7 +6,6 @@
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="state" column="state" jdbcType="VARCHAR"/>
-        <result property="tenantId" column="tenant_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="columns">
@@ -15,7 +14,6 @@
         ,username
         ,password
         ,state
-        ,tenant_id
 
     </sql>
 
