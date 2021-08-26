@@ -1,6 +1,7 @@
 package com.tianqi.client.config.security;
 
 import com.tianqi.client.config.security.authorization.JwtTokenVerifyAuthorizationFilter;
+import com.tianqi.client.config.security.hook.FilterExceptionProcessor;
 import com.tianqi.client.config.security.hook.JwtAccessDeniedHandler;
 import com.tianqi.client.config.security.hook.JwtPostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +71,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .withObjectPostProcessor(new JwtPostProcessor())
                 .and().exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler)
-                .authenticationEntryPoint(authenticationEntryPoint);
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and().addFilterBefore(new FilterExceptionProcessor(),
+                UsernamePasswordAuthenticationFilter.class);
     }
 
     /**

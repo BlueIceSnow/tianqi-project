@@ -1,6 +1,7 @@
 package com.tianqi.auth.api;
 
 import com.tianqi.auth.api.fallback.AbstractDemoFallback;
+import com.tianqi.auth.pojo.TqAuthUserDO;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ import java.util.Map;
 public interface IDemoApi {
 
     @GetMapping("user/listAll")
-    RpcResultEntity<List<TqUserDO>> listAll();
+    RpcResultEntity<List<TqAuthUserDO>> listAll();
 
     /**
      * 校验token

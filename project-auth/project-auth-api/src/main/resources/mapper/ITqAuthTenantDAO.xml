@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianqi.auth.dao.ITqAuthTenantDAO">
+    <resultMap type="com.tianqi.auth.pojo.TqAuthTenantDO" id="TqAuthTenantMap">
+        <result property="mgrId" column="mgr_id" jdbcType="INTEGER"/>
+        <result property="effectTime" column="effect_time" jdbcType="TIMESTAMP"/>
+        <result property="expiryTime" column="expiry_time" jdbcType="TIMESTAMP"/>
+        <result property="state" column="state" jdbcType="BOOLEAN"/>
+    </resultMap>
+
+    <sql id="columns">
+        <include refid="com.tianqi.common.dao.IBaseDAO.commonCol"/>
+        mgr_id
+        ,effect_time
+        ,expiry_time
+        ,state
+
+    </sql>
+
+</mapper>
+

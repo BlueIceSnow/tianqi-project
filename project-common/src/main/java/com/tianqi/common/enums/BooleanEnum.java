@@ -18,8 +18,8 @@ public enum BooleanEnum implements BaseEnum<Integer, Boolean> {
      * 假
      */
     FALSE(0, false);
-    public final Integer name;
     @EnumValue
+    public final Integer name;
     public final boolean value;
 
 

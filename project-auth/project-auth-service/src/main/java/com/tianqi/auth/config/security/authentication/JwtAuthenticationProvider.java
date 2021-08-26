@@ -2,6 +2,8 @@ package com.tianqi.auth.config.security.authentication;
 
 import com.tianqi.auth.config.security.IJwtSecurityMetaService;
 import com.tianqi.auth.config.security.authorization.JwtAuthority;
+import com.tianqi.auth.pojo.TqAuthTenantDO;
+import com.tianqi.auth.pojo.TqAuthUserDO;
 import com.tianqi.common.pojo.JwtUserClaims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -33,7 +35,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authentication;
         final String username = jwtToken.getDetails().getUsername();
         final String credentials = String.valueOf(jwtToken.getCredentials());
-        final TqUserDO realUser = securityMetaService.loadUserInfo(username);
+        final TqAuthUserDO realUser = securityMetaService.loadUserInfo(username);
         if (realUser != null &&
                 passwordEncoder.matches(credentials, realUser.getPassword()
                 )) {

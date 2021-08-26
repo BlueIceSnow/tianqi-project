@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianqi.auth.dao.ITqAuthUserDAO">
+    <resultMap type="com.tianqi.auth.pojo.TqAuthUserDO" id="TqAuthUserMap">
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="columns">
+        <include refid="com.tianqi.common.dao.IBaseDAO.commonCol"/>
+        type
+        ,username
+        ,password
+        ,state
+
+    </sql>
+
+</mapper>
+

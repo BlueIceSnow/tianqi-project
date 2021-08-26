@@ -1,6 +1,7 @@
 package com.tianqi.auth.config.security;
 
 import com.tianqi.auth.config.security.authentication.JwtAuthenticationProvider;
+import com.tianqi.auth.config.security.hook.FilterExceptionProcessor;
 import com.tianqi.auth.config.security.hook.JwtAccessDeniedHandler;
 import com.tianqi.auth.config.security.hook.JwtAuthenticationEntryPoint;
 import com.tianqi.auth.config.security.hook.JwtLoginHandler;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.List;
 
@@ -62,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 配置权限认证相关
      *
-     * @param http
+     * @param http http安全配置
      * @throws Exception
      */
     @Override
@@ -83,13 +85,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withObjectPostProcessor(new JwtPostProcessor())
                 .and().exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler)
-                .authenticationEntryPoint(authenticationEntryPoint);
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and().addFilterBefore(new FilterExceptionProcessor(),
+                UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
      * 配置Web安全，会在SecurityFilterProxy中生成一个新的过滤器链
      *
-     * @param web
+     * @param web Web安全配置类
      * @throws Exception
      */
     @Override

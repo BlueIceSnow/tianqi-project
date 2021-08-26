@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tianqi.auth.dao.ITqAuthOrgDAO">
+    <resultMap type="com.tianqi.auth.pojo.TqAuthOrgDO" id="TqAuthOrgMap">
+        <result property="orgCode" column="org_code" jdbcType="VARCHAR"/>
+        <result property="appKey" column="app_key" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="columns">
+        <include refid="com.tianqi.common.dao.IBaseDAO.commonCol"/>
+        org_code
+        ,app_key
+
+    </sql>
+
+</mapper>
+

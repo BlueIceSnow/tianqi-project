@@ -1,5 +1,7 @@
 package com.tianqi.auth.provider;
 
+import com.tianqi.auth.pojo.TqAuthUserDO;
+import com.tianqi.auth.service.ITqAuthUserService;
 import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.result.rpc.RpcResult;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
@@ -18,15 +20,15 @@ import java.util.List;
  */
 @RestController
 public class DemoProvider {
-    private ITqUserService userService;
+    private ITqAuthUserService userService;
 
     @Autowired
-    public void setUserService(ITqUserService userService) {
+    public void setUserService(ITqAuthUserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("user/listAll")
-    public RpcResultEntity<List<TqUserDO>> listAll() {
+    public RpcResultEntity<List<TqAuthUserDO>> listAll() {
         final Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication);
@@ -36,9 +38,9 @@ public class DemoProvider {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        List<TqUserDO> userDOS =
-                userService.listEntity(new TqUserDO()).getData().doOrDto();
-        return RpcResult.<List<TqUserDO>>builder().withStatus(StatusEnum.OK)
+        List<TqAuthUserDO> userDOS =
+                userService.listEntity(new TqAuthUserDO()).getData().doOrDto();
+        return RpcResult.<List<TqAuthUserDO>>builder().withStatus(StatusEnum.OK)
                 .withResult(userDOS).build();
     }
 }
