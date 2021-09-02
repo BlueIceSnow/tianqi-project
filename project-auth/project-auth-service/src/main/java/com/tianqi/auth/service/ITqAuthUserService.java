@@ -10,7 +10,7 @@ import com.tianqi.common.service.IBaseService;
  * @author yuantianqi
  * @since 2021-08-25 19:27:44
  */
-public interface ITqAuthUserService extends IBaseService<TqAuthUserDO> ,
+public interface ITqAuthUserService extends IBaseService<TqAuthUserDO>,
         IJwtSecurityMetaService {
 
 }

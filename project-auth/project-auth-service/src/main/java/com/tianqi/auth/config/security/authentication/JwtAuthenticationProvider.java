@@ -1,9 +1,8 @@
 package com.tianqi.auth.config.security.authentication;
 
 import com.tianqi.auth.config.security.IJwtSecurityMetaService;
-import com.tianqi.auth.config.security.authorization.JwtAuthority;
-import com.tianqi.auth.pojo.TqAuthTenantDO;
-import com.tianqi.auth.pojo.TqAuthUserDO;
+import com.tianqi.auth.pojo.bo.TqAuthUserLoginBO;
+import com.tianqi.auth.pojo.entity.JwtAuthority;
 import com.tianqi.common.pojo.JwtUserClaims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -24,33 +23,52 @@ import java.util.stream.Collectors;
  */
 @Component
 public class JwtAuthenticationProvider implements AuthenticationProvider {
-    @Autowired
     private IJwtSecurityMetaService securityMetaService;
-    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setSecurityMetaService(
+            final IJwtSecurityMetaService securityMetaService) {
+        this.securityMetaService = securityMetaService;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(
+            final PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public Authentication authenticate(final Authentication authentication)
             throws AuthenticationException {
-        JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authentication;
+        final JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authentication;
         final String username = jwtToken.getDetails().getUsername();
         final String credentials = String.valueOf(jwtToken.getCredentials());
-        final TqAuthUserDO realUser = securityMetaService.loadUserInfo(username);
-        if (realUser != null &&
-                passwordEncoder.matches(credentials, realUser.getPassword()
-                )) {
-            final List<JwtAuthority> jwtAuthorities =
-                    securityMetaService.loadAuthorities(username);
+        final String appKey = jwtToken.getDetails().getAppKey();
+        final Integer tenantId = jwtToken.getDetails().getTenantId();
+        // 加载用户信息
+        final TqAuthUserLoginBO
+                realUserBO = securityMetaService.loadUserInfo(username, tenantId, appKey);
+        final List<JwtAuthority> authorities = realUserBO.getAuthorities();
+        if (passwordEncoder.matches(credentials, realUserBO.getPassword()
+        )) {
             final JwtAuthenticationToken authenticationToken =
-                    new JwtAuthenticationToken(jwtAuthorities);
-
+                    new JwtAuthenticationToken(authorities);
+            // 将用户权限转为字符串列表
+            final List<String> roles =
+                    authorities.stream().map(JwtAuthority::getAuthority)
+                            .collect(Collectors.toList());
+            // 构建已登录用户
             final JwtUserClaims jwtUserClaims =
-                    new JwtUserClaims(realUser.getId(), realUser.getName(),
-                            realUser.getUsername(),
-                            jwtAuthorities.stream().map(JwtAuthority::getAuthority)
-                                    .collect(Collectors.toList()),
-                            UUID.randomUUID().toString());
-
+                    new JwtUserClaims(realUserBO.getUserId(),
+                            realUserBO.getName(),
+                            realUserBO.getUsername(),
+                            roles,
+                            UUID.randomUUID().toString(),
+                            realUserBO.getTenantId(),
+                            realUserBO.getOrgCode(),
+                            realUserBO.getAppKey()
+                    );
             authenticationToken.setDetails(jwtUserClaims);
             authenticationToken.setAuthenticated(true);
             return authenticationToken;

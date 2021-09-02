@@ -35,7 +35,7 @@ public class JwtSecurityMetaDataSource implements
     }
 
     public JwtSecurityMetaDataSource(
-            DefaultFilterInvocationSecurityMetadataSource
+            final DefaultFilterInvocationSecurityMetadataSource
                     defaultFilterInvocationSecurityMetadataSource) {
         this.defaultFilterInvocationSecurityMetadataSource =
                 defaultFilterInvocationSecurityMetadataSource;
@@ -47,28 +47,27 @@ public class JwtSecurityMetaDataSource implements
         this.loadDataSource();
         final Collection<ConfigAttribute> attributes =
                 defaultFilterInvocationSecurityMetadataSource.getAttributes(object);
-        HttpServletRequest request = ((FilterInvocation) object).getRequest();
-        Iterator customMap = this.requestMap.entrySet().iterator();
-        Map.Entry entry;
+        final HttpServletRequest request = ((FilterInvocation) object).getRequest();
+        final Iterator<Map.Entry<RequestMatcher, Collection<ConfigAttribute>>> customMap =
+                this.requestMap.entrySet().iterator();
+        Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry;
         do {
             if (!customMap.hasNext()) {
                 return attributes;
             }
-            entry = (Map.Entry) customMap.next();
-        } while (!((RequestMatcher) entry.getKey()).matches(request));
+            entry = customMap.next();
+        } while (!entry.getKey().matches(request));
 
-        return (Collection<ConfigAttribute>) entry.getValue();
+        return entry.getValue();
     }
 
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
         this.loadDataSource();
-        Set<ConfigAttribute> allAttributes = new HashSet();
-        Iterator var2 = this.requestMap.entrySet().iterator();
+        final Set<ConfigAttribute> allAttributes = new HashSet<>();
 
-        while (var2.hasNext()) {
-            Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry =
-                    (Map.Entry) var2.next();
+        for (final Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : this.requestMap
+                .entrySet()) {
             allAttributes.addAll(entry.getValue());
         }
         final Collection<ConfigAttribute> allConfigAttributes =

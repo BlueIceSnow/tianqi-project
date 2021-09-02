@@ -23,7 +23,7 @@ public class DemoProvider {
     private ITqAuthUserService userService;
 
     @Autowired
-    public void setUserService(ITqAuthUserService userService) {
+    public void setUserService(final ITqAuthUserService userService) {
         this.userService = userService;
     }
 
@@ -32,14 +32,9 @@ public class DemoProvider {
         final Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication);
-//        int i = 1 / 0;
-//        try {
-//            Thread.sleep(30000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-        List<TqAuthUserDO> userDOS =
-                userService.listEntity(new TqAuthUserDO()).getData().doOrDto();
+        final List<TqAuthUserDO> userDOS =
+                userService.listEntity(TqAuthUserDO.builder().build()).getData()
+                        .doOrDto();
         return RpcResult.<List<TqAuthUserDO>>builder().withStatus(StatusEnum.OK)
                 .withResult(userDOS).build();
     }

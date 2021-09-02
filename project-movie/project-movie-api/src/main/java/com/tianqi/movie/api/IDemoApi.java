@@ -16,6 +16,12 @@ import java.util.List;
 @FeignClient(name = "project-movie-service", fallback = AbstractDemoFallback.class)
 public interface IDemoApi {
 
+    /**
+     * 查询用户列表
+     *
+     * @param userDO 查询参数
+     * @return 用户列表
+     */
     @GetMapping("user/listAll")
     ResultEntity<List<UserDO>> listAll(UserDO userDO);
 }

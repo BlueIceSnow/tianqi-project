@@ -2,7 +2,7 @@ package com.tianqi.gateway.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tianqi.auth.api.IDemoApi;
-import com.tianqi.common.enums.AuthEnums;
+import com.tianqi.common.enums.AuthEnum;
 import com.tianqi.common.result.rest.RestResult;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
@@ -39,20 +39,21 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
     private IDemoApi demoApi;
 
     @Autowired
-    public void setMapper(ObjectMapper mapper) {
+    public void setMapper(final ObjectMapper mapper) {
         this.mapper = mapper;
     }
 
     @SneakyThrows
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        ServerHttpRequest request = exchange.getRequest();
-        String authentication = request.getHeaders().getFirst("Authorization");
-        byte[] resultBytes = mapper.writeValueAsString(RestResult.builder()
-                .withData(new HashMap<>()).isOk(false).withStatus(AuthEnums.LOGIN_FAIL)
+    public Mono<Void> filter(final ServerWebExchange exchange,
+                             final GatewayFilterChain chain) {
+        final ServerHttpRequest request = exchange.getRequest();
+        final String authentication = request.getHeaders().getFirst("Authorization");
+        final byte[] resultBytes = mapper.writeValueAsString(RestResult.builder()
+                .withData(new HashMap<>(0)).isOk(false).withStatus(AuthEnum.LOGIN_FAIL)
                 .build())
                 .getBytes(StandardCharsets.UTF_8);
-        DataBuffer wrap = exchange.getResponse().bufferFactory().wrap(resultBytes);
+        final DataBuffer wrap = exchange.getResponse().bufferFactory().wrap(resultBytes);
         if (StringUtils.isEmpty(authentication)) {
             exchange.getResponse().getHeaders()
                     .setContentType(MediaType.APPLICATION_JSON);
@@ -60,13 +61,11 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         }
         // 拥有用户的TOKEN
         try {
-            Map<String, Object> checkResult =
+            final Map<String, Object> checkResult =
                     demoApi.checkToken(authentication.replace("Bearer ", ""));
 
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
-        } finally {
-
         }
         return chain.filter(exchange);
     }

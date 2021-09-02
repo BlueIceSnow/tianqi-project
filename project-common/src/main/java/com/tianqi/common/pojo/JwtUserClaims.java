@@ -17,7 +17,7 @@ public class JwtUserClaims {
     /**
      * 用户ID
      */
-    private Long id;
+    private Integer id;
     /**
      * 用户昵称
      */
@@ -39,16 +39,36 @@ public class JwtUserClaims {
     private List<String> roles;
 
     /**
+     * 所属租户ID
+     */
+    private Integer tenantId;
+
+    /**
+     * 所属组织CODE
+     */
+    private String orgCode;
+
+    /**
+     * 所属应用
+     */
+    private String appKey;
+
+    /**
      * JWT 唯一 ID（JWT ID）
      */
     private String jti;
 
-    public JwtUserClaims(Long id, String name, String username, List<String> roles,
-                         String jti) {
+    public JwtUserClaims(final Integer id, final String name, final String username,
+                         final List<String> roles, final String jti,
+                         final Integer tenantId,
+                         final String orgCode, final String appKey) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.roles = roles;
         this.jti = jti;
+        this.tenantId = tenantId;
+        this.orgCode = orgCode;
+        this.appKey = appKey;
     }
 }

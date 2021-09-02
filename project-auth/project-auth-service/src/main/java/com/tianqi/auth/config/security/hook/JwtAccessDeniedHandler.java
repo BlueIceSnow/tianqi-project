@@ -1,6 +1,6 @@
 package com.tianqi.auth.config.security.hook;
 
-import com.tianqi.common.enums.AuthEnums;
+import com.tianqi.common.enums.AuthEnum;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
@@ -33,7 +33,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         }
         final ResultEntity<Object> accessDenied = RestResult.builder()
                 .withError(new BaseException("access denied"))
-                .withStatus(AuthEnums.AUTHORIZE_FAIL)
+                .withStatus(AuthEnum.AUTHORIZE_FAIL)
                 .build();
         ResponseUtil.resJson(response, accessDenied);
     }

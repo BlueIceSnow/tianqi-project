@@ -1,4 +1,4 @@
-package com.tianqi.auth.config.security.authorization;
+package com.tianqi.auth.pojo.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -11,7 +11,7 @@ public class JwtAuthority implements GrantedAuthority {
 
     private final String role;
 
-    public JwtAuthority(String role) {
+    public JwtAuthority(final String role) {
         this.role = role;
     }
 

@@ -1,8 +1,6 @@
 package com.tianqi.auth.config.security;
 
-import com.tianqi.auth.config.security.authorization.JwtAuthority;
-import com.tianqi.auth.pojo.TqAuthTenantDO;
-import com.tianqi.auth.pojo.TqAuthUserDO;
+import com.tianqi.auth.pojo.bo.TqAuthUserLoginBO;
 import org.springframework.security.access.ConfigAttribute;
 
 import java.util.List;
@@ -19,9 +17,11 @@ public interface IJwtSecurityMetaService {
      * 加载用户信息
      *
      * @param username 用户唯一标识
+     * @param tenantId 租户ID
+     * @param appKey   应用key
      * @return
      */
-    TqAuthUserDO loadUserInfo(String username);
+    TqAuthUserLoginBO loadUserInfo(String username, Integer tenantId, String appKey);
 
     /**
      * 无效校验权限的路径
@@ -29,14 +29,6 @@ public interface IJwtSecurityMetaService {
      * @return
      */
     List<String> loadIgnoringAuthorities();
-
-    /**
-     * 加载权限信息
-     *
-     * @param username 用户唯一标识
-     * @return
-     */
-    List<JwtAuthority> loadAuthorities(String username);
 
 
     /**

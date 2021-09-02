@@ -1,6 +1,6 @@
 package com.tianqi.auth.config.security.hook;
 
-import com.tianqi.common.enums.AuthEnums;
+import com.tianqi.common.enums.AuthEnum;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
@@ -33,7 +33,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         }
         final ResultEntity<Object> notLogin = RestResult.builder()
                 .withError(new BaseException("not login"))
-                .withStatus(AuthEnums.NOT_LOGIN)
+                .withStatus(AuthEnum.NOT_LOGIN)
                 .build();
         ResponseUtil.resJson(response, notLogin);
     }

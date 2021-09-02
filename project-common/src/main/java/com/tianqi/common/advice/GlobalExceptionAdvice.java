@@ -39,19 +39,19 @@ public class GlobalExceptionAdvice {
      */
     @ExceptionHandler(value = {MethodArgumentNotValidException.class,
             BindException.class})
-    public ResultEntity validateHandler(Exception validateEx) {
+    public ResultEntity validateHandler(final Exception validateEx) {
 
-        BindingResult bindingResult = null;
+        final BindingResult bindingResult;
         if (validateEx instanceof MethodArgumentNotValidException) {
             bindingResult =
                     ((MethodArgumentNotValidException) validateEx).getBindingResult();
         } else {
             bindingResult = (BindingResult) validateEx;
         }
-        List<ObjectError> allErrors = bindingResult.getAllErrors();
-        List<ValidateEntity> validates = new ArrayList<>();
+        final List<ObjectError> allErrors = bindingResult.getAllErrors();
+        final List<ValidateEntity> validates = new ArrayList<>();
         allErrors.stream().forEach(error -> {
-            ValidateEntity validateEntity = new ValidateEntity();
+            final ValidateEntity validateEntity = new ValidateEntity();
             if (error instanceof FieldError) {
                 validateEntity.setFields(((FieldError) error).getField());
             }
@@ -71,12 +71,12 @@ public class GlobalExceptionAdvice {
      * @return
      */
     @ExceptionHandler(value = JsonMappingException.class)
-    public ResultEntity jsonParseHandler(JsonMappingException jsonParseEx) {
+    public ResultEntity jsonParseHandler(final JsonMappingException jsonParseEx) {
 
-        List<String> errorField = jsonParseEx.getPath().stream()
+        final List<String> errorField = jsonParseEx.getPath().stream()
                 .map(JsonMappingException.Reference::getFieldName)
                 .collect(Collectors.toList());
-        ValidateEntity validateEntity = new ValidateEntity();
+        final ValidateEntity validateEntity = new ValidateEntity();
         validateEntity.setFields(errorField.get(0));
         validateEntity.setMessage(jsonParseEx.getOriginalMessage());
         return RestResult.builder()
@@ -92,7 +92,7 @@ public class GlobalExceptionAdvice {
      * @return
      */
     @ExceptionHandler(value = BaseException.class)
-    public ResultEntity baseException(BaseException baseException) {
+    public ResultEntity baseException(final BaseException baseException) {
         return RestResult.builder()
                 .withStatus(StatusEnum.BUS_ERROR)
                 .withError(baseException)
@@ -106,12 +106,12 @@ public class GlobalExceptionAdvice {
      * @return
      */
     @ExceptionHandler(value = Exception.class)
-    public ResultEntity exception(Exception exception) throws Exception {
+    public ResultEntity exception(final Exception exception) throws Exception {
         if (IGNORE_PROCESSOR_EX.contains(exception.getClass().getName())) {
             throw exception;
         }
 
-        BaseException baseException = new BaseException(exception.getMessage());
+        final BaseException baseException = new BaseException(exception.getMessage());
         baseException.setStackTrace(exception.getStackTrace());
         return RestResult.builder()
                 .withStatus(StatusEnum.SERVER_ERROR)

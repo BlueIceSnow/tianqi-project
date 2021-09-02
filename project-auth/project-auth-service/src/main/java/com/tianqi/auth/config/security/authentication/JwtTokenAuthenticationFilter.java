@@ -17,6 +17,8 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
 
     private final static String USERNAME = "username";
     private final static String PASSWORD = "password";
+    private final static String APP_KEY = "appKey";
+    private final static String TENANT_ID = "tenantId";
 
     public JwtTokenAuthenticationFilter() {
         setFilterProcessesUrl("/token");
@@ -30,9 +32,13 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
                 new JwtAuthenticationToken(null);
         final String username = request.getParameter(USERNAME);
         final String password = request.getParameter(PASSWORD);
-        JwtUserClaims jwtUserClaims = new JwtUserClaims();
+        final String appKey = request.getParameter(APP_KEY);
+        final String tenantId = request.getParameter(TENANT_ID);
+        final JwtUserClaims jwtUserClaims = new JwtUserClaims();
         jwtUserClaims.setUsername(username);
         jwtUserClaims.setPassword(password);
+        jwtUserClaims.setAppKey(appKey);
+        jwtUserClaims.setTenantId(Integer.parseInt(tenantId));
         authenticationToken.setDetails(jwtUserClaims);
         return getAuthenticationManager().authenticate(authenticationToken);
     }

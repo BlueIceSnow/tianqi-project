@@ -18,6 +18,13 @@ import java.util.List;
  * @author yuantianqi
  */
 public interface IBaseController<DO extends BaseDO> {
+    
+    /**
+     * 根据ID查询实体信息
+     *
+     * @param id 实体主键
+     * @return 实体响应对象
+     */
     @GetMapping("{id}")
     ResultEntity<DO> getEntity(@PathVariable("id") String id);
 

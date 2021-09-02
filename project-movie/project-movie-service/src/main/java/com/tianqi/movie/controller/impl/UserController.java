@@ -42,14 +42,12 @@ public class UserController extends BaseControllerImpl<IUserService, UserDO>
     @PreAuthorize("hasRole('BLUE')")
     public ResultEntity<List<com.tianqi.info.pojo.UserDO>> testFeign() {
         log.debug("debug信息");
-//        RpcResultEntity<List<com.tianqi.auth.pojo.TqUserDO>> rpcResultEntity =
-//                demoApi.listAll();
         final com.tianqi.info.pojo.UserDO userDO = new com.tianqi.info.pojo.UserDO();
         userDO.setDeleted(BooleanEnum.TRUE);
         final RpcResultEntity<List<com.tianqi.info.pojo.UserDO>> listResultEntity =
                 iDemoApi.listAll(userDO);
-        List<com.tianqi.info.pojo.UserDO> result = listResultEntity.getResult();
-        BaseEnum status = listResultEntity.getStatus();
+        final List<com.tianqi.info.pojo.UserDO> result = listResultEntity.getResult();
+        final BaseEnum status = listResultEntity.getStatus();
 
         return RestResult.<List<com.tianqi.info.pojo.UserDO>>builder()
                 .withStatus(status).withData(result).build();

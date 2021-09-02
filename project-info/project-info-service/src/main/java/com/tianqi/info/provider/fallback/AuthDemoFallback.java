@@ -1,6 +1,7 @@
 package com.tianqi.info.provider.fallback;
 
 import com.tianqi.auth.api.fallback.AbstractDemoFallback;
+import com.tianqi.auth.pojo.TqAuthUserDO;
 import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.result.rpc.RpcResult;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
@@ -18,15 +19,15 @@ import java.util.Map;
 @Component
 public class AuthDemoFallback extends AbstractDemoFallback {
     @Override
-    public RpcResultEntity<List<TqUserDO>> listAll() {
+    public RpcResultEntity<List<TqAuthUserDO>> listAll() {
         System.out.println("出现异常！");
-        return RpcResult.<List<TqUserDO>>builder()
+        return RpcResult.<List<TqAuthUserDO>>builder()
                 .withStatus(StatusEnum.BUS_ERROR)
                 .withResult(new ArrayList<>()).build();
     }
 
     @Override
-    public Map<String, Object> checkToken(String value) {
+    public Map<String, Object> checkToken(final String value) {
         return null;
     }
 }

@@ -3,6 +3,8 @@ package com.tianqi.auth.service;
 import com.tianqi.auth.pojo.TqAuthUserRoleGroupRelationDO;
 import com.tianqi.common.service.IBaseService;
 
+import java.util.List;
+
 /**
  * 用户角色组关联表(TqAuthUserRoleGroupRelation)表服务接口
  *
@@ -12,4 +14,12 @@ import com.tianqi.common.service.IBaseService;
 public interface ITqAuthUserRoleGroupRelationService
         extends IBaseService<TqAuthUserRoleGroupRelationDO> {
 
+    /**
+     * 根据用户 ID 及 OrgCode 查询用户角色列表
+     *
+     * @param userId
+     * @param orgCode
+     * @return
+     */
+    List<String> selectUserRoleListByUserId(Integer userId, String orgCode);
 }

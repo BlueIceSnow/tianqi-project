@@ -18,6 +18,12 @@ import java.util.List;
         AbstractDemoFallback.class)
 public interface IDemoApi {
 
+    /**
+     * 查询所有用户
+     *
+     * @param userDO 查询参数
+     * @return 响应用户列表
+     */
     @PostMapping("/user/listAll")
     RpcResultEntity<List<UserDO>> listAll(@RequestBody UserDO userDO);
 }

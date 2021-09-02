@@ -13,14 +13,14 @@ import java.io.Serializable;
  * TqAuthApplication表：应用表
  *
  * @author yuantianqi
- * @since 2021-08-26 14:57:06
+ * @since 2021-08-26 15:26:23
  */
 @Data
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @TableName(value = "tq_auth_application")
 public class TqAuthApplicationDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = 459491086874120598L;
+    private static final long serialVersionUID = -27653635998201362L;
     /**
      * APP唯一标识
      */

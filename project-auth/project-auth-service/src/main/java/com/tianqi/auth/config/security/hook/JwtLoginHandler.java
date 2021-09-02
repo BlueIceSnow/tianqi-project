@@ -1,7 +1,7 @@
 package com.tianqi.auth.config.security.hook;
 
 import cn.hutool.core.date.DateField;
-import com.tianqi.common.enums.AuthEnums;
+import com.tianqi.common.enums.AuthEnum;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.pojo.JwtUserClaims;
 import com.tianqi.common.result.rest.RestResult;
@@ -40,7 +40,7 @@ public class JwtLoginHandler implements AuthenticationFailureHandler,
         }
         final ResultEntity<Object> loginFail = RestResult.builder()
                 .withError(new BaseException("username or password not match!"))
-                .withStatus(AuthEnums.LOGIN_FAIL)
+                .withStatus(AuthEnum.LOGIN_FAIL)
                 .build();
         ResponseUtil.resJson(response, loginFail);
     }
@@ -56,7 +56,7 @@ public class JwtLoginHandler implements AuthenticationFailureHandler,
         final String sign = SignUtil
                 .sign((JwtUserClaims) authentication.getDetails(), 1, DateField.HOUR);
         final ResultEntity<Object> loginSuccess = RestResult.builder()
-                .withStatus(AuthEnums.LOGIN_SUCCESS)
+                .withStatus(AuthEnum.LOGIN_SUCCESS)
                 .withData(sign)
                 .build();
         ResponseUtil.resJson(response, loginSuccess);
@@ -72,7 +72,7 @@ public class JwtLoginHandler implements AuthenticationFailureHandler,
         }
         final ResultEntity<Object> logoutSuccess = RestResult.builder()
                 .withError(new BaseException("username or password not match!"))
-                .withStatus(AuthEnums.LOGOUT_SUCCESS)
+                .withStatus(AuthEnum.LOGOUT_SUCCESS)
                 .build();
         ResponseUtil.resJson(response, logoutSuccess);
     }

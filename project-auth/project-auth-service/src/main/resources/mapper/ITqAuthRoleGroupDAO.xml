@@ -3,12 +3,14 @@
 <mapper namespace="com.tianqi.auth.dao.ITqAuthRoleGroupDAO">
     <resultMap type="com.tianqi.auth.pojo.TqAuthRoleGroupDO" id="TqAuthRoleGroupMap">
         <result property="includeRoles" column="include_roles" jdbcType="VARCHAR"/>
+        <result property="tenantId" column="tenant_id" jdbcType="INTEGER"/>
         <result property="appId" column="app_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="columns">
         <include refid="com.tianqi.common.dao.IBaseDAO.commonCol"/>
         include_roles
+        ,tenant_id
         ,app_id
 
     </sql>

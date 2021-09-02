@@ -4,6 +4,7 @@
     <resultMap type="com.tianqi.auth.pojo.TqAuthUserOrgRelationDO" id="TqAuthUserOrgRelationMap">
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
         <result property="orgId" column="org_id" jdbcType="INTEGER"/>
+        <result property="tenantId" column="tenant_id" jdbcType="INTEGER"/>
         <result property="appId" column="app_id" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -11,9 +12,19 @@
         <include refid="com.tianqi.common.dao.IBaseDAO.commonCol"/>
         user_id
         ,org_id
+        ,tenant_id
         ,app_id
 
     </sql>
+    <select id="selectUserOrgByTenantIdAndAppKey" resultType="java.lang.String">
+        select org_code
+        from tq_auth_user_org_relation m
+                 left join tq_auth_org tao on m.org_id = tao.id
+                 left join tq_auth_application taa on m.app_id = taa.id
+        where m.user_id = #{userId}
+          and m.tenant_id = #{tenantId}
+          and taa.app_key = #{appKey}
+    </select>
 
 </mapper>
 

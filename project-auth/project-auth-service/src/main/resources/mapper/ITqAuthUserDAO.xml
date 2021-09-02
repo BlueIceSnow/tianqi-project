@@ -6,6 +6,7 @@
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="state" column="state" jdbcType="VARCHAR"/>
+        <result property="tenantId" column="tenant_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="columns">
@@ -14,8 +15,16 @@
         ,username
         ,password
         ,state
+        ,tenant_id
 
     </sql>
+    <select id="selectUserByUsernameAndTenantId" resultType="com.tianqi.auth.pojo.TqAuthUserDO">
+        select c.*, (select name from tq_auth_user) a
+        from (select * from tq_auth_user) c
+                 left join tq_auth_application taa on c.create_time = taa.create_time
+        where c.username in (select username from tq_auth_user)
+          and c.tenant_id = #{tenantId}
+    </select>
 
 </mapper>
 

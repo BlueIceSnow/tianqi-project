@@ -20,6 +20,11 @@ import java.util.Map;
 @FeignClient(name = "project-auth-service", fallback = AbstractDemoFallback.class)
 public interface IDemoApi {
 
+    /**
+     * 查询用户列表
+     *
+     * @return 用户列表
+     */
     @GetMapping("user/listAll")
     RpcResultEntity<List<TqAuthUserDO>> listAll();
 

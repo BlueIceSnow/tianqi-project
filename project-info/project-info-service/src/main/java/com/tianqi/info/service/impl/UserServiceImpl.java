@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @since 2021-04-11 18:37:12
  */
 @Service
-public class UserService extends BaseServiceImpl<IUserDAO, UserDO>
+public class UserServiceImpl extends BaseServiceImpl<IUserDAO, UserDO>
         implements IUserService {
 
 }

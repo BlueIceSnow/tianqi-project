@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.OrderBy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.tianqi.common.enums.BooleanEnum;
 import com.tianqi.common.handler.type.JsonObjectHandler;
 import lombok.Data;
@@ -24,7 +23,7 @@ public class BaseDO implements Serializable {
      * ID
      */
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private Integer id;
     /**
      * 名称
      */
@@ -42,7 +41,6 @@ public class BaseDO implements Serializable {
      * 是否删除，逻辑删除
      */
     @TableField(value = "is_delete")
-    @TableLogic(value = "0", delval = "1")
     private BooleanEnum deleted;
     /**
      * 创建用户

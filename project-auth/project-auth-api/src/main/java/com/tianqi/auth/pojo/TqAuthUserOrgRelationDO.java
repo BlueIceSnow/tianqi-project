@@ -13,14 +13,14 @@ import java.io.Serializable;
  * TqAuthUserOrgRelation表：用户组织关联表
  *
  * @author yuantianqi
- * @since 2021-08-26 14:57:21
+ * @since 2021-08-26 15:26:34
  */
 @Data
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @TableName(value = "tq_auth_user_org_relation")
 public class TqAuthUserOrgRelationDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -10595163741720066L;
+    private static final long serialVersionUID = 745404704924103091L;
     /**
      * 角色组ID
      */
@@ -31,6 +31,11 @@ public class TqAuthUserOrgRelationDO extends BaseDO implements Serializable {
      */
     @TableField(value = "org_id")
     private Integer orgId;
+    /**
+     * 租户ID
+     */
+    @TableField(value = "tenant_id")
+    private Integer tenantId;
     /**
      * 应用ID
      */

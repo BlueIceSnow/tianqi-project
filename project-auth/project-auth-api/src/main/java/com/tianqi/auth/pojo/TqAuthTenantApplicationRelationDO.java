@@ -13,14 +13,14 @@ import java.io.Serializable;
  * TqAuthTenantApplicationRelation表：租户应用关联表
  *
  * @author yuantianqi
- * @since 2021-08-26 14:57:20
+ * @since 2021-08-26 15:26:33
  */
 @Data
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @TableName(value = "tq_auth_tenant_application_relation")
 public class TqAuthTenantApplicationRelationDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -80957153292099734L;
+    private static final long serialVersionUID = -31730908714226532L;
     /**
      * 租户Key
      */
@@ -31,6 +31,11 @@ public class TqAuthTenantApplicationRelationDO extends BaseDO implements Seriali
      */
     @TableField(value = "application_key")
     private String applicationKey;
+    /**
+     * 租户ID
+     */
+    @TableField(value = "tenant_id")
+    private Integer tenantId;
     /**
      * 应用ID
      */

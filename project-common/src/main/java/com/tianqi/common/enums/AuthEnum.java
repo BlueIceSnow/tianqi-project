@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum AuthEnums implements BaseEnum<Integer, String> {
+public enum AuthEnum implements BaseEnum<Integer, String> {
 
     /**
      * 认证失败
@@ -45,6 +45,6 @@ public enum AuthEnums implements BaseEnum<Integer, String> {
 
     @Override
     public BaseEnum<Integer, String>[] enumValues() {
-        return AuthEnums.values();
+        return AuthEnum.values();
     }
 }

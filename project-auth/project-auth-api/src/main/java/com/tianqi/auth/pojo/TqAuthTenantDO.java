@@ -15,14 +15,14 @@ import java.sql.Timestamp;
  * TqAuthTenant表：租户表
  *
  * @author yuantianqi
- * @since 2021-08-26 14:57:19
+ * @since 2021-08-26 15:26:33
  */
 @Data
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @TableName(value = "tq_auth_tenant")
 public class TqAuthTenantDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = -19075357049938635L;
+    private static final long serialVersionUID = 824453841069949523L;
     /**
      * 租户Key
      */

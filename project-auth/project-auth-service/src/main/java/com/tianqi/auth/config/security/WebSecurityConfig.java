@@ -1,11 +1,19 @@
 package com.tianqi.auth.config.security;
 
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.tianqi.auth.config.security.authentication.JwtAuthenticationProvider;
 import com.tianqi.auth.config.security.hook.FilterExceptionProcessor;
 import com.tianqi.auth.config.security.hook.JwtAccessDeniedHandler;
 import com.tianqi.auth.config.security.hook.JwtAuthenticationEntryPoint;
 import com.tianqi.auth.config.security.hook.JwtLoginHandler;
 import com.tianqi.auth.config.security.hook.JwtPostProcessor;
+import com.tianqi.auth.config.sql.AppIdHandler;
+import com.tianqi.auth.config.sql.ExtendSqlInterceptor;
+import com.tianqi.auth.config.sql.IsDeleteHandler;
+import com.tianqi.auth.config.sql.OrgCodeHandler;
+import com.tianqi.auth.config.sql.TenantIdHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -116,6 +124,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        final MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        interceptor.addInnerInterceptor(
+                new ExtendSqlInterceptor(new IsDeleteHandler()));
+        interceptor.addInnerInterceptor(
+                new ExtendSqlInterceptor(new OrgCodeHandler()));
+        interceptor.addInnerInterceptor(
+                new ExtendSqlInterceptor(new AppIdHandler()));
+        interceptor.addInnerInterceptor(
+                new ExtendSqlInterceptor(new TenantIdHandler()));
+        return interceptor;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.tianqi.common.exception;
 
+import com.tianqi.common.constant.SystemConstant;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -13,21 +14,21 @@ public class BaseException extends RuntimeException {
 
     private final String message;
 
-    public BaseException(String message) {
+    public BaseException(final String message) {
         super(message);
         this.message = message;
     }
 
     @Override
     public StackTraceElement[] getStackTrace() {
-        StackTraceElement[] stackTrace = super.getStackTrace();
-        List<StackTraceElement> elements = new ArrayList<>();
+        final StackTraceElement[] stackTrace = super.getStackTrace();
+        final List<StackTraceElement> elements = new ArrayList<>();
         if (stackTrace != null && stackTrace.length != 0) {
-            String[] packages = stackTrace[0].getClassName().split("\\.");
-            String pkgName = new StringBuffer(packages[0]).append(".").append(packages[1])
+            final String[] packages = stackTrace[0].getClassName().split("\\.");
+            final String pkgName = new StringBuffer(packages[0]).append(".").append(packages[1])
                     .toString();
-            if (pkgName.contains("com.tianqi")) {
-                for (StackTraceElement stackTraceElement : stackTrace) {
+            if (pkgName.contains(SystemConstant.SYS_PKG_NAME)) {
+                for (final StackTraceElement stackTraceElement : stackTrace) {
                     if (stackTraceElement.getClassName().contains(pkgName)) {
                         elements.add(stackTraceElement);
                     }

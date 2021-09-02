@@ -9,18 +9,22 @@ public interface BaseEnum<Key, Value> {
     /**
      * 获取code码
      *
-     * @return
+     * @return 获取枚举的标识Key
      */
     Key getKey();
 
     /**
      * 获取消息信息
      *
-     * @return
+     * @return 获取枚举的标识Value
      */
     Value getValue();
 
-    ;
 
-    BaseEnum[] enumValues();
+    /**
+     * 获取所有的枚举值
+     *
+     * @return 所有的枚举值
+     */
+    BaseEnum<Key, Value>[] enumValues();
 }
