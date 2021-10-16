@@ -6,9 +6,10 @@ import com.tianqi.common.service.IBaseService;
 /**
  * 应用表(TqAuthApplication)表服务接口
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-08-25 19:25:54
  */
-public interface ITqAuthApplicationService extends IBaseService<TqAuthApplicationDO> {
+public interface ITqAuthApplicationService
+        extends IBaseService<TqAuthApplicationDO> {
 
 }

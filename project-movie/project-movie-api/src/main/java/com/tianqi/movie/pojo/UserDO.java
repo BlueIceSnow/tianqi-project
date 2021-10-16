@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * User表：
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-04-11 18:37:06
  */
 @TableName(value = "user")

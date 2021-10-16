@@ -16,8 +16,8 @@
         ,app_id
 
     </sql>
-    <select id="selectUserOrgByTenantIdAndAppKey" resultType="java.lang.String">
-        select org_code
+    <select id="selectUserOrgByTenantIdAndAppKey" resultType="com.tianqi.auth.pojo.TqAuthOrgDO">
+        select tao.*
         from tq_auth_user_org_relation m
                  left join tq_auth_org tao on m.org_id = tao.id
                  left join tq_auth_application taa on m.app_id = taa.id

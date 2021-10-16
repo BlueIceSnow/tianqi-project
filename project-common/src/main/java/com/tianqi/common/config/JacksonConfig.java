@@ -15,20 +15,23 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 /**
  * 配置Jackson实体
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 @Configuration
 public class JacksonConfig {
     @Bean
     @Primary
     @ConditionalOnMissingBean(ObjectMapper.class)
-    public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
-        ObjectMapper objectMapper = builder.createXmlMapper(false).build();
-        SimpleModule simpleModule = new SimpleModule();
+    public ObjectMapper jacksonObjectMapper(
+            final Jackson2ObjectMapperBuilder builder) {
+        final ObjectMapper objectMapper = builder.createXmlMapper(false).build();
+        final SimpleModule simpleModule = new SimpleModule();
         simpleModule.setSerializerModifier(new CustomBeanSerializerModifier());
-        simpleModule.setDeserializerModifier(new CustomBeanDeSerializerModifier());
+        simpleModule
+                .setDeserializerModifier(new CustomBeanDeSerializerModifier());
         objectMapper.registerModule(simpleModule);
-        SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
+        final SerializerProvider serializerProvider =
+                objectMapper.getSerializerProvider();
         serializerProvider.setNullValueSerializer(
                 new CustomNullJsonSerializer.NullObjectJsonSerializer());
         return objectMapper;

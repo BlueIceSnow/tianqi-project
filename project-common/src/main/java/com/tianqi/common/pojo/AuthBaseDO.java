@@ -20,4 +20,15 @@ public class AuthBaseDO extends BaseDO implements Serializable {
      */
     @TableField(value = "tenant_key")
     private Integer tenantKey;
+    /**
+     * 所属租户
+     */
+    @TableField(value = "tenant_id")
+    private Integer tenantId;
+    /**
+     * 所属租户
+     */
+    @TableField(value = "app_id")
+    private Integer appId;
+
 }

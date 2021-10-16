@@ -12,11 +12,11 @@
         ,user_id
 
     </sql>
-    <select id="selectUserRoleListByUserId" resultType="com.alibaba.fastjson.JSONArray">
+    <select id="selectUserRoleListInRoleGroupByUserIdAndAppId" resultType="com.alibaba.fastjson.JSONArray">
         SELECT rg.include_roles
         FROM tq_auth_user_role_group_relation m
                  left join tq_auth_user u on m.user_id = u.id
-                 left join tq_auth_role_group rg on m.role_group_id = rg.id
+                 left join tq_auth_role_group rg on m.role_group_id = rg.id and rg.app_id = #{appId}
         where m.user_id = #{id}
     </select>
 

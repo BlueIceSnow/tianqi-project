@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 组织角色关联表(TqAuthOrgRoleRelation)表服务接口
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-08-25 19:26:36
  */
 public interface ITqAuthOrgRoleRelationService
@@ -17,8 +17,8 @@ public interface ITqAuthOrgRoleRelationService
     /**
      * 根据OrgCode查询组织所拥有的角色
      *
-     * @param orgCode
+     * @param orgId 组织ID
      * @return
      */
-    List<String> selectOrgRoleListByOrgCode(String orgCode);
+    List<String> selectOrgRoleListByOrgId(final Integer orgId);
 }

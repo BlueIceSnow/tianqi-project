@@ -67,22 +67,22 @@ public class SignUtil {
             if (!publicFile.exists()) {
                 publicFile.getParentFile().mkdirs();
             }
-            try (FileOutputStream outputStream =
+            try (final FileOutputStream outputStream =
                          new FileOutputStream(privateFile)) {
                 outputStream.write(aPrivateEncoded);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new BaseException("generator private key file error");
             }
-            try (FileOutputStream outputStream =
+            try (final FileOutputStream outputStream =
                          new FileOutputStream(publicFile)) {
                 outputStream.write(aPublicEncoded);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new BaseException("generator public key file error");
             }
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 ////        final JwtUserClaims blue =
 ////                new JwtUserClaims(1L, "blue", "1820846241", new ArrayList<>(),
 ////                        UUID.randomUUID().toString());
@@ -97,6 +97,9 @@ public class SignUtil {
 //        } catch (ExpiredJwtException expiredJwtException) {
 //            log.error("sign is expired");
 //        }
+        final JwtUserClaims jwtUserClaims = parseSign(
+                "eyJhbGciOiJSUzI1NiJ9.eyJleHAiOjE2MzA1Nzg1MTAsImF1ZCI6IlVTRVIiLCJpc3MiOiJXV1cuWVRRLkNPTSIsInN1YiI6eyJpZCI6MSwibmFtZSI6Inl1YW50aWFucWkiLCJ1c2VybmFtZSI6Inl1YW50aWFucWkiLCJyb2xlcyI6WyJERU1PIl0sImRhdGFQZXJtaXNzaW9ucyI6W10sInRlbmFudElkIjoxLCJvcmdDb2RlIjoiMTAwMDAxIiwib3JnSWQiOjEsImFwcEtleSI6IlhRSTd0blJweUZkZHNOTmZPIiwiYXBwSWQiOjEsImp0aSI6bnVsbH19.ZcW7UHWc8n91eD7N2CbWsY3RXg3WHOtJJhaCplhm3682Tt9FAqkJwOIIZ-KOS6S2LwZJBBkF_jnMp6YiXQkRwcsAGglnLhikosBa1bzMAhzgMlsJbEDdSCd6_WhAQ74jjlrXUUSQblyE4JaAqEEAJDtbsVclRlnTQ4Dd9QE-o57Gv_EYmkIJ_necY0RP35ddh8sGuMwcCYnJIZFA6T0g0oybQFGrvp0AxBfGmgQPvlstaiBo5NYWNn4He1WQID6x4JTmHy05y1VLuwcvsUPCqcs_hRc5gfbFnMU2rCoFIwkn0oXux-Ij49w1pUqUIasCuWo5mtsZucN9NtUSleNu4w");
+        System.out.println(jwtUserClaims);
     }
 
     /**
@@ -105,13 +108,13 @@ public class SignUtil {
      * @param keyPath
      * @return
      */
-    private static byte[] readKey(String keyPath) {
+    private static byte[] readKey(final String keyPath) {
         final File file = new File(keyPath);
-        byte[] bytes;
+        final byte[] bytes;
         try {
             final FileInputStream fileInputStream = new FileInputStream(file);
             bytes = IoUtil.readBytes(fileInputStream);
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             if (log.isErrorEnabled()) {
                 log.error("read key fail");
             }
@@ -130,7 +133,7 @@ public class SignUtil {
         RSAPrivateKey rsaPrivateKey = null;
         try {
             rsaPrivateKey = RSAPrivateCrtKeyImpl.newKey(bytes);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             if (log.isErrorEnabled()) {
                 log.error("key file is error, can't generator private key");
             }
@@ -148,7 +151,7 @@ public class SignUtil {
         RSAPublicKey rsaPublicKey = null;
         try {
             rsaPublicKey = RSAPublicKeyImpl.newKey(bytes);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             if (log.isErrorEnabled()) {
                 log.error("key file is error, can't generator public key");
             }
@@ -163,7 +166,8 @@ public class SignUtil {
      * @param userClaims
      * @return
      */
-    public static String sign(JwtUserClaims userClaims, int time, DateField dateField) {
+    public static String sign(final JwtUserClaims userClaims, final int time,
+                              final DateField dateField) {
         final RSAPrivateKey rsaPrivateKey = readPrivateKey();
         final Date expireDate = DateUtil.date()
                 .offset(dateField, time).toJdkDate();
@@ -178,7 +182,7 @@ public class SignUtil {
                         mapper.writeValueAsString(userClaims),
                         expireDate.getTime(),
                         TimeUnit.MILLISECONDS);
-            } catch (JsonProcessingException e) {
+            } catch (final JsonProcessingException e) {
                 log.error("user sign is error, user claims convert to json error");
             }
         }
@@ -200,7 +204,7 @@ public class SignUtil {
      * @param sign
      * @return
      */
-    public static JwtUserClaims parseSign(String sign) throws JwtException {
+    public static JwtUserClaims parseSign(final String sign) throws JwtException {
         final RSAPublicKey rsaPublicKey = readPublicKey();
         final JwtUserClaims userClaims = Jwts.parserBuilder()
                 .setSigningKey(rsaPublicKey)

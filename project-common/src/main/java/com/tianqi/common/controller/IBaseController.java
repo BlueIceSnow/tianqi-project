@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * controller层接口
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 public interface IBaseController<DO extends BaseDO> {
     

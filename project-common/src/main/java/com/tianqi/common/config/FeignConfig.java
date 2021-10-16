@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Feign日志打印
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 @Configuration
 public class FeignConfig {

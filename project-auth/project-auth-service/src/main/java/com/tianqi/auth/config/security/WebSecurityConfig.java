@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.tianqi.auth.config.security.authentication.JwtAuthenticationProvider;
+import com.tianqi.auth.config.security.authorization.JwtTokenVerifyAuthorizationFilter;
 import com.tianqi.auth.config.security.hook.FilterExceptionProcessor;
 import com.tianqi.auth.config.security.hook.JwtAccessDeniedHandler;
 import com.tianqi.auth.config.security.hook.JwtAuthenticationEntryPoint;
@@ -40,6 +41,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAccessDeniedHandler accessDeniedHandler;
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
     private IJwtSecurityMetaService metaService;
+    private JwtTokenVerifyAuthorizationFilter verifyAuthorizationFilter;
+
+    @Autowired
+    public void setVerifyAuthorizationFilter(
+            final JwtTokenVerifyAuthorizationFilter verifyAuthorizationFilter) {
+        this.verifyAuthorizationFilter = verifyAuthorizationFilter;
+    }
 
     @Autowired
     public void setLoginHandler(final JwtLoginHandler loginHandler) {
@@ -94,8 +102,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler)
                 .authenticationEntryPoint(authenticationEntryPoint)
-                .and().addFilterBefore(new FilterExceptionProcessor(),
-                UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(verifyAuthorizationFilter,
+                UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new FilterExceptionProcessor(),
+                        UsernamePasswordAuthenticationFilter.class);
     }
 
     /**

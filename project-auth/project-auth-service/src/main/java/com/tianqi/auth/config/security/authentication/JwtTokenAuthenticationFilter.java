@@ -36,7 +36,7 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
         final String tenantId = request.getParameter(TENANT_ID);
         final JwtUserClaims jwtUserClaims = new JwtUserClaims();
         jwtUserClaims.setUsername(username);
-        jwtUserClaims.setPassword(password);
+        authenticationToken.setPassword(password);
         jwtUserClaims.setAppKey(appKey);
         jwtUserClaims.setTenantId(Integer.parseInt(tenantId));
         authenticationToken.setDetails(jwtUserClaims);

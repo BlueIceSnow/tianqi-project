@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * 自定义序列化
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 @Slf4j
 public class CustomSerializer {

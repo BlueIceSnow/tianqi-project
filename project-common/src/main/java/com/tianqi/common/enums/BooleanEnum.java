@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * @author yuantianqi
+ * @Author yuantianqi
  */
 @Getter
 @AllArgsConstructor

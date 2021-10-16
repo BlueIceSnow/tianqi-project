@@ -8,17 +8,18 @@ import java.util.List;
 /**
  * 组织角色关联表(TqAuthOrgRoleRelation)表数据库访问层
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-08-25 19:26:35
  */
-public interface ITqAuthOrgRoleRelationDAO extends IBaseDAO<TqAuthOrgRoleRelationDO> {
+public interface ITqAuthOrgRoleRelationDAO
+        extends IBaseDAO<TqAuthOrgRoleRelationDO> {
 
     /**
      * 根据OrgCode查询组织角色列表
      *
-     * @param orgCode
+     * @param orgId
      * @return
      */
-    List<String> selectOrgRoleListByOrgCode(String orgCode);
+    List<String> selectOrgRoleListByOrgId(Integer orgId);
 }
 

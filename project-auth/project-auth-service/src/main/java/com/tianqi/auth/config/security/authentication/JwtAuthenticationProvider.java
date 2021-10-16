@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -43,7 +42,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             throws AuthenticationException {
         final JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authentication;
         final String username = jwtToken.getDetails().getUsername();
-        final String credentials = String.valueOf(jwtToken.getCredentials());
+        final String credentials = String.valueOf(jwtToken.getPassword());
         final String appKey = jwtToken.getDetails().getAppKey();
         final Integer tenantId = jwtToken.getDetails().getTenantId();
         // 加载用户信息
@@ -64,10 +63,13 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
                             realUserBO.getName(),
                             realUserBO.getUsername(),
                             roles,
-                            UUID.randomUUID().toString(),
+                            realUserBO.getDataPermissions(),
+                            null,
                             realUserBO.getTenantId(),
                             realUserBO.getOrgCode(),
-                            realUserBO.getAppKey()
+                            realUserBO.getOrgId(),
+                            realUserBO.getAppKey(),
+                            realUserBO.getAppId()
                     );
             authenticationToken.setDetails(jwtUserClaims);
             authenticationToken.setAuthenticated(true);

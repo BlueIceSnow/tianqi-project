@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 基础业务层抽象
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 public interface IBaseService<DO extends BaseDO> {
     /**
@@ -64,7 +64,8 @@ public interface IBaseService<DO extends BaseDO> {
      * @param id     ID
      * @return 分页删除后所处页数据
      */
-    ResultEntity<List<DO>> removeByPage(DO entity, int page, int size, String id);
+    ResultEntity<List<DO>> removeByPage(DO entity, int page, int size,
+                                        String id);
 
     /**
      * 删除实体

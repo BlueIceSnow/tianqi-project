@@ -10,46 +10,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author yuantianqi
+ * @Author yuantianqi
  */
 public abstract class ResultBuilder<T, Builder extends ResultBuilder> {
     private BaseEnum status;
-    private List<ValidateEntity> validates = new ArrayList<>();
+    private final List<ValidateEntity> validates = new ArrayList<>();
     private BaseException error;
     private RestEntity<T> data;
 
 
-    public Builder withStatus(BaseEnum status) {
+    public Builder withStatus(final BaseEnum status) {
         this.status = status;
         return (Builder) this;
     }
 
-    public Builder withValidate(ValidateEntity validate) {
+    public Builder withValidate(final ValidateEntity validate) {
         this.validates.add(validate);
         return (Builder) this;
     }
 
-    public Builder withValidates(List<ValidateEntity> validates) {
-        for (ValidateEntity validate : validates) {
+    public Builder withValidates(final List<ValidateEntity> validates) {
+        for (final ValidateEntity validate : validates) {
             this.validates.remove(validate);
         }
         this.validates.addAll(validates);
         return (Builder) this;
     }
 
-    public Builder withError(BaseException error) {
+    public Builder withError(final BaseException error) {
         this.error = error;
         return (Builder) this;
     }
 
-    protected Builder withData(RestEntity<T> data) {
+    protected Builder withData(final RestEntity<T> data) {
         this.data = data;
         return (Builder) this;
     }
 
 
     public ResultEntity<T> build() {
-        return new ResultEntity<>(this.status, this.validates, this.error, this.data);
+        return new ResultEntity<>(this.status, this.validates, this.error,
+                this.data);
     }
 
 }

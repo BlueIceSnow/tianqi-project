@@ -20,36 +20,36 @@ import java.util.Set;
 public class CustomDeserializer {
     public static class StatusDeSerializer extends JsonDeserializer<BaseEnum> {
         @Override
-        public BaseEnum deserialize(JsonParser jsonParser,
-                                    DeserializationContext deserializationContext)
+        public BaseEnum deserialize(final JsonParser jsonParser,
+                                    final DeserializationContext deserializationContext)
                 throws IOException {
             jsonParser.nextFieldName();
             jsonParser.nextValue();
-            String key = jsonParser.getValueAsString();
+            final String key = jsonParser.getValueAsString();
             jsonParser.nextFieldName();
             jsonParser.nextValue();
-            String value = jsonParser.getValueAsString();
+            final String value = jsonParser.getValueAsString();
             jsonParser.nextFieldName();
             if (StringUtils.isEmpty(key) || StringUtils.isEmpty(value)) {
                 return null;
             }
-            ClassPathScanningCandidateComponentProvider provider =
+            final ClassPathScanningCandidateComponentProvider provider =
                     new ClassPathScanningCandidateComponentProvider(false);
             provider.addIncludeFilter(new AssignableTypeFilter(BaseEnum.class));
-            Set<BeanDefinition> components =
+            final Set<BeanDefinition> components =
                     provider.findCandidateComponents("com/tianqi");
-            for (BeanDefinition component : components) {
+            for (final BeanDefinition component : components) {
                 try {
-                    Class cls = Class.forName(component.getBeanClassName());
-                    Object[] enumConstants = cls.getEnumConstants();
-                    for (Object enumConstant : enumConstants) {
-                        BaseEnum cast = BaseEnum.class.cast(enumConstant);
+                    final Class cls = Class.forName(component.getBeanClassName());
+                    final Object[] enumConstants = cls.getEnumConstants();
+                    for (final Object enumConstant : enumConstants) {
+                        final BaseEnum cast = (BaseEnum) enumConstant;
                         if (cast.getKey().toString().equals(key) &&
                                 cast.getValue().toString().equals(value)) {
                             return cast;
                         }
                     }
-                } catch (ClassNotFoundException e) {
+                } catch (final ClassNotFoundException e) {
                     e.printStackTrace();
                 }
                 // use class cls found

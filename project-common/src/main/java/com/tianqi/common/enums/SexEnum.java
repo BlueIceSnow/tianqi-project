@@ -3,7 +3,7 @@ package com.tianqi.common.enums;
 import lombok.AllArgsConstructor;
 
 /**
- * @author yuantianqi
+ * @Author yuantianqi
  */
 @AllArgsConstructor
 public enum SexEnum implements BaseEnum<Integer, String> {

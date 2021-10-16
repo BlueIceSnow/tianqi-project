@@ -6,7 +6,7 @@ import com.tianqi.common.dao.IBaseDAO;
 /**
  * 组织架构表(TqAuthOrg)表数据库访问层
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-08-25 19:26:24
  */
 public interface ITqAuthOrgDAO extends IBaseDAO<TqAuthOrgDO> {

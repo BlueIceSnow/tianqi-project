@@ -3,7 +3,7 @@ package com.tianqi.client.constant;
 /**
  * 配置类常量
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 public class ConfigConstant {
 }

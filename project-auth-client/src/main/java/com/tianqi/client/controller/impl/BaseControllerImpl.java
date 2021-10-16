@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 基础控制层
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 public abstract class BaseControllerImpl<Service extends IBaseService<DO>, DO extends BaseDO>
         implements IBaseController<DO> {

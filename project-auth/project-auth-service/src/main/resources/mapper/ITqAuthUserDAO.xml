@@ -18,12 +18,12 @@
         ,tenant_id
 
     </sql>
+
     <select id="selectUserByUsernameAndTenantId" resultType="com.tianqi.auth.pojo.TqAuthUserDO">
-        select c.*, (select name from tq_auth_user) a
-        from (select * from tq_auth_user) c
-                 left join tq_auth_application taa on c.create_time = taa.create_time
-        where c.username in (select username from tq_auth_user)
-          and c.tenant_id = #{tenantId}
+        select *
+        from tq_auth_user
+        where username = #{username}
+          and tenant_id = #{tenantId}
     </select>
 
 </mapper>

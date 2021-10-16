@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 /**
  * 基础持久层
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 @Data
 public class BaseDO implements Serializable {

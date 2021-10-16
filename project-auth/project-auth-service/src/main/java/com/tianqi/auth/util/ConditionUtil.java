@@ -5,14 +5,15 @@ import com.tianqi.common.enums.BooleanEnum;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * @Author: yuantianqi
  * @Date: 2021/9/1 15:56
  * @Description:
  */
-public class SqlConditionUtil {
-    public static final String APP_Id = "app_id";
+public class ConditionUtil {
+    public static final String APP_ID = "app_id";
     public static final String TENANT_ID = "tenant_id";
     public static final String ORG_CODE = "org_code";
     public static final String IS_DELETE = "is_delete";
@@ -20,7 +21,7 @@ public class SqlConditionUtil {
             ThreadLocal.withInitial(HashMap::new);
 
     public static void setAppId(final Integer appId) {
-        CONDITION.get().put(APP_Id, appId);
+        CONDITION.get().put(APP_ID, appId);
     }
 
     public static void setTenantId(final Integer tenantId) {
@@ -36,7 +37,7 @@ public class SqlConditionUtil {
     }
 
     public static Map<String, Integer> getAppIdCond() {
-        return getIdCond(APP_Id);
+        return getIdCond(APP_ID);
     }
 
     public static Map<String, Integer> getTenantIdCond() {
@@ -55,6 +56,10 @@ public class SqlConditionUtil {
         return getCodeCond();
     }
 
+    public static void remove() {
+        CONDITION.remove();
+    }
+
 
     private static Map<String, Integer> getIdCond(final String key) {
         final HashMap<String, Integer> result = new HashMap<>(1);
@@ -62,7 +67,8 @@ public class SqlConditionUtil {
         final Set<Map.Entry<String, Object>> entries = cond.entrySet();
         for (final Map.Entry<String, Object> entry : entries) {
             if (entry.getKey().equals(key)) {
-                result.put(entry.getKey(), Integer.valueOf(entry.getValue().toString()));
+                result.put(entry.getKey(),
+                        Integer.valueOf(entry.getValue().toString()));
             }
         }
         return result;
@@ -73,10 +79,20 @@ public class SqlConditionUtil {
         final Map<String, Object> cond = CONDITION.get();
         final Set<Map.Entry<String, Object>> entries = cond.entrySet();
         for (final Map.Entry<String, Object> entry : entries) {
-            if (entry.getKey().equals(SqlConditionUtil.ORG_CODE)) {
+            if (entry.getKey().equals(ConditionUtil.ORG_CODE)) {
                 result.put(entry.getKey(), entry.getValue().toString());
             }
         }
+        return result;
+    }
+
+    public static <T> T global(final Supplier<T> supplier,
+                               final Map<String, Object> params) {
+        final Map<String, Object> backupMap = CONDITION.get();
+        CONDITION.set(params);
+        final T result = supplier.get();
+        CONDITION.remove();
+        CONDITION.set(backupMap);
         return result;
     }
 

@@ -6,7 +6,7 @@ import com.tianqi.common.dao.IBaseDAO;
 /**
  * 用户表(TqAuthUser)表数据库访问层
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-08-25 19:27:44
  */
 public interface ITqAuthUserDAO extends IBaseDAO<TqAuthUserDO> {
@@ -18,6 +18,7 @@ public interface ITqAuthUserDAO extends IBaseDAO<TqAuthUserDO> {
      * @param tenantId 租户ID
      * @return
      */
-    TqAuthUserDO selectUserByUsernameAndTenantId(String username, Integer tenantId);
+    TqAuthUserDO selectUserByUsernameAndTenantId(String username,
+                                                 Integer tenantId);
 }
 

@@ -1,7 +1,7 @@
 package com.tianqi.auth.config.sql;
 
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
-import com.tianqi.auth.util.SqlConditionUtil;
+import com.tianqi.auth.util.ConditionUtil;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
@@ -17,7 +17,7 @@ import java.util.Map;
 public class TenantIdHandler implements TenantLineHandler {
     @Override
     public Expression getTenantId() {
-        final Map<String, Integer> tenantIdCond = SqlConditionUtil.getTenantIdCond();
+        final Map<String, Integer> tenantIdCond = ConditionUtil.getTenantIdCond();
         for (final Map.Entry<String, Integer> entry : tenantIdCond
                 .entrySet()) {
             return new EqualsTo(new Column(entry.getKey()),
@@ -28,12 +28,12 @@ public class TenantIdHandler implements TenantLineHandler {
 
     @Override
     public String getTenantIdColumn() {
-        return SqlConditionUtil.TENANT_ID;
+        return ConditionUtil.TENANT_ID;
     }
 
     @Override
     public boolean ignoreTable(final String tableName) {
         return TenantLineHandler.super.ignoreTable(tableName) ||
-                SqlConditionUtil.getTenantIdCond().size() == 0;
+                ConditionUtil.getTenantIdCond().size() == 0;
     }
 }

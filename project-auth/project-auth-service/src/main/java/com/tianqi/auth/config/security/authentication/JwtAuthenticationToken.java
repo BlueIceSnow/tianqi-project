@@ -13,6 +13,15 @@ import java.util.Collection;
  */
 public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
+    private String password;
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     public JwtAuthenticationToken(
             final Collection<? extends GrantedAuthority> authorities) {
@@ -26,7 +35,7 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
 
     @Override
     public Object getCredentials() {
-        return getDetails().getPassword();
+        return null;
     }
 
     @Override

@@ -6,7 +6,7 @@ import com.tianqi.common.result.rest.builder.RestResultBuilder;
 /**
  * 统一响应结果
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 public final class RestResult {
     public static <Entity> RestResultBuilder<Entity> builder() {

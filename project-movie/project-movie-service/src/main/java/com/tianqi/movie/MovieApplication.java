@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 /**
  * MovieApplication主入口函数
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-04-11 18:37:17
  */
 @SpringBootApplication(scanBasePackages = {"com.tianqi.common", "com.tianqi.movie"})

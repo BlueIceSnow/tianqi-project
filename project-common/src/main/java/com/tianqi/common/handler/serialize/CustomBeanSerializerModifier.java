@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * 自定义BeanSerializerModifier
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 public class CustomBeanSerializerModifier extends BeanSerializerModifier {
 

@@ -12,12 +12,12 @@
         ,org_id
 
     </sql>
-    <select id="selectOrgRoleListByOrgCode" resultType="java.lang.String">
+    <select id="selectOrgRoleListByOrgId" resultType="java.lang.String">
         SELECT ar.code
         FROM tq_auth_org_role_relation m
                  left join tq_auth_org o on m.org_id = o.id
                  left join tq_auth_role ar on m.role_id = ar.id
-        where o.org_code = #{orgCode}
+        where o.id = #{orgId}
     </select>
 
 </mapper>

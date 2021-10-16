@@ -1,6 +1,6 @@
 package com.tianqi.auth.config.security.interceptor;
 
-import com.tianqi.auth.util.SqlConditionUtil;
+import com.tianqi.auth.util.ConditionUtil;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.StringValue;
@@ -25,7 +25,8 @@ public interface AuthHandler {
      * @return 租户 ID 值表达式
      */
     default Expression getTenantId() {
-        final Map<String, Integer> tenantIdCond = SqlConditionUtil.getTenantIdCond();
+        final Map<String, Integer> tenantIdCond =
+                ConditionUtil.getTenantIdCond();
         return getExpression(tenantIdCond);
     }
 
@@ -37,7 +38,7 @@ public interface AuthHandler {
      * @return 租户字段名
      */
     default String getTenantIdColumn() {
-        return SqlConditionUtil.TENANT_ID;
+        return ConditionUtil.TENANT_ID;
     }
 
     /**
@@ -47,7 +48,7 @@ public interface AuthHandler {
      * @return 租户 ID 值表达式
      */
     default Expression getAppId() {
-        final Map<String, Integer> tenantIdCond = SqlConditionUtil.getAppIdCond();
+        final Map<String, Integer> tenantIdCond = ConditionUtil.getAppIdCond();
         return getExpression(tenantIdCond);
     }
 
@@ -74,7 +75,7 @@ public interface AuthHandler {
      * @return AppId 字段名
      */
     default String getAppIdColumn() {
-        return SqlConditionUtil.APP_Id;
+        return ConditionUtil.APP_ID;
     }
 
     /**
@@ -84,12 +85,13 @@ public interface AuthHandler {
      * @return 租户 ID 值表达式
      */
     default Expression getOrgCode() {
-        final Map<String, String> tenantIdCond = SqlConditionUtil.getOrgCodeCond();
+        final Map<String, String> tenantIdCond = ConditionUtil.getOrgCodeCond();
         final Set<Map.Entry<String, String>> entries = tenantIdCond.entrySet();
         for (final Map.Entry<String, String> entry : entries) {
             final LikeExpression likeExpression = new LikeExpression();
             likeExpression.withLeftExpression(new Column(entry.getKey()));
-            likeExpression.withRightExpression(new StringValue("%" + entry.getValue()));
+            likeExpression.withRightExpression(
+                    new StringValue("%" + entry.getValue()));
             return likeExpression;
         }
         return null;
@@ -103,7 +105,7 @@ public interface AuthHandler {
      * @return 租户字段名
      */
     default String getOrgCodeColumn() {
-        return SqlConditionUtil.ORG_CODE;
+        return ConditionUtil.ORG_CODE;
     }
 
     /**
@@ -115,8 +117,8 @@ public interface AuthHandler {
      * @return 是否忽略, true:表示忽略，false:需要解析并拼接
      */
     default boolean ignoreTable(final String tableName) {
-        return SqlConditionUtil.getOrgCodeCond().size() == 0 &&
-                SqlConditionUtil.getAppIdCond().size() == 0 &&
-                SqlConditionUtil.getTenantIdCond().size() == 0;
+        return ConditionUtil.getOrgCodeCond().size() == 0 &&
+                ConditionUtil.getAppIdCond().size() == 0 &&
+                ConditionUtil.getTenantIdCond().size() == 0;
     }
 }

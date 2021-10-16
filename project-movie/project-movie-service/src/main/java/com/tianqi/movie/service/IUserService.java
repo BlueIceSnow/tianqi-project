@@ -6,7 +6,7 @@ import com.tianqi.movie.pojo.UserDO;
 /**
  * (User)表服务接口
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-04-11 18:37:11
  */
 public interface IUserService extends IBaseService<UserDO> {

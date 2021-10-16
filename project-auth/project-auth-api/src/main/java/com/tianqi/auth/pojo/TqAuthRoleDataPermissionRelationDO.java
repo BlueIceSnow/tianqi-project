@@ -3,24 +3,29 @@ package com.tianqi.auth.pojo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.tianqi.common.pojo.BaseDO;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 /**
  * TqAuthRoleDataPermissionRelation表：角色数据权限关联表
  *
- * @author yuantianqi
- * @since 2021-08-26 15:26:32
+ * @Author yuantianqi
+ * @since 2021-09-02 16:50:30
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName(value = "tq_auth_role_data_permission_relation")
-public class TqAuthRoleDataPermissionRelationDO extends BaseDO implements Serializable {
-    private static final long serialVersionUID = 862128701471423292L;
+public class TqAuthRoleDataPermissionRelationDO extends BaseDO
+        implements Serializable {
+    private static final long serialVersionUID = 622519049033710289L;
     /**
      * 角色组ID
      */

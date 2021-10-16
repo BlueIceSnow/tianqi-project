@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * @author yuantianqi
+ * @Author yuantianqi
  */
 @Data
 @NoArgsConstructor

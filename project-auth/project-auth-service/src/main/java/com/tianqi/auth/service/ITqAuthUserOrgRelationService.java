@@ -1,12 +1,13 @@
 package com.tianqi.auth.service;
 
+import com.tianqi.auth.pojo.TqAuthOrgDO;
 import com.tianqi.auth.pojo.TqAuthUserOrgRelationDO;
 import com.tianqi.common.service.IBaseService;
 
 /**
  * 用户组织关联表(TqAuthUserOrgRelation)表服务接口
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-08-26 15:33:18
  */
 public interface ITqAuthUserOrgRelationService
@@ -20,6 +21,7 @@ public interface ITqAuthUserOrgRelationService
      * @param appKey   App Key
      * @return
      */
-    String selectUserOrgByTenantIdAndAppKey(Integer userId, Integer tenantId,
-                                            String appKey);
+    TqAuthOrgDO selectUserOrgByTenantIdAndAppKey(Integer userId,
+                                                 Integer tenantId,
+                                                 String appKey);
 }

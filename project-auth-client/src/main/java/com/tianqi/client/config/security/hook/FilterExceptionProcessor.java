@@ -27,7 +27,8 @@ public class FilterExceptionProcessor extends OncePerRequestFilter {
 
         try {
             filterChain.doFilter(request, response);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
+            logger.error(ex);
             final ResultEntity<Object> build = RestResult.builder()
                     .withError(new BaseException(ex.getMessage()))
                     .withStatus(StatusEnum.SERVER_ERROR)

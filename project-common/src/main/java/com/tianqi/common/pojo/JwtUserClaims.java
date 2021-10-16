@@ -1,6 +1,5 @@
 package com.tianqi.common.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,16 +26,16 @@ public class JwtUserClaims {
      */
     private String username;
 
-    /**
-     * 密码
-     */
-    @JsonIgnore
-    private String password;
 
     /**
      * 角色列表
      */
     private List<String> roles;
+
+    /**
+     * 数据权限列表
+     */
+    private List<Integer> dataPermissions;
 
     /**
      * 所属租户ID
@@ -49,9 +48,19 @@ public class JwtUserClaims {
     private String orgCode;
 
     /**
-     * 所属应用
+     * 所属组织ID
+     */
+    private Integer orgId;
+
+    /**
+     * 所属应用 Key
      */
     private String appKey;
+
+    /**
+     * 所属应用 Id
+     */
+    private Integer appId;
 
     /**
      * JWT 唯一 ID（JWT ID）
@@ -59,9 +68,10 @@ public class JwtUserClaims {
     private String jti;
 
     public JwtUserClaims(final Integer id, final String name, final String username,
-                         final List<String> roles, final String jti,
-                         final Integer tenantId,
-                         final String orgCode, final String appKey) {
+                         final List<String> roles, final List<Integer> dataPermissions,
+                         final String jti, final Integer tenantId,
+                         final String orgCode, final Integer orgId, final String appKey,
+                         final Integer appId) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -70,5 +80,8 @@ public class JwtUserClaims {
         this.tenantId = tenantId;
         this.orgCode = orgCode;
         this.appKey = appKey;
+        this.appId = appId;
+        this.orgId = orgId;
+        this.dataPermissions = dataPermissions;
     }
 }

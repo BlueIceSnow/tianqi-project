@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * (User)表控制层
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-04-11 18:37:15
  */
 @RestController
@@ -36,14 +36,14 @@ public class UserController extends BaseControllerImpl<IUserService, UserDO>
     private HttpServletRequest request;
 
     @Override
-    public ResultEntity<List<com.tianqi.auth.pojo.TqUserDO>> testFeign() {
+    public ResultEntity<List<com.tianqi.auth.pojo.TqAuthUserDO>> testFeign() {
         log.debug("debug信息");
-        RpcResultEntity<List<com.tianqi.auth.pojo.TqUserDO>> rpcResultEntity =
+        final RpcResultEntity<List<com.tianqi.auth.pojo.TqAuthUserDO>> rpcResultEntity =
                 demoApi.listAll();
-        List<com.tianqi.auth.pojo.TqUserDO> result = rpcResultEntity.getResult();
-        BaseEnum status = rpcResultEntity.getStatus();
+        final List<com.tianqi.auth.pojo.TqAuthUserDO> result = rpcResultEntity.getResult();
+        final BaseEnum status = rpcResultEntity.getStatus();
 
-        return RestResult.<List<com.tianqi.auth.pojo.TqUserDO>>builder()
+        return RestResult.<List<com.tianqi.auth.pojo.TqAuthUserDO>>builder()
                 .withStatus(StatusEnum.OK).withData(result).build();
     }
 }

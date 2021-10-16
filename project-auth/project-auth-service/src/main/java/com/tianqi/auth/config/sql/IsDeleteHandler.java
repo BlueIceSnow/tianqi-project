@@ -1,7 +1,7 @@
 package com.tianqi.auth.config.sql;
 
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
-import com.tianqi.auth.util.SqlConditionUtil;
+import com.tianqi.auth.util.ConditionUtil;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
@@ -17,7 +17,7 @@ import java.util.Map;
 public class IsDeleteHandler implements TenantLineHandler {
     @Override
     public Expression getTenantId() {
-        for (final Map.Entry<String, Integer> entry : SqlConditionUtil.getIsDeletedCond()
+        for (final Map.Entry<String, Integer> entry : ConditionUtil.getIsDeletedCond()
                 .entrySet()) {
             return new EqualsTo(new Column(entry.getKey()),
                     new LongValue(entry.getValue()));
@@ -27,7 +27,7 @@ public class IsDeleteHandler implements TenantLineHandler {
 
     @Override
     public String getTenantIdColumn() {
-        return SqlConditionUtil.IS_DELETE;
+        return ConditionUtil.IS_DELETE;
     }
 
     @Override

@@ -6,7 +6,7 @@ import com.tianqi.common.controller.IBaseController;
 /**
  * 应用表(TqAuthApplication)表控制层
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-08-25 19:26:00
  */
 public interface ITqAuthApplicationController

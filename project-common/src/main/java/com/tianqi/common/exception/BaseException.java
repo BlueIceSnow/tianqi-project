@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author yuantianqi
+ * @Author yuantianqi
  */
 @Data
 public class BaseException extends RuntimeException {

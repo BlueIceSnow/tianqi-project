@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * 请求结果
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 
 @AllArgsConstructor

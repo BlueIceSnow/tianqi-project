@@ -6,7 +6,7 @@ import com.tianqi.common.pojo.BaseDO;
 /**
  * 持久层封装
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 public interface IBaseDAO<DO extends BaseDO> extends BaseMapper<DO> {
 }

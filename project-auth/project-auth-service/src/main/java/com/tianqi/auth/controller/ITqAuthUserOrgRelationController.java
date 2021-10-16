@@ -6,7 +6,7 @@ import com.tianqi.common.controller.IBaseController;
 /**
  * 用户组织关联表(TqAuthUserOrgRelation)表控制层
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-08-26 15:33:18
  */
 public interface ITqAuthUserOrgRelationController

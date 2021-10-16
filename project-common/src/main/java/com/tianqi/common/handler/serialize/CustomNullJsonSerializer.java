@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * 自定义null值序列化处理器
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 public class CustomNullJsonSerializer {
 

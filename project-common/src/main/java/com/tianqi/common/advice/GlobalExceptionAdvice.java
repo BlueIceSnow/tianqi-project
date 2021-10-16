@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * 异常处理器
  *
- * @author yuantianqi
+ * @Author yuantianqi
  */
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
@@ -44,7 +44,8 @@ public class GlobalExceptionAdvice {
         final BindingResult bindingResult;
         if (validateEx instanceof MethodArgumentNotValidException) {
             bindingResult =
-                    ((MethodArgumentNotValidException) validateEx).getBindingResult();
+                    ((MethodArgumentNotValidException) validateEx)
+                            .getBindingResult();
         } else {
             bindingResult = (BindingResult) validateEx;
         }
@@ -71,7 +72,8 @@ public class GlobalExceptionAdvice {
      * @return
      */
     @ExceptionHandler(value = JsonMappingException.class)
-    public ResultEntity jsonParseHandler(final JsonMappingException jsonParseEx) {
+    public ResultEntity jsonParseHandler(
+            final JsonMappingException jsonParseEx) {
 
         final List<String> errorField = jsonParseEx.getPath().stream()
                 .map(JsonMappingException.Reference::getFieldName)
@@ -111,7 +113,8 @@ public class GlobalExceptionAdvice {
             throw exception;
         }
 
-        final BaseException baseException = new BaseException(exception.getMessage());
+        final BaseException baseException =
+                new BaseException(exception.getMessage());
         baseException.setStackTrace(exception.getStackTrace());
         return RestResult.builder()
                 .withStatus(StatusEnum.SERVER_ERROR)

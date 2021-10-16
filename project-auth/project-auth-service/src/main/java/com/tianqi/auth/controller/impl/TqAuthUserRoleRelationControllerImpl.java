@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 用户角色组关联表(TqAuthUserRoleRelation)表控制层
  *
- * @author yuantianqi
+ * @Author yuantianqi
  * @since 2021-08-31 11:08:05
  */
 @RestController

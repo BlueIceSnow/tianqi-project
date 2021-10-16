@@ -1,6 +1,7 @@
 package com.tianqi.gateway.fallback;
 
 import com.tianqi.auth.api.fallback.AbstractDemoFallback;
+import com.tianqi.auth.pojo.TqAuthUserDO;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +16,12 @@ import java.util.Map;
 @Component
 public class TokenFallback extends AbstractDemoFallback {
     @Override
-    public RpcResultEntity<List<TqUserDO>> listAll() {
+    public RpcResultEntity<List<TqAuthUserDO>> listAll() {
         return null;
     }
 
     @Override
-    public Map<String, Object> checkToken(String value) {
+    public Map<String, Object> checkToken(final String value) {
         System.out.println(value);
         return null;
     }
