@@ -1,6 +1,7 @@
 package com.tianqi.auth.service;
 
 import com.tianqi.auth.pojo.TqAuthResourceDO;
+import com.tianqi.auth.pojo.dto.resp.ResourceDetailDTO;
 import com.tianqi.common.enums.ResourceTypeEnum;
 import com.tianqi.common.service.IBaseService;
 
@@ -23,4 +24,16 @@ public interface ITqAuthResourceService extends IBaseService<TqAuthResourceDO> {
      */
     List<TqAuthResourceDO> selectResourceListByAppId(Integer appId,
                                                      ResourceTypeEnum type);
+
+    /**
+     * 获取当前登录用户的资源列表
+     *
+     * @param roles
+     * @param appId
+     * @return: java.util.List<com.tianqi.auth.pojo.dto.resp.ResourceDetailDTO>
+     * @date: 2021/10/19 19:55:34
+     */
+    List<ResourceDetailDTO> loadLoginUserResourceList(
+            final List<String> roles, final Integer appId);
+
 }

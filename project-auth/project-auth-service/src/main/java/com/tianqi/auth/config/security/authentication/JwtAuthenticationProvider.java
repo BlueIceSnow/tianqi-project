@@ -49,8 +49,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         final TqAuthUserLoginBO
                 realUserBO = securityMetaService.loadUserInfo(username, tenantId, appKey);
         final List<JwtAuthority> authorities = realUserBO.getAuthorities();
-        if (passwordEncoder.matches(credentials, realUserBO.getPassword()
-        )) {
+        if (passwordEncoder.matches(credentials, realUserBO.getPassword())) {
             final JwtAuthenticationToken authenticationToken =
                     new JwtAuthenticationToken(authorities);
             // 将用户权限转为字符串列表

@@ -1,5 +1,6 @@
 package com.tianqi.auth.config.security.authorization;
 
+import cn.hutool.core.util.StrUtil;
 import com.tianqi.auth.config.security.authentication.JwtAuthenticationToken;
 import com.tianqi.auth.config.security.hook.JwtAuthenticationEntryPoint;
 import com.tianqi.auth.pojo.entity.JwtAuthority;
@@ -10,7 +11,6 @@ import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.annotation.Nonnull;
@@ -18,11 +18,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import java.util.stream.Collectors;
 
 /**
@@ -33,7 +30,6 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenVerifyAuthorizationFilter extends OncePerRequestFilter {
     private JwtAuthenticationEntryPoint entryPoint;
-    public static final String ADDR = "";
 
     @Autowired
     public void setEntryPoint(
@@ -56,7 +52,8 @@ public class JwtTokenVerifyAuthorizationFilter extends OncePerRequestFilter {
                                     @Nonnull final FilterChain filterChain)
             throws ServletException, IOException {
         final String token = request.getHeader(SystemConstant.HEADER_TOKEN);
-        if (!StringUtils.isEmpty(token)) {
+        if (StrUtil.isNotEmpty(token)) {
+            // 用户TOKEN存在，验证用户TOKEN
             final JwtUserClaims jwtUserClaims;
             try {
                 jwtUserClaims = SignUtil.parseSign(token);
@@ -70,41 +67,15 @@ public class JwtTokenVerifyAuthorizationFilter extends OncePerRequestFilter {
                             .collect(Collectors.toList());
             final JwtAuthenticationToken jwtAuthenticationToken =
                     new JwtAuthenticationToken(roles);
+            // 封装用户权限
             jwtAuthenticationToken.setAuthenticated(true);
             jwtAuthenticationToken.setDetails(jwtUserClaims);
             SecurityContextHolder.getContext()
                     .setAuthentication(jwtAuthenticationToken);
             filterChain.doFilter(request, response);
         } else {
+            // 用户TOKEN不存在
             entryPoint.commence(request, response, null);
         }
-        final String test = null;
-        final String[] split = test.split(",");
-    }
-
-    /**
-     * test jsr305.
-     *
-     * @param: test
-     * @return: void
-     * @date: 2021/10/12 15:01:26
-     */
-    public static void test(@Nonnull final String test) {
-        // TODO ceshi jsr305
-        System.out.println(test);
-        final File file = new File("/test/add.txt");
-        if (file.exists()) {
-            System.out.println(file);
-        }
-        final Vector vector = new Vector();
-    }
-
-    public static List<String> main(final String[] args) {
-        final List<String> objects = null;
-        if (System.getenv().equals(1)) {
-            return new ArrayList<>();
-        }
-
-        return objects;
     }
 }

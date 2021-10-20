@@ -52,7 +52,7 @@ public class JwtPostProcessor
     }
 
     public AccessDecisionManager accessDecisionManager(
-            List<AccessDecisionVoter<?>> voters) {
+            final List<AccessDecisionVoter<?>> voters) {
         if (this.accessDecisionManager == null) {
             this.accessDecisionManager =
                     new JwtAccessDecidedManager(voters);
@@ -61,12 +61,12 @@ public class JwtPostProcessor
     }
 
     public AbstractSecurityInterceptor securityInterceptor(
-            SecurityMetadataSource securityMetadataSource) {
+            final SecurityMetadataSource securityMetadataSource) {
         final IJwtSecurityMetaService metaService;
         try {
             metaService = SpringUtil.getBean(
                     IJwtSecurityMetaService.class);
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             log.error("meta service not configuration");
             throw new BaseException("meta service not configuration");
         }

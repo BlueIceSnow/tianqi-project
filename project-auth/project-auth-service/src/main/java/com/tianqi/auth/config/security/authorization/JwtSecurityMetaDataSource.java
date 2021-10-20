@@ -35,7 +35,7 @@ public class JwtSecurityMetaDataSource implements
     }
 
     public JwtSecurityMetaDataSource(
-            DefaultFilterInvocationSecurityMetadataSource
+            final DefaultFilterInvocationSecurityMetadataSource
                     defaultFilterInvocationSecurityMetadataSource) {
         this.defaultFilterInvocationSecurityMetadataSource =
                 defaultFilterInvocationSecurityMetadataSource;
@@ -46,9 +46,10 @@ public class JwtSecurityMetaDataSource implements
             throws IllegalArgumentException {
         this.loadDataSource();
         final Collection<ConfigAttribute> attributes =
-                defaultFilterInvocationSecurityMetadataSource.getAttributes(object);
-        HttpServletRequest request = ((FilterInvocation) object).getRequest();
-        Iterator customMap = this.requestMap.entrySet().iterator();
+                defaultFilterInvocationSecurityMetadataSource
+                        .getAttributes(object);
+        final HttpServletRequest request = ((FilterInvocation) object).getRequest();
+        final Iterator customMap = this.requestMap.entrySet().iterator();
         Map.Entry entry;
         do {
             if (!customMap.hasNext()) {
@@ -56,23 +57,26 @@ public class JwtSecurityMetaDataSource implements
             }
             entry = (Map.Entry) customMap.next();
         } while (!((RequestMatcher) entry.getKey()).matches(request));
-
-        return (Collection<ConfigAttribute>) entry.getValue();
+        final Collection<ConfigAttribute> attributesRes =
+                (Collection<ConfigAttribute>) entry.getValue();
+        attributesRes.addAll(attributes);
+        return attributesRes;
     }
 
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
         this.loadDataSource();
-        Set<ConfigAttribute> allAttributes = new HashSet();
-        Iterator var2 = this.requestMap.entrySet().iterator();
+        final Set<ConfigAttribute> allAttributes = new HashSet();
+        final Iterator var2 = this.requestMap.entrySet().iterator();
 
         while (var2.hasNext()) {
-            Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry =
+            final Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry =
                     (Map.Entry) var2.next();
             allAttributes.addAll(entry.getValue());
         }
         final Collection<ConfigAttribute> allConfigAttributes =
-                defaultFilterInvocationSecurityMetadataSource.getAllConfigAttributes();
+                defaultFilterInvocationSecurityMetadataSource
+                        .getAllConfigAttributes();
         allAttributes.addAll(allConfigAttributes);
         return allAttributes;
     }

@@ -96,13 +96,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(loginHandler)
                 .and().authenticationProvider(authenticationProvider)
                 .authorizeRequests()
-                .mvcMatchers("/user/page").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .withObjectPostProcessor(new JwtPostProcessor())
                 .and().exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler)
                 .authenticationEntryPoint(authenticationEntryPoint)
-                .and().addFilterBefore(verifyAuthorizationFilter,
+                .and().addFilterAfter(verifyAuthorizationFilter,
                 UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new FilterExceptionProcessor(),
                         UsernamePasswordAuthenticationFilter.class);
@@ -119,10 +118,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 可匿名访问资源
         final List<String> ignoringAuthorities = metaService
                 .loadIgnoringAuthorities();
-        web.ignoring().antMatchers(ignoringAuthorities.toArray(new String[] {}));
+        web.ignoring()
+                .antMatchers(ignoringAuthorities.toArray(new String[] {}));
 
         final DefaultWebSecurityExpressionHandler expressionHandler =
-                (DefaultWebSecurityExpressionHandler) web.getExpressionHandler();
+                (DefaultWebSecurityExpressionHandler) web
+                        .getExpressionHandler();
         expressionHandler.setDefaultRolePrefix(SUPPORT_PREFIX);
     }
 
@@ -139,7 +140,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         final MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        interceptor.addInnerInterceptor(
+                new PaginationInnerInterceptor(DbType.MYSQL));
         interceptor.addInnerInterceptor(
                 new ExtendSqlInterceptor(new IsDeleteHandler()));
         interceptor.addInnerInterceptor(

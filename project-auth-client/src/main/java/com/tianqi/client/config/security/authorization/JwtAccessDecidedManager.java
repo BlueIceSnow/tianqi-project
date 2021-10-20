@@ -28,28 +28,36 @@ public class JwtAccessDecidedManager extends AbstractAccessDecisionManager {
                        final Collection<ConfigAttribute> configAttributes)
             throws AccessDeniedException, InsufficientAuthenticationException {
         int deny = 0;
-        for (AccessDecisionVoter voter : getDecisionVoters()) {
-            int result = voter.vote(authentication, object, configAttributes);
-
+        int access = 0;
+        for (final AccessDecisionVoter voter : getDecisionVoters()) {
+            final int result =
+                    voter.vote(authentication, object, configAttributes);
             switch (result) {
                 case AccessDecisionVoter.ACCESS_GRANTED:
-                    return;
-
+                    access++;
+                    break;
                 case AccessDecisionVoter.ACCESS_DENIED:
                     deny++;
-
                     break;
-
                 default:
                     break;
             }
         }
-        if (deny > 0) {
-            throw new AccessDeniedException(messages.getMessage(
-                    "AbstractAccessDecisionManager.accessDenied", "Access is denied"));
+        if (access == getDecisionVoters().size()) {
+            return;
+        } else {
+            if (deny > 0) {
+                // 有一个拒绝，或者没有弃权但是没给通过票，
+                throw new AccessDeniedException(messages.getMessage(
+                        "AbstractAccessDecisionManager.accessDenied",
+                        "Access is denied"));
+            }
         }
         // 允许进行弃权，如果都弃权则进入方法鉴权
-        setAllowIfAllAbstainDecisions(true);
+        setAllowIfAllAbstainDecisions(configAttributes.stream()
+                .anyMatch(config -> config.getAttribute() != null &&
+                        config.getAttribute()
+                                .contains("TQ:METHOD")));
         checkAllowIfAllAbstainDecisions();
     }
 

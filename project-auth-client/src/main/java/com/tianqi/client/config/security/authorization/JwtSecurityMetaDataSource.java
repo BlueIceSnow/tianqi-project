@@ -57,8 +57,9 @@ public class JwtSecurityMetaDataSource implements
             }
             entry = customMap.next();
         } while (!entry.getKey().matches(request));
-
-        return entry.getValue();
+        final Collection<ConfigAttribute> result = entry.getValue();
+        result.addAll(attributes);
+        return result;
     }
 
     @Override
