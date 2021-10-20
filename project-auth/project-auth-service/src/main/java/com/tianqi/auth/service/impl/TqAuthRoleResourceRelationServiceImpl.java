@@ -5,6 +5,7 @@ import com.tianqi.auth.pojo.TqAuthRoleDO;
 import com.tianqi.auth.pojo.TqAuthRoleResourceRelationDO;
 import com.tianqi.auth.pojo.dto.resp.ResourceRoleDTO;
 import com.tianqi.auth.service.ITqAuthRoleResourceRelationService;
+import com.tianqi.common.constant.SystemConstant;
 import com.tianqi.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,12 +55,17 @@ public class TqAuthRoleResourceRelationServiceImpl extends
         final List<ResourceRoleDTO> resourceRoleDTOS =
                 dao.selectResourceRoleMapping(tenantId, appId);
         final Map<String, List<String>> result = new HashMap<>();
+
         for (final ResourceRoleDTO resourceRoleDTO : resourceRoleDTOS) {
-            result.put(resourceRoleDTO.getUrl(),
+            result.put(resourceRoleDTO.getUrl() + SystemConstant.REDIS_SPLIT +
+                            resourceRoleDTO.getAppId() +
+                            SystemConstant.REDIS_SPLIT +
+                            resourceRoleDTO.getTenantId(),
                     resourceRoleDTO.getRoles().stream()
                             .map(TqAuthRoleDO::getCode)
                             .collect(Collectors.toList()));
         }
+
         return result;
     }
 }

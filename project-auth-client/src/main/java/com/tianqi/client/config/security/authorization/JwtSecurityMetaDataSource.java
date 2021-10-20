@@ -64,7 +64,6 @@ public class JwtSecurityMetaDataSource implements
 
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
-        this.loadDataSource();
         final Set<ConfigAttribute> allAttributes = new HashSet<>();
 
         for (final Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : this.requestMap

@@ -8,6 +8,8 @@
 
     <resultMap id="roleResourceMap" type="com.tianqi.auth.pojo.dto.resp.ResourceRoleDTO">
         <result column="url" property="url"/>
+        <result column="tenant_id" property="tenantId"/>
+        <result column="app_id" property="appId"/>
         <collection property="roles" ofType="com.tianqi.auth.pojo.TqAuthRoleDO">
             <result column="code" property="code"/>
         </collection>
@@ -20,10 +22,19 @@
     </sql>
 
     <select id="selectResourceRoleMapping" resultMap="roleResourceMap">
-        select ar.url, r.*
+        select ar.url,ar.app_id,m.tenant_id, r.*
         from tq_auth_role_resource_relation m
-                 right join tq_auth_resource ar on m.resource_id = ar.id and app_id = #{appId}
-                 left join tq_auth_role r on m.role_id = r.id and r.tenant_id = #{tenantId}
+        right join tq_auth_resource ar on m.resource_id = ar.id
+        <if test="appId != null">
+            and app_id = #{appId}
+        </if>
+        left join tq_auth_role r on m.role_id = r.id
+        <if test="tenantId != null">
+            and r.tenant_id = #{tenantId}
+        </if>
+        <if test="tenantId == null">
+            and r.tenant_id = m.tenant_id
+        </if>
         WHERE ar.type = 'U'
     </select>
 </mapper>

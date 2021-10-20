@@ -14,12 +14,20 @@ import java.util.List;
  */
 @Data
 public class ResourceRoleDTO {
-  /**
-   * 路径.
-   */
-  private String url;
-  /**
-   * 角色.
-   */
-  private List<TqAuthRoleDO> roles;
+    /**
+     * 路径.
+     */
+    private String url;
+    /**
+     * 租户ID.
+     */
+    private Integer tenantId;
+    /**
+     * 应用ID.
+     */
+    private Integer appId;
+    /**
+     * 角色.
+     */
+    private List<TqAuthRoleDO> roles;
 }

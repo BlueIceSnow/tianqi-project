@@ -9,8 +9,8 @@ spring:
   application:
     name: @project.artifactId@
   redis:
-    host: 47.96.238.166
-    password: tq123456
+    host: 127.0.0.1
+    password: 123456
     database: 0
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

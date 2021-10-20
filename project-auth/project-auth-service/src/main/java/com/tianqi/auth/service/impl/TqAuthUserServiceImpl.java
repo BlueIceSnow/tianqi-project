@@ -11,11 +11,13 @@ import com.tianqi.auth.service.ITqAuthOrgService;
 import com.tianqi.auth.service.ITqAuthRoleResourceRelationService;
 import com.tianqi.auth.service.ITqAuthRoleService;
 import com.tianqi.auth.service.ITqAuthUserService;
+import com.tianqi.common.constant.SystemConstant;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.pojo.JwtUserClaims;
 import com.tianqi.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,14 @@ public class TqAuthUserServiceImpl
     private ITqAuthOrgService orgService;
     private ITqAuthRoleService roleService;
     private ITqAuthRoleResourceRelationService roleResourceRelationService;
+    private RedisTemplate<String, List<JwtConfigAttribute>> redisTemplate;
+
+
+    @Autowired
+    public void setRedisTemplate(
+            final RedisTemplate<String, List<JwtConfigAttribute>> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Autowired
     public void setRoleResourceRelationService(
@@ -120,19 +130,57 @@ public class TqAuthUserServiceImpl
         final JwtAuthenticationToken authentication =
                 (JwtAuthenticationToken) SecurityContextHolder.getContext()
                         .getAuthentication();
-        final JwtUserClaims details = authentication.getDetails();
-        final Integer appId = details.getAppId();
-        final Integer tenantId = details.getTenantId();
+        Integer appId = null;
+        Integer tenantId = null;
+        if (authentication != null) {
+            final JwtUserClaims details = authentication.getDetails();
+            appId = details.getAppId();
+            tenantId = details.getTenantId();
+            return redisTemplate.<String, List<ConfigAttribute>>opsForHash()
+                    .entries(SystemConstant.REDIS_PREFIX + SystemConstant.REDIS_AUTH_PREFIX +
+                            SystemConstant.REDIS_TENANT_PREFIX + tenantId +
+                            SystemConstant.REDIS_APP_PREFIX + appId);
+        }
         // 根据用户ID、AppKey获取用户所拥有的认证平台角色
         final Map<String, List<String>> roleResources =
                 roleResourceRelationService
                         .selectResourceRoleMapping(tenantId, appId);
         final Map<String, List<ConfigAttribute>> result = new HashMap<>();
-        for (final Map.Entry<String, List<String>> entry : roleResources
-                .entrySet()) {
-            result.put(entry.getKey(),
+        final Map<String, Map<String, List<ConfigAttribute>>> group = new HashMap<>();
+        for (final Map.Entry<String, List<String>> entry : roleResources.entrySet()) {
+            result.put(entry.getKey().split(SystemConstant.REDIS_SPLIT)[0],
                     entry.getValue().stream().map(JwtConfigAttribute::new)
                             .collect(Collectors.toList()));
+            final Map<String, List<ConfigAttribute>> stringListMap =
+                    group.get(entry.getKey().split(SystemConstant.REDIS_SPLIT)[1] +
+                            SystemConstant.REDIS_SPLIT +
+                            entry.getKey().split(SystemConstant.REDIS_SPLIT)[2]);
+            if (stringListMap == null) {
+                final Map<String, List<ConfigAttribute>> mapping = new HashMap<>();
+                mapping.put(entry.getKey().split(SystemConstant.REDIS_SPLIT)[0],
+                        entry.getValue().stream().map(JwtConfigAttribute::new)
+                                .collect(Collectors.toList()));
+                group.put(entry.getKey().split(SystemConstant.REDIS_SPLIT)[1] +
+                                SystemConstant.REDIS_SPLIT +
+                                entry.getKey().split(SystemConstant.REDIS_SPLIT)[2],
+                        mapping);
+            } else {
+                stringListMap
+                        .put(entry.getKey().split(SystemConstant.REDIS_SPLIT)[0],
+                                entry.getValue().stream().map(JwtConfigAttribute::new)
+                                        .collect(Collectors.toList()));
+            }
+        }
+        // 将权限数据放入Redis中
+        for (final Map.Entry<String, Map<String, List<ConfigAttribute>>> stringMapEntry : group
+                .entrySet()) {
+            final String key = stringMapEntry.getKey();
+            redisTemplate.<String, List<ConfigAttribute>>opsForHash()
+                    .putAll(SystemConstant.REDIS_PREFIX + SystemConstant.REDIS_AUTH_PREFIX +
+                                    SystemConstant.REDIS_TENANT_PREFIX + key.split(
+                            SystemConstant.REDIS_SPLIT)[0] + SystemConstant.REDIS_APP_PREFIX +
+                                    key.split(SystemConstant.REDIS_SPLIT)[1],
+                            stringMapEntry.getValue());
         }
         return result;
     }

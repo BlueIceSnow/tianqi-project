@@ -3,10 +3,14 @@ package com.tianqi.client.config;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.tianqi.client.config.interceptor.TenantInterceptor;
 import com.tianqi.client.config.security.IJwtSecurityMetaService;
+import com.tianqi.client.config.security.authorization.JwtConfigAttribute;
 import com.tianqi.client.service.impl.AuthClientServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
+
+import java.util.List;
 
 /**
  * @Author: yuantianqi
@@ -18,8 +22,9 @@ public class DefaultConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public IJwtSecurityMetaService jwtSecurityMetaService() {
-        return new AuthClientServiceImpl();
+    public IJwtSecurityMetaService jwtSecurityMetaService(
+            final RedisTemplate<String, List<JwtConfigAttribute>> redisTemplate) {
+        return new AuthClientServiceImpl(redisTemplate);
     }
 
     @Bean
