@@ -8,8 +8,8 @@ spring:
   application:
     name: @project.artifactId@
   redis:
-    host: 47.96.238.166
-    password: tq123456
+    host: 127.0.0.1
+    password: 123456
     database: 0
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -28,19 +28,19 @@ spring:
         namespace: def2c741-902f-4be8-b173-835204b0f6fd
     gateway:
       routes:
-        - id: project-auth-service-${spring.profiles.active}
-          uri: lb://project-auth-service-${spring.profiles.active}
+        - id: project-auth-service
+          uri: lb://project-auth-service
           predicates:
-            - Path=/auth/**
+            - Path=/api/auth/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
           order: 0
-        - id: project-movie-service-${spring.profiles.active}
-          uri: lb://project-movie-service-${spring.profiles.active}
+        - id: project-movie-service
+          uri: lb://project-movie-service
           predicates:
-            - Path=/movie/**
+            - Path=/api/movie/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=2
           order: 1
       discovery:
         locator:

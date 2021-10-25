@@ -1,6 +1,7 @@
 package com.tianqi.common.result.rest.builder;
 
 import com.tianqi.common.enums.BaseEnum;
+import com.tianqi.common.enums.StatusEnum;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.result.rest.entity.RestEntity;
 import com.tianqi.common.result.rest.entity.ResultEntity;
@@ -49,6 +50,9 @@ public abstract class ResultBuilder<T, Builder extends ResultBuilder> {
 
 
     public ResultEntity<T> build() {
+        if (status == null) {
+            status = StatusEnum.OK;
+        }
         return new ResultEntity<>(this.status, this.validates, this.error,
                 this.data);
     }

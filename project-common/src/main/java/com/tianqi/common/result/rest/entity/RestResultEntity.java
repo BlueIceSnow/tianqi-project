@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RestResultEntity<T> implements RestEntity<T>, Serializable {
-    private boolean isOk;
+    private boolean ok;
     private T row;
 
     @Override

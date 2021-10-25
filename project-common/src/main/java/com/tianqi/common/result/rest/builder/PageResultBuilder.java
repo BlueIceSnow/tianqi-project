@@ -12,12 +12,12 @@ public class PageResultBuilder<T> extends ResultBuilder<T, PageResultBuilder<T>>
     private long total;
     private T rows;
 
-    public PageResultBuilder<T> withTotal(long total) {
+    public PageResultBuilder<T> withTotal(final long total) {
         this.total = total;
         return this;
     }
 
-    public PageResultBuilder<T> withRows(T rows) {
+    public PageResultBuilder<T> withRows(final T rows) {
         this.rows = rows;
         return this;
     }

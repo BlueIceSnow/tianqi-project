@@ -14,7 +14,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,7 +29,7 @@ import java.util.Map;
  * @Description:
  */
 
-@Component
+//@Component
 public class AuthenticationFilter implements GlobalFilter, Ordered {
     static private final Charset CHARACTER_SET = StandardCharsets.ISO_8859_1;
     private ObjectMapper mapper;
@@ -50,7 +49,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         final ServerHttpRequest request = exchange.getRequest();
         final String authentication = request.getHeaders().getFirst("Authorization");
         final byte[] resultBytes = mapper.writeValueAsString(RestResult.builder()
-                .withData(new HashMap<>(0)).isOk(false).withStatus(AuthEnum.LOGIN_FAIL)
+                .withData(new HashMap<>(0)).ok(false).withStatus(AuthEnum.LOGIN_FAIL)
                 .build())
                 .getBytes(StandardCharsets.UTF_8);
         final DataBuffer wrap = exchange.getResponse().bufferFactory().wrap(resultBytes);

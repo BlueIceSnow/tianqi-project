@@ -60,6 +60,8 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             final JwtUserClaims jwtUserClaims =
                     new JwtUserClaims(realUserBO.getUserId(),
                             realUserBO.getName(),
+                            realUserBO.getType(),
+                            realUserBO.getState(),
                             realUserBO.getUsername(),
                             roles,
                             realUserBO.getDataPermissions(),

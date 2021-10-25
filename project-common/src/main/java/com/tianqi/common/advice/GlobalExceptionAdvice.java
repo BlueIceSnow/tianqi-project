@@ -96,7 +96,7 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(value = BaseException.class)
     public ResultEntity baseException(final BaseException baseException) {
         return RestResult.builder()
-                .withStatus(StatusEnum.BUS_ERROR)
+                .withStatus(StatusEnum.OPERATION_ERROR)
                 .withError(baseException)
                 .build();
     }

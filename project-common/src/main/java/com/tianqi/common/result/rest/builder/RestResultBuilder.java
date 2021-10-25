@@ -9,22 +9,22 @@ import com.tianqi.common.result.rest.entity.ResultEntity;
  * @Description:
  */
 public class RestResultBuilder<T> extends ResultBuilder<T, RestResultBuilder<T>> {
-    private boolean isOk;
+    private boolean ok;
     private T data;
 
-    public RestResultBuilder<T> isOk(boolean isOk) {
-        this.isOk = isOk;
+    public RestResultBuilder<T> ok(final boolean ok) {
+        this.ok = ok;
         return this;
     }
 
-    public RestResultBuilder<T> withData(T data) {
+    public RestResultBuilder<T> withData(final T data) {
         this.data = data;
         return this;
     }
 
     @Override
     public ResultEntity<T> build() {
-        super.withData(new RestResultEntity<>(this.isOk, this.data));
+        super.withData(new RestResultEntity<>(this.ok, this.data));
         return super.build();
     }
 }

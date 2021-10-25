@@ -58,6 +58,7 @@ public class JwtLoginHandler implements AuthenticationFailureHandler,
         final ResultEntity<Object> loginSuccess = RestResult.builder()
                 .withStatus(AuthEnum.LOGIN_SUCCESS)
                 .withData(sign)
+                .ok(true)
                 .build();
         ResponseUtil.resJson(response, loginSuccess);
     }

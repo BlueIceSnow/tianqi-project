@@ -40,7 +40,7 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
         final DO aDo = dao.selectById(id);
         return RestResult.<DO>builder()
                 .withData(aDo)
-                .isOk(true)
+                .ok(true)
                 .withStatus(StatusEnum.OK)
                 .build();
     }
@@ -57,7 +57,7 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
         return RestResult.<List<DO>>builder()
                 .withData(entities)
                 .withStatus(StatusEnum.OK)
-                .isOk(true)
+                .ok(true)
                 .build();
     }
 
@@ -91,14 +91,14 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
         if (i != 0) {
             return RestResult.<DO>builder()
                     .withData(entity)
-                    .isOk(true)
+                    .ok(true)
                     .withStatus(StatusEnum.OK)
                     .build();
         }
         return RestResult.<DO>builder()
                 .withData(entity)
-                .isOk(true)
-                .withStatus(StatusEnum.OPTION_ERROR)
+                .ok(true)
+                .withStatus(StatusEnum.OPERATION_ERROR)
                 .build();
     }
 
@@ -115,15 +115,15 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
         if (i != 0) {
             return RestResult.<DO>builder()
                     .withData(entity)
-                    .isOk(true)
+                    .ok(true)
                     .withStatus(StatusEnum.OK)
                     .build();
         }
 
         return RestResult.<DO>builder()
                 .withData(entity)
-                .isOk(true)
-                .withStatus(StatusEnum.OPTION_ERROR)
+                .ok(true)
+                .withStatus(StatusEnum.OPERATION_ERROR)
                 .build();
     }
 
@@ -137,7 +137,8 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
      * @return
      */
     @Override
-    public ResultEntity<List<DO>> removeByPage(final DO entity, final int page, final int size, final String id) {
+    public ResultEntity<List<DO>> removeByPage(final DO entity, final int page, final int size,
+                                               final String id) {
 
         final int i = dao.deleteById(id);
         if (i != 0) {
@@ -166,7 +167,7 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
         }
         return RestResult.<List<DO>>builder()
                 .withStatus(StatusEnum.DELETE_ERROR)
-                .isOk(false)
+                .ok(false)
                 .withData(new ArrayList<>())
                 .build();
     }

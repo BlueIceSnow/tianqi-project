@@ -1,5 +1,6 @@
 package com.tianqi.common.pojo;
 
+import com.tianqi.common.enums.BooleanEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +27,14 @@ public class JwtUserClaims {
      */
     private String username;
 
-
+    /**
+     * 用户类型.
+     */
+    private String type;
+    /**
+     * 账号状态.
+     */
+    private BooleanEnum state;
     /**
      * 角色列表
      */
@@ -67,13 +75,17 @@ public class JwtUserClaims {
      */
     private String jti;
 
-    public JwtUserClaims(final Integer id, final String name, final String username,
+    public JwtUserClaims(final Integer id, final String name, final String type,
+                         final BooleanEnum state,
+                         final String username,
                          final List<String> roles, final List<Integer> dataPermissions,
                          final String jti, final Integer tenantId,
                          final String orgCode, final Integer orgId, final String appKey,
                          final Integer appId) {
         this.id = id;
         this.name = name;
+        this.type = type;
+        this.state = state;
         this.username = username;
         this.roles = roles;
         this.jti = jti;

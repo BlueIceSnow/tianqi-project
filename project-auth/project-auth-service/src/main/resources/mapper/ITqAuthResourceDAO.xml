@@ -10,6 +10,16 @@
         app_id
 
     </sql>
+    <select id="selectMenuResource" resultType="com.tianqi.auth.pojo.dto.resp.ResourceDetailDTO">
+        select t.id , t.name,t.parent_id,t.type , t.url ,t.component,t.closeable , t.icon from tq_auth_resource t left
+        join tq_auth_role_resource_relation a on t.id = a.resource_id
+        left join tq_auth_role b on a.role_id = b.id and b.tenant_id = #{tenantId} and b.code in
+        <foreach collection="roles" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+        where t.type = 'M' and t.app_id = #{appId}
+    </select>
+
 
 </mapper>
 
