@@ -22,7 +22,7 @@ public class AuthDemoFallback extends AbstractDemoFallback {
     public RpcResultEntity<List<TqAuthUserDO>> listAll() {
         System.out.println("出现异常！");
         return RpcResult.<List<TqAuthUserDO>>builder()
-                .withStatus(StatusEnum.BUS_ERROR)
+                .withStatus(StatusEnum.OPERATION_ERROR)
                 .withResult(new ArrayList<>()).build();
     }
 

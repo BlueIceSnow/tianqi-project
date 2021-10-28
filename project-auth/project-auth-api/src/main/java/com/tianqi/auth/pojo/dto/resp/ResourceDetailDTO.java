@@ -1,5 +1,6 @@
 package com.tianqi.auth.pojo.dto.resp;
 
+import com.alibaba.fastjson.JSONObject;
 import com.tianqi.common.enums.BooleanEnum;
 import lombok.Data;
 
@@ -20,4 +21,5 @@ public class ResourceDetailDTO {
     private String icon;
     private String type;
     private Long parentId;
+    private JSONObject extField;
 }
