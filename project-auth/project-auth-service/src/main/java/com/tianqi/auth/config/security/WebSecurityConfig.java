@@ -13,6 +13,7 @@ import com.tianqi.auth.config.security.hook.JwtPostProcessor;
 import com.tianqi.auth.config.sql.AppIdHandler;
 import com.tianqi.auth.config.sql.ExtendSqlInterceptor;
 import com.tianqi.auth.config.sql.IsDeleteHandler;
+import com.tianqi.auth.config.sql.OrderExtendSqlInterceptor;
 import com.tianqi.auth.config.sql.OrgCodeHandler;
 import com.tianqi.auth.config.sql.TenantIdHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,6 +151,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 new ExtendSqlInterceptor(new AppIdHandler()));
         interceptor.addInnerInterceptor(
                 new ExtendSqlInterceptor(new TenantIdHandler()));
+        interceptor.addInnerInterceptor(new OrderExtendSqlInterceptor());
         return interceptor;
     }
 

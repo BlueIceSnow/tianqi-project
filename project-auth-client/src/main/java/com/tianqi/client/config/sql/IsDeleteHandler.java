@@ -1,4 +1,4 @@
-package com.tianqi.auth.config.sql;
+package com.tianqi.client.config.sql;
 
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
 import com.tianqi.common.util.ConditionUtil;
@@ -11,15 +11,13 @@ import java.util.Map;
 
 /**
  * @Author: yuantianqi
- * @Date: 2021/9/2 09:51
+ * @Date: 2021/9/2 09:53
  * @Description:
  */
-public class AppIdHandler implements TenantLineHandler {
-
+public class IsDeleteHandler implements TenantLineHandler {
     @Override
     public Expression getTenantId() {
-        for (final Map.Entry<String, Integer> entry : ConditionUtil
-                .getAppIdCond()
+        for (final Map.Entry<String, Integer> entry : ConditionUtil.getIsDeletedCond()
                 .entrySet()) {
             return new EqualsTo(new Column(entry.getKey()),
                     new LongValue(entry.getValue()));
@@ -29,12 +27,11 @@ public class AppIdHandler implements TenantLineHandler {
 
     @Override
     public String getTenantIdColumn() {
-        return ConditionUtil.APP_ID;
+        return ConditionUtil.IS_DELETE;
     }
 
     @Override
     public boolean ignoreTable(final String tableName) {
-        return TenantLineHandler.super.ignoreTable(tableName) ||
-                ConditionUtil.getAppIdCond().size() == 0;
+        return TenantLineHandler.super.ignoreTable(tableName);
     }
 }

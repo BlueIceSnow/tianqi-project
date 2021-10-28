@@ -1,4 +1,4 @@
-package com.tianqi.auth.util;
+package com.tianqi.common.util;
 
 import com.tianqi.common.enums.BooleanEnum;
 
@@ -17,6 +17,7 @@ public class ConditionUtil {
     public static final String TENANT_ID = "tenant_id";
     public static final String ORG_CODE = "org_code";
     public static final String IS_DELETE = "is_delete";
+    public static final String ORDER_COLUMN = "sequence";
     private static final ThreadLocal<Map<String, Object>> CONDITION =
             ThreadLocal.withInitial(HashMap::new);
 

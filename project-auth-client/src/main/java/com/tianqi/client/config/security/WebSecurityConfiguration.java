@@ -1,9 +1,18 @@
 package com.tianqi.client.config.security;
 
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.tianqi.client.config.security.authorization.JwtTokenVerifyAuthorizationFilter;
 import com.tianqi.client.config.security.hook.FilterExceptionProcessor;
 import com.tianqi.client.config.security.hook.JwtAccessDeniedHandler;
 import com.tianqi.client.config.security.hook.JwtPostProcessor;
+import com.tianqi.client.config.sql.AppIdHandler;
+import com.tianqi.client.config.sql.ExtendSqlInterceptor;
+import com.tianqi.client.config.sql.IsDeleteHandler;
+import com.tianqi.client.config.sql.OrderExtendSqlInterceptor;
+import com.tianqi.client.config.sql.OrgCodeHandler;
+import com.tianqi.client.config.sql.TenantIdHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -104,4 +113,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        final MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(
+                new PaginationInnerInterceptor(DbType.MYSQL));
+        interceptor.addInnerInterceptor(
+                new ExtendSqlInterceptor(new IsDeleteHandler()));
+        interceptor.addInnerInterceptor(
+                new ExtendSqlInterceptor(new OrgCodeHandler()));
+        interceptor.addInnerInterceptor(
+                new ExtendSqlInterceptor(new AppIdHandler()));
+        interceptor.addInnerInterceptor(
+                new ExtendSqlInterceptor(new TenantIdHandler()));
+        interceptor.addInnerInterceptor(new OrderExtendSqlInterceptor());
+        return interceptor;
+    }
 }

@@ -1,7 +1,7 @@
 package com.tianqi.auth.config.sql;
 
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
-import com.tianqi.auth.util.ConditionUtil;
+import com.tianqi.common.util.ConditionUtil;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;

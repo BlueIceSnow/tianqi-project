@@ -1,4 +1,4 @@
-package com.tianqi.auth.config.sql;
+package com.tianqi.client.config.sql;
 
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
 import com.tianqi.common.util.ConditionUtil;
