@@ -2,6 +2,7 @@ package com.tianqi.auth.config.security;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.tianqi.auth.config.security.authentication.JwtAuthenticationProvider;
 import com.tianqi.auth.config.security.authorization.JwtTokenVerifyAuthorizationFilter;
@@ -152,6 +153,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         interceptor.addInnerInterceptor(
                 new ExtendSqlInterceptor(new TenantIdHandler()));
         interceptor.addInnerInterceptor(new OrderExtendSqlInterceptor());
+        interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         return interceptor;
     }
 

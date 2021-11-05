@@ -2,6 +2,7 @@ package com.tianqi.auth.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.tianqi.common.enums.BooleanEnum;
 import com.tianqi.common.pojo.BaseDO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,5 +51,17 @@ public class TqAuthResourceDO extends BaseDO implements Serializable {
      */
     @TableField(value = "app_id")
     private Integer appId;
+
+    /**
+     * 组件路径
+     */
+    @TableField(value = "component")
+    private String component;
+
+    /**
+     * 可关闭：0-不可关闭;1-可关闭
+     */
+    @TableField(value = "closeable")
+    private BooleanEnum closeable;
 
 }

@@ -37,4 +37,10 @@ public class TqAuthRoleResourceRelationDO extends BaseDO
     @TableField(value = "resource_id")
     private Integer resourceId;
 
+    /**
+     * 租户ID
+     */
+    @TableField(value = "tenant_id")
+    private Integer tenantId;
+
 }

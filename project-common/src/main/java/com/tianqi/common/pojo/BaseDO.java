@@ -1,10 +1,13 @@
 package com.tianqi.common.pojo;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.OrderBy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.tianqi.common.enums.BooleanEnum;
 import com.tianqi.common.handler.type.JsonObjectHandler;
 import lombok.Data;
@@ -33,7 +36,7 @@ public class BaseDO implements Serializable {
     /**
      * 扩展字段
      */
-    @TableField(value = "ext_field", typeHandler =
+    @TableField(value = "ext_field", fill = FieldFill.INSERT, typeHandler =
             JsonObjectHandler.class)
     private JSONObject extField;
 
@@ -41,6 +44,7 @@ public class BaseDO implements Serializable {
      * 是否删除，逻辑删除
      */
     @TableField(value = "is_delete")
+    @TableLogic(value = "0", delval = "1")
     private BooleanEnum deleted;
     /**
      * 创建用户
@@ -69,4 +73,10 @@ public class BaseDO implements Serializable {
     @TableField(value = "sequence")
     @OrderBy
     private Long sequence;
+
+    /**
+     * 乐观锁
+     */
+    @Version
+    private Integer version;
 }

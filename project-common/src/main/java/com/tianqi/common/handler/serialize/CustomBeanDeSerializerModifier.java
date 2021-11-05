@@ -16,32 +16,33 @@ import java.util.function.Supplier;
  */
 public class CustomBeanDeSerializerModifier extends BeanDeserializerModifier {
     @Override
-    public JsonDeserializer<?> modifyEnumDeserializer(DeserializationConfig config,
-                                                      JavaType type,
-                                                      BeanDescription beanDesc,
-                                                      JsonDeserializer<?> deserializer) {
+    public JsonDeserializer<?> modifyEnumDeserializer(final DeserializationConfig config,
+                                                      final JavaType type,
+                                                      final BeanDescription beanDesc,
+                                                      final JsonDeserializer<?> deserializer) {
         return customEnumDeserializer(beanDesc, () -> super.modifyEnumDeserializer(config,
                 type, beanDesc, deserializer));
     }
 
     @Override
-    public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config,
-                                                  BeanDescription beanDesc,
-                                                  JsonDeserializer<?> deserializer) {
+    public JsonDeserializer<?> modifyDeserializer(final DeserializationConfig config,
+                                                  final BeanDescription beanDesc,
+                                                  final JsonDeserializer<?> deserializer) {
         return customEnumDeserializer(beanDesc, () -> super.modifyDeserializer(config,
                 beanDesc,
                 deserializer));
     }
 
-    public JsonDeserializer<?> customEnumDeserializer(BeanDescription beanDescription,
-                                                      Supplier<JsonDeserializer<?>> supplier) {
-        boolean isBaseEnumTypeSubClass =
+    public JsonDeserializer<?> customEnumDeserializer(final BeanDescription beanDescription,
+                                                      final Supplier<JsonDeserializer<?>> supplier) {
+        final boolean isBaseEnumTypeSubClass =
                 beanDescription.getType().getRawClass().getInterfaces().length != 0 &&
                         beanDescription.getType().getRawClass().getInterfaces()[0]
                                 .isAssignableFrom(BaseEnum.class);
-        boolean isBaseEnumType =
-                beanDescription.getType().getRawClass().getInterfaces()[0]
-                        .isAssignableFrom(BaseEnum.class);
+        final boolean isBaseEnumType =
+                beanDescription.getType().getRawClass().getInterfaces().length != 0 &&
+                        beanDescription.getType().getRawClass().getInterfaces()[0]
+                                .isAssignableFrom(BaseEnum.class);
         if (isBaseEnumTypeSubClass || isBaseEnumType) {
             return new CustomDeserializer.StatusDeSerializer();
         }

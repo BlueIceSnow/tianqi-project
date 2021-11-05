@@ -2,17 +2,13 @@ package com.tianqi.client.config.sql;
 
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
-import com.tianqi.common.util.ConditionUtil;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Parenthesis;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.expression.operators.relational.LikeExpression;
-import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
-import net.sf.jsqlparser.statement.select.OrderByElement;
-import net.sf.jsqlparser.statement.select.PlainSelect;
 
 /**
  * @Author: yuantianqi
@@ -30,11 +26,17 @@ public class ExtendSqlInterceptor extends TenantLineInnerInterceptor {
     @Override
     protected Expression builderExpression(final Expression currentExpression,
                                            final Table table) {
-        final Expression expression = handler.getTenantId();
-        if (expression instanceof EqualsTo) {
-            ((EqualsTo) expression).withLeftExpression(this.getAliasColumn(table));
-        } else if (expression instanceof LikeExpression) {
+        final Expression columnValue = handler.getTenantId();
+        Expression expression = null;
+        if (handler instanceof AppIdHandler || handler instanceof IsDeleteHandler ||
+                handler instanceof TenantIdHandler) {
+            expression = new EqualsTo(this.getAliasColumn(table), columnValue);
+        } else if (handler instanceof OrgCodeHandler) {
+            expression = new LikeExpression();
             ((LikeExpression) expression).withLeftExpression(this.getAliasColumn(table));
+            ((LikeExpression) expression).withRightExpression(columnValue);
+        } else {
+            return currentExpression;
         }
         if (currentExpression == null) {
             return expression;
@@ -44,14 +46,5 @@ public class ExtendSqlInterceptor extends TenantLineInnerInterceptor {
         } else {
             return new AndExpression(currentExpression, expression);
         }
-    }
-
-    @Override
-    protected void processPlainSelect(final PlainSelect plainSelect) {
-        final OrderByElement orderByElement = new OrderByElement();
-        orderByElement.setExpression(new Column(ConditionUtil.ORDER_COLUMN));
-        orderByElement.setAsc(true);
-        plainSelect.addOrderByElements(orderByElement);
-        super.processPlainSelect(plainSelect);
     }
 }

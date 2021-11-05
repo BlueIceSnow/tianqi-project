@@ -26,11 +26,17 @@ public class ExtendSqlInterceptor extends TenantLineInnerInterceptor {
     @Override
     protected Expression builderExpression(final Expression currentExpression,
                                            final Table table) {
-        final Expression expression = handler.getTenantId();
-        if (expression instanceof EqualsTo) {
-            ((EqualsTo) expression).withLeftExpression(this.getAliasColumn(table));
-        } else if (expression instanceof LikeExpression) {
+        final Expression columnValue = handler.getTenantId();
+        Expression expression = null;
+        if (handler instanceof AppIdHandler || handler instanceof IsDeleteHandler ||
+                handler instanceof TenantIdHandler) {
+            expression = new EqualsTo(this.getAliasColumn(table), columnValue);
+        } else if (handler instanceof OrgCodeHandler) {
+            expression = new LikeExpression();
             ((LikeExpression) expression).withLeftExpression(this.getAliasColumn(table));
+            ((LikeExpression) expression).withRightExpression(columnValue);
+        } else {
+            return currentExpression;
         }
         if (currentExpression == null) {
             return expression;

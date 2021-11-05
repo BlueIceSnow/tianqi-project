@@ -76,4 +76,12 @@ public interface IBaseService<DO extends BaseDO> {
      */
     ResultEntity<List<DO>> remove(DO entity, String id);
 
+    /**
+     * 批量删除
+     *
+     * @param ids    实体ID列表
+     * @param entity 条件参数
+     * @return 删除后实体列表
+     */
+    ResultEntity<List<DO>> batchRemove(DO entity, String ids);
 }

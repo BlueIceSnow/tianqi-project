@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -162,13 +163,36 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
     public ResultEntity<List<DO>> remove(final DO entity, final String id) {
         final int i = dao.deleteById(id);
         if (i != 0) {
-            final ResultEntity<List<DO>> listRestResult = listEntity(entity);
-            return listRestResult;
+            return removeOk(entity);
         }
         return RestResult.<List<DO>>builder()
                 .withStatus(StatusEnum.DELETE_ERROR)
                 .ok(false)
                 .withData(new ArrayList<>())
                 .build();
+    }
+
+    @Override
+    public ResultEntity<List<DO>> batchRemove(final DO entity, final String ids) {
+        final int i = dao.deleteBatchIds(Arrays.asList(ids.split(",")));
+        if (i != 0) {
+            return removeOk(entity);
+        }
+        return RestResult.<List<DO>>builder()
+                .withStatus(StatusEnum.DELETE_ERROR)
+                .ok(false)
+                .withData(new ArrayList<>())
+                .build();
+    }
+
+    /**
+     * 删除成功后的处理逻辑
+     *
+     * @param entity 查询条件实体
+     * @return 返回删除后的数据列表
+     */
+    protected ResultEntity<List<DO>> removeOk(final DO entity) {
+        final ResultEntity<List<DO>> listRestResult = listEntity(entity);
+        return listRestResult;
     }
 }

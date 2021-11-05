@@ -2,7 +2,7 @@ package com.tianqi.common.controller;
 
 import com.tianqi.common.pojo.BaseDO;
 import com.tianqi.common.result.rest.entity.ResultEntity;
-import org.apache.ibatis.annotations.Delete;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +18,7 @@ import java.util.List;
  * @Author yuantianqi
  */
 public interface IBaseController<DO extends BaseDO> {
-    
+
     /**
      * 根据ID查询实体信息
      *
@@ -78,10 +78,10 @@ public interface IBaseController<DO extends BaseDO> {
      * @param id     实体ID
      * @return 返回删除数据后当前页实体列表
      */
-    @Delete("page/{id}")
+    @DeleteMapping("page/{primaryKey}")
     ResultEntity<List<DO>> removeByPage(DO entity
             , @RequestParam("page") int page, @RequestParam("size") int size,
-                                        @PathVariable("id") String id);
+                                        @PathVariable("primaryKey") String id);
 
     /**
      * 删除实体
@@ -90,6 +90,17 @@ public interface IBaseController<DO extends BaseDO> {
      * @param entity 查询参数
      * @return 返回删除实体后数据列表
      */
-    @Delete("{id}")
-    ResultEntity<List<DO>> remove(DO entity, @PathVariable("id") String id);
+    @DeleteMapping("{primaryKey}")
+    ResultEntity<List<DO>> remove(DO entity, @PathVariable("primaryKey") String id);
+
+
+    /**
+     * 批量删除
+     *
+     * @param entity 查询参数
+     * @param ids    要删除的ID列表
+     * @return
+     */
+    @DeleteMapping("batchRemove/{primaryKeys}")
+    ResultEntity<List<DO>> batchRemove(DO entity, @PathVariable("primaryKeys") String ids);
 }

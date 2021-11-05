@@ -61,4 +61,9 @@ public abstract class BaseControllerImpl<Service extends IBaseService<DO>, DO ex
     public ResultEntity<List<DO>> remove(final DO entity, final String id) {
         return service.remove(entity, id);
     }
+
+    @Override
+    public ResultEntity<List<DO>> batchRemove(final DO entity, final String ids) {
+        return service.batchRemove(entity, ids);
+    }
 }

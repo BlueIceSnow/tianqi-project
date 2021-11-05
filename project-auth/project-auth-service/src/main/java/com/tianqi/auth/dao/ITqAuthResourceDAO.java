@@ -1,7 +1,6 @@
 package com.tianqi.auth.dao;
 
 import com.tianqi.auth.pojo.TqAuthResourceDO;
-import com.tianqi.auth.pojo.dto.resp.ResourceDetailDTO;
 import com.tianqi.common.dao.IBaseDAO;
 
 import java.util.List;
@@ -23,6 +22,7 @@ public interface ITqAuthResourceDAO extends IBaseDAO<TqAuthResourceDO> {
      * @return: java.util.List<com.tianqi.auth.pojo.dto.resp.ResourceDetailDTO>
      * @date: 2021/10/21 09:16:25
      */
-    List<ResourceDetailDTO> selectMenuResource(List<String> roles, Integer tenantId, Integer appId);
+    List<TqAuthResourceDO> selectMenuResource(List<String> roles, final TqAuthResourceDO condition,
+                                              Integer tenantId, Integer appId);
 }
 
