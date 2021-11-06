@@ -6,7 +6,6 @@ import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.IBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -49,12 +48,17 @@ public abstract class BaseControllerImpl<Service extends IBaseService<DO>, DO ex
     public ResultEntity<DO> update(final DO entity) {
         return service.update(entity);
     }
-
-    @GetMapping("page/{id}")
+    
     @Override
     public ResultEntity<List<DO>> removeByPage(final DO entity, final int page, final int size,
                                                final String id) {
         return service.removeByPage(entity, page, size, id);
+    }
+
+    @Override
+    public ResultEntity<List<DO>> batchRemoveByPage(final DO entity, final int page, final int size,
+                                                    final String ids) {
+        return service.batchRemoveByPage(entity, page, size, ids);
     }
 
     @Override

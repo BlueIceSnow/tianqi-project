@@ -84,6 +84,20 @@ public interface IBaseController<DO extends BaseDO> {
                                         @PathVariable("primaryKey") String id);
 
     /**
+     * 分页批量删除实体
+     *
+     * @param entity 条件查询参数
+     * @param page   当前页
+     * @param size   每页大小
+     * @param ids    实体IDs
+     * @return 返回删除数据后当前页实体列表
+     */
+    @DeleteMapping("batchRemoveByPage/{primaryKeys}")
+    ResultEntity<List<DO>> batchRemoveByPage(DO entity
+            , @RequestParam("page") int page, @RequestParam("size") int size,
+                                             @PathVariable("primaryKeys") String ids);
+
+    /**
      * 删除实体
      *
      * @param id     实体ID

@@ -84,4 +84,16 @@ public interface IBaseService<DO extends BaseDO> {
      * @return 删除后实体列表
      */
     ResultEntity<List<DO>> batchRemove(DO entity, String ids);
+
+    /**
+     * 分页批量删除
+     *
+     * @param entity 查询条件
+     * @param page   当前页
+     * @param size   页大小
+     * @param ids    删除的IDS
+     * @return 删除后当前页实体列表
+     */
+    ResultEntity<List<DO>> batchRemoveByPage(DO entity, int page, int size,
+                                             String ids);
 }

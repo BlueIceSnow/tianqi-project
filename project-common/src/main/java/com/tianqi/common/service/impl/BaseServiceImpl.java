@@ -128,23 +128,27 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
                 .build();
     }
 
-    /**
-     * 分页删除实体
-     *
-     * @param entity
-     * @param page
-     * @param size
-     * @param id
-     * @return
-     */
     @Override
     public ResultEntity<List<DO>> removeByPage(final DO entity, final int page, final int size,
                                                final String id) {
 
         final int i = dao.deleteById(id);
         if (i != 0) {
-            final ResultEntity<List<DO>> doPageResult = listPageEntity(entity, page, size);
-            return doPageResult;
+            return removeByPageOk(entity, page, size);
+        }
+        return RestResult.<List<DO>>builderPage()
+                .withStatus(StatusEnum.DELETE_ERROR)
+                .withTotal(0)
+                .withRows(new ArrayList<>())
+                .build();
+    }
+
+    @Override
+    public ResultEntity<List<DO>> batchRemoveByPage(final DO entity, final int page, final int size,
+                                                    final String ids) {
+        final int i = dao.deleteBatchIds(Arrays.asList(ids.split(",")));
+        if (i != 0) {
+            return removeByPageOk(entity, page, size);
         }
         return RestResult.<List<DO>>builderPage()
                 .withStatus(StatusEnum.DELETE_ERROR)
@@ -192,7 +196,17 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
      * @return 返回删除后的数据列表
      */
     protected ResultEntity<List<DO>> removeOk(final DO entity) {
-        final ResultEntity<List<DO>> listRestResult = listEntity(entity);
-        return listRestResult;
+        return listEntity(entity);
+    }
+
+    /**
+     * 删除成功后的处理逻辑
+     *
+     * @param entity 查询条件实体
+     * @return 返回删除后的数据列表
+     */
+    protected ResultEntity<List<DO>> removeByPageOk(final DO entity, final Integer page,
+                                                    final Integer size) {
+        return listPageEntity(entity, page, size);
     }
 }
