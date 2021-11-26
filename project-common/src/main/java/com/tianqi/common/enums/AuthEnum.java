@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum AuthEnum implements BaseEnum<Integer, String> {
+public enum AuthEnum implements BusinessEnum<Integer, String> {
 
     /**
      * 认证失败

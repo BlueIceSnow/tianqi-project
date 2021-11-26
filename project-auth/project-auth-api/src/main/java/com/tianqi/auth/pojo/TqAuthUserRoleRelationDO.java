@@ -36,4 +36,7 @@ public class TqAuthUserRoleRelationDO extends BaseDO implements Serializable {
     @TableField(value = "user_id")
     private Integer userId;
 
+    @TableField(value = "app_id")
+    private Integer appId;
+
 }

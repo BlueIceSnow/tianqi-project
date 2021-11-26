@@ -42,5 +42,4 @@ public class TqAuthRoleResourceRelationDO extends BaseDO
      */
     @TableField(value = "tenant_id")
     private Integer tenantId;
-
 }

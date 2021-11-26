@@ -13,7 +13,7 @@
 
     </sql>
     <select id="selectUserRoleListByUserIdAndAppId" resultType="java.lang.String">
-        SELECT *
+        SELECT r.code
         FROM tq_auth_user_role_relation m
                  left join tq_auth_role r on m.role_id = r.id and r.app_id = #{appId}
         where m.user_id = #{userId}

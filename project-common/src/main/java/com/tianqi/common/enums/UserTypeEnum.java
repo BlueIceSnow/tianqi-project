@@ -13,7 +13,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum UserTypeEnum implements BaseEnum<String, String> {
+public enum UserTypeEnum implements DatabaseEnum<String, String> {
 
     /**
      * 系统管理员

@@ -15,10 +15,8 @@ public interface ITqAuthUserDAO extends IBaseDAO<TqAuthUserDO> {
      * 根据用户名及租户ID查询用户信息
      *
      * @param username 用户名
-     * @param tenantId 租户ID
      * @return
      */
-    TqAuthUserDO selectUserByUsernameAndTenantId(String username,
-                                                 Integer tenantId);
+    TqAuthUserDO selectUserByUsernameAndTenantId(String username);
 }
 

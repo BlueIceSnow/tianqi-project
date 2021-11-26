@@ -1,6 +1,6 @@
 package com.tianqi.auth.pojo;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.tianqi.common.pojo.BaseDO;
@@ -30,7 +30,7 @@ public class TqAuthRoleGroupDO extends BaseDO implements Serializable {
      * 互斥角色ID列表
      */
     @TableField(value = "include_roles")
-    private JSONObject includeRoles;
+    private JSONArray includeRoles;
     /**
      * 租户ID
      */

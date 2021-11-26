@@ -35,16 +35,24 @@ public class CustomBeanDeSerializerModifier extends BeanDeserializerModifier {
 
     public JsonDeserializer<?> customEnumDeserializer(final BeanDescription beanDescription,
                                                       final Supplier<JsonDeserializer<?>> supplier) {
-        final boolean isBaseEnumTypeSubClass =
-                beanDescription.getType().getRawClass().getInterfaces().length != 0 &&
-                        beanDescription.getType().getRawClass().getInterfaces()[0]
-                                .isAssignableFrom(BaseEnum.class);
-        final boolean isBaseEnumType =
-                beanDescription.getType().getRawClass().getInterfaces().length != 0 &&
-                        beanDescription.getType().getRawClass().getInterfaces()[0]
-                                .isAssignableFrom(BaseEnum.class);
-        if (isBaseEnumTypeSubClass || isBaseEnumType) {
-            return new CustomDeserializer.StatusDeSerializer();
+        final Class<?>[] interfaces = beanDescription.getType().getRawClass().getInterfaces();
+        // 获取类型上的接口
+        if (interfaces.length != 0) {
+            final Class<?> anInterface = interfaces[0];
+            final boolean isBaseEnum = anInterface.isAssignableFrom(BaseEnum.class);
+            if (!isBaseEnum) {
+                // 如果不是，则查看是否在其上上级接口上
+                final Class<?>[] superInterfaces = anInterface.getInterfaces();
+                if (superInterfaces.length == 0) {
+                    return supplier.get();
+                }
+                final Class<?> superAnInterface = superInterfaces[0];
+                if (superAnInterface.isAssignableFrom(BaseEnum.class)) {
+                    return new CustomDeserializer.StatusDeSerializer();
+                }
+            } else {
+                return new CustomDeserializer.StatusDeSerializer();
+            }
         }
         return supplier.get();
     }

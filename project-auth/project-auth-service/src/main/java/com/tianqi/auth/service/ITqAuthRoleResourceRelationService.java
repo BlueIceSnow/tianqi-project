@@ -1,6 +1,7 @@
 package com.tianqi.auth.service;
 
 import com.tianqi.auth.pojo.TqAuthRoleResourceRelationDO;
+import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.IBaseService;
 
 import java.util.List;
@@ -23,4 +24,26 @@ public interface ITqAuthRoleResourceRelationService
      */
     Map<String, List<String>> selectResourceRoleMapping(final Integer tenantId,
                                                         final Integer appId);
+
+    /**
+     * 加载已授权资源，通过角色ID及资源类型
+     *
+     * @param roleId 角色ID
+     * @param type   资源类型
+     * @return
+     */
+    ResultEntity<List<TqAuthRoleResourceRelationDO>> loadAuthorisedResByRoleIdAndType(String roleId,
+                                                                                      String type);
+
+    /**
+     * 建立角色与资源关系
+     *
+     * @param tenantId      租户ID
+     * @param roleId        角色ID
+     * @param resIdsArr     资源ID数组
+     * @param resIdsDeleted 删除的关系
+     * @return
+     */
+    boolean insertRoleResourceRelations(Integer tenantId, String roleId, String[] resIdsArr,
+                                        String[] resIdsDeleted);
 }

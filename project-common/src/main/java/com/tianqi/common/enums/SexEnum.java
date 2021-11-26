@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
  * @Author yuantianqi
  */
 @AllArgsConstructor
-public enum SexEnum implements BaseEnum<Integer, String> {
+public enum SexEnum implements DatabaseEnum<Integer, String> {
     /**
      * 男
      */

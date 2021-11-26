@@ -12,4 +12,5 @@ import com.tianqi.common.service.IBaseService;
 public interface ITqAuthApplicationService
         extends IBaseService<TqAuthApplicationDO> {
 
+
 }

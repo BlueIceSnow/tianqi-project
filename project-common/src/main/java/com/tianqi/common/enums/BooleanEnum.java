@@ -9,32 +9,32 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum BooleanEnum implements BaseEnum<Integer, Boolean> {
+public enum BooleanEnum implements DatabaseEnum<Boolean, Integer> {
     /**
      * 真
      */
-    TRUE(1, true),
+    TRUE(true, 1),
     /**
      * 假
      */
-    FALSE(0, false);
+    FALSE(false, 0);
     @EnumValue
-    public final Integer name;
-    public final boolean value;
+    public final boolean name;
+    public final Integer value;
 
 
     @Override
-    public Integer getKey() {
+    public Boolean getKey() {
         return name;
     }
 
     @Override
-    public Boolean getValue() {
+    public Integer getValue() {
         return value;
     }
 
     @Override
-    public BaseEnum<Integer, Boolean>[] enumValues() {
+    public BaseEnum<Boolean, Integer>[] enumValues() {
         return BooleanEnum.values();
     }
 }

@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -25,6 +26,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName(value = "tq_auth_tenant")
+@Accessors(chain = true)
 public class TqAuthTenantDO extends BaseDO implements Serializable {
     private static final long serialVersionUID = -95455460441344902L;
     /**

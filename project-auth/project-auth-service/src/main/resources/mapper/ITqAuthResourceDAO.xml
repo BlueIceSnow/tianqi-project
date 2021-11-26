@@ -11,7 +11,7 @@
 
     </sql>
     <select id="selectMenuResource" resultType="com.tianqi.auth.pojo.TqAuthResourceDO">
-        select t.* from
+        select t.*,t.is_delete is_delete from
         tq_auth_resource t left
         join tq_auth_role_resource_relation a on t.id = a.resource_id
         left join tq_auth_role b on a.role_id = b.id and b.tenant_id = #{tenantId}

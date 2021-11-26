@@ -1,6 +1,7 @@
 package com.tianqi.auth.config.security.authorization;
 
 import cn.hutool.core.util.StrUtil;
+import com.tianqi.auth.config.security.IJwtSecurityMetaService;
 import com.tianqi.auth.config.security.authentication.JwtAuthenticationToken;
 import com.tianqi.auth.config.security.hook.JwtAuthenticationEntryPoint;
 import com.tianqi.auth.pojo.entity.JwtAuthority;
@@ -11,6 +12,7 @@ import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.annotation.Nonnull;
@@ -30,6 +32,13 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenVerifyAuthorizationFilter extends OncePerRequestFilter {
     private JwtAuthenticationEntryPoint entryPoint;
+    private IJwtSecurityMetaService securityMetaService;
+
+    @Autowired
+    public void setSecurityMetaService(
+            final IJwtSecurityMetaService securityMetaService) {
+        this.securityMetaService = securityMetaService;
+    }
 
     @Autowired
     public void setEntryPoint(
@@ -52,6 +61,16 @@ public class JwtTokenVerifyAuthorizationFilter extends OncePerRequestFilter {
                                     @Nonnull final FilterChain filterChain)
             throws ServletException, IOException {
         final String token = request.getHeader(SystemConstant.HEADER_TOKEN);
+        final List<String> ignoringAuthorities = securityMetaService.loadIgnoringAuthorities();
+        final AntPathMatcher antPathMatcher = new AntPathMatcher();
+        boolean isIgnoring = false;
+        for (final String ignoringAuthority : ignoringAuthorities) {
+            isIgnoring = antPathMatcher.match(ignoringAuthority, request.getRequestURI());
+            if (isIgnoring) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
         if (StrUtil.isNotEmpty(token)) {
             // 用户TOKEN存在，验证用户TOKEN
             final JwtUserClaims jwtUserClaims;

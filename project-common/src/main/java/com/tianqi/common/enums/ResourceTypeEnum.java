@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.EnumValue;
  * @Date: 2021/9/2 15:55
  * @Description:
  */
-public enum ResourceTypeEnum implements BaseEnum {
+public enum ResourceTypeEnum implements DatabaseEnum<String, String> {
     /**
      * 链接资源
      */
@@ -34,7 +34,7 @@ public enum ResourceTypeEnum implements BaseEnum {
     }
 
     @Override
-    public Object getValue() {
+    public String getValue() {
         return value;
     }
 

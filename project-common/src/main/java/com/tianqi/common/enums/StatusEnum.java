@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum StatusEnum implements BaseEnum<Integer, String> {
+public enum StatusEnum implements BusinessEnum<Integer, String> {
     /**
      * 参数校验问题
      */

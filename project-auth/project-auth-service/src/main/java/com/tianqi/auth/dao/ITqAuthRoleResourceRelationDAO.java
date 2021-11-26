@@ -24,5 +24,13 @@ public interface ITqAuthRoleResourceRelationDAO
     List<ResourceRoleDTO> selectResourceRoleMapping(Integer tenantId,
                                                     Integer appId);
 
+    /**
+     * 根据角色ID及资源类型加载资源
+     *
+     * @param roleId 角色ID
+     * @param type   资源类型
+     * @return
+     */
+    List<TqAuthRoleResourceRelationDO> loadAuthorisedResByRoleIdAndType(String roleId, String type);
 }
 

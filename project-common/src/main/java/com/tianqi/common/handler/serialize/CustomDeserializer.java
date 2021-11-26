@@ -1,13 +1,16 @@
 package com.tianqi.common.handler.serialize;
 
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonStreamContext;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.tianqi.common.enums.BaseEnum;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * @Author: yuantianqi
@@ -21,57 +24,59 @@ public class CustomDeserializer {
                                     final DeserializationContext deserializationContext)
                 throws IOException {
             BaseEnum[] enumConstants = null;
-            final Class<?> aClass =
-                    jsonParser.getParsingContext().getCurrentValue()
-                            .getClass();
+            Class<?> keyClass = null;
+            JsonStreamContext parseContext = jsonParser.getParsingContext().getParent();
+            if (parseContext.getCurrentValue() == null) {
+                parseContext = jsonParser.getParsingContext();
+            }
+            final Class<?> aClass = parseContext.getCurrentValue()
+                    .getClass();
             try {
                 final Field declaredField =
-                        aClass.getDeclaredField(
-                                jsonParser.getParsingContext().getCurrentName());
+                        aClass.getDeclaredField(parseContext.getCurrentName());
                 final Class<BaseEnum> type = (Class<BaseEnum>) declaredField.getType();
                 enumConstants = type.getEnumConstants();
+                keyClass = ((ParameterizedType) type.getGenericInterfaces()[0])
+                        .getActualTypeArguments()[0].getClass();
             } catch (final NoSuchFieldException e) {
                 try {
                     final Field declaredField = aClass.getSuperclass().getDeclaredField(
-                            jsonParser.getParsingContext().getCurrentName());
+                            parseContext.getCurrentName());
                     final Class<BaseEnum> type = (Class<BaseEnum>) declaredField.getType();
                     enumConstants = type.getEnumConstants();
+                    keyClass = ((ParameterizedType) type.getGenericInterfaces()[0])
+                            .getActualTypeArguments()[0].getClass();
                 } catch (final NoSuchFieldException noSuchFieldException) {
                     noSuchFieldException.printStackTrace();
                 }
-                e.printStackTrace();
             }
-//            jsonParser.nextFieldName();
-//            jsonParser.nextValue();
-//            final String key = jsonParser.getValueAsString();
-//            jsonParser.nextFieldName();
-//            jsonParser.nextValue();
-            final String value = jsonParser.getValueAsString();
-//            jsonParser.nextFieldName();
-            if (StringUtils.isEmpty(value)) {
+            final JsonToken currentToken = jsonParser.getCurrentToken();
+            if (currentToken == JsonToken.START_OBJECT) {
+                jsonParser.nextToken();
                 return null;
             }
-//            final ClassPathScanningCandidateComponentProvider provider =
-//                    new ClassPathScanningCandidateComponentProvider(false);
-//            provider.addIncludeFilter(new AssignableTypeFilter(BaseEnum.class));
-//            final Set<BeanDefinition> components =
-//                    provider.findCandidateComponents("com/tianqi");
-//            for (final BeanDefinition component : components) {
-//            try {
-//                final Class cls = Class.forName(component.getBeanClassName());
-//                final Object[] enumConstants = cls.getEnumConstants();
-            for (final Object enumConstant : enumConstants) {
-                final BaseEnum cast = (BaseEnum) enumConstant;
-                if (cast.getValue().toString().equals(value)) {
-                    return cast;
+            String key = "";
+
+            switch (currentToken) {
+                case VALUE_TRUE:
+                case VALUE_FALSE:
+                case VALUE_STRING:
+                case VALUE_NUMBER_INT:
+                case VALUE_EMBEDDED_OBJECT:
+                    key = jsonParser.getValueAsString();
+                    break;
+                default:
+                    key = null;
+
+            }
+            if (StrUtil.isNotBlank(key)) {
+                for (final Object enumConstant : enumConstants) {
+                    final BaseEnum cast = (BaseEnum) enumConstant;
+                    if (cast.getKey().toString().equals(key)) {
+                        return cast;
+                    }
                 }
             }
-//            } catch (final ClassNotFoundException e) {
-//                e.printStackTrace();
-//            }
-            // use class cls found
-//            }
-
             return null;
         }
     }

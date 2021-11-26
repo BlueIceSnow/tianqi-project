@@ -1,11 +1,15 @@
 package com.tianqi.auth.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tianqi.auth.dao.ITqAuthRoleResourceRelationDAO;
 import com.tianqi.auth.pojo.TqAuthRoleDO;
 import com.tianqi.auth.pojo.TqAuthRoleResourceRelationDO;
 import com.tianqi.auth.pojo.dto.resp.ResourceRoleDTO;
 import com.tianqi.auth.service.ITqAuthRoleResourceRelationService;
 import com.tianqi.common.constant.SystemConstant;
+import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.result.rest.RestResult;
+import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,5 +71,38 @@ public class TqAuthRoleResourceRelationServiceImpl extends
         }
 
         return result;
+    }
+
+    @Override
+    public ResultEntity<List<TqAuthRoleResourceRelationDO>> loadAuthorisedResByRoleIdAndType(
+            final String roleId,
+            final String type) {
+
+
+        return RestResult.<List<TqAuthRoleResourceRelationDO>>builder()
+                .withData(dao.loadAuthorisedResByRoleIdAndType(roleId, type)).ok(true)
+                .withStatus(StatusEnum.OK)
+                .build();
+    }
+
+    @Override
+    public boolean insertRoleResourceRelations(final Integer tenantId, final String roleId,
+                                               final String[] resIdsArr,
+                                               final String[] resIdsDeleted) {
+        int insert = 0;
+        int deleted = 0;
+        for (final String resId : resIdsArr) {
+            final TqAuthRoleResourceRelationDO tqAuthRoleResourceRelationDO =
+                    new TqAuthRoleResourceRelationDO(Integer.parseInt(roleId),
+                            Integer.parseInt(resId), tenantId);
+            insert = dao.insert(tqAuthRoleResourceRelationDO);
+        }
+        if (resIdsDeleted.length != 0) {
+            deleted = dao.delete(new QueryWrapper<TqAuthRoleResourceRelationDO>().lambda()
+                    .eq(TqAuthRoleResourceRelationDO::getRoleId, roleId)
+                    .in(TqAuthRoleResourceRelationDO::getResourceId, resIdsDeleted));
+        }
+
+        return deleted == resIdsDeleted.length && insert == resIdsArr.length;
     }
 }

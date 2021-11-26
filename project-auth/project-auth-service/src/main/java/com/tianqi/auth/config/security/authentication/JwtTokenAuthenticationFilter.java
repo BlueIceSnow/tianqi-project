@@ -33,7 +33,6 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
     private final static String USERNAME = "username";
     private final static String PASSWORD = "password";
     private final static String APP_KEY = "appKey";
-    private final static String TENANT_ID = "tenantId";
 
     public JwtTokenAuthenticationFilter() {
         setFilterProcessesUrl("/token");
@@ -74,12 +73,10 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
         final String username = params.getString(USERNAME);
         final String password = params.getString(PASSWORD);
         final String appKey = params.getString(APP_KEY);
-        final String tenantId = params.getString(TENANT_ID);
         final JwtUserClaims jwtUserClaims = new JwtUserClaims();
         jwtUserClaims.setUsername(username);
         authenticationToken.setPassword(password);
         jwtUserClaims.setAppKey(appKey);
-        jwtUserClaims.setTenantId(Integer.parseInt(tenantId));
         authenticationToken.setDetails(jwtUserClaims);
         return getAuthenticationManager().authenticate(authenticationToken);
     }
@@ -97,7 +94,6 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
         final String username = params.getString(USERNAME);
         final String password = params.getString(PASSWORD);
         final String appKey = params.getString(APP_KEY);
-        final String tenantId = params.getString(TENANT_ID);
         final List<ValidateEntity> validateEntities = new ArrayList<>();
         if (StrUtil.isEmpty(username)) {
             validateEntities.add(new ValidateEntity("username", "用户名不能为空!"));
@@ -107,9 +103,6 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
         }
         if (StrUtil.isEmpty(appKey)) {
             validateEntities.add(new ValidateEntity("appKey", "应用ID不能为空!"));
-        }
-        if (StrUtil.isEmpty(tenantId)) {
-            validateEntities.add(new ValidateEntity("tenantId", "租户ID不能为空!"));
         }
         return validateEntities;
     }

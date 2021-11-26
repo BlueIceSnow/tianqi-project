@@ -1,12 +1,19 @@
 package com.tianqi.auth.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tianqi.auth.dao.ITqAuthUserOrgRelationDAO;
 import com.tianqi.auth.pojo.TqAuthOrgDO;
 import com.tianqi.auth.pojo.TqAuthUserOrgRelationDO;
 import com.tianqi.auth.service.ITqAuthUserOrgRelationService;
+import com.tianqi.auth.util.AuthUtil;
+import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.result.rest.RestResult;
+import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 用户组织关联表(TqAuthUserOrgRelation)表服务实现类
@@ -34,5 +41,39 @@ public class TqAuthUserOrgRelationServiceImpl
                                                         final String appKey) {
         return userOrgRelationDAO
                 .selectUserOrgByTenantIdAndAppKey(userId, tenantId, appKey);
+    }
+
+    @Override
+    public boolean insertOrgUserRelations(final Integer orgId, final Integer appId,
+                                          final String[] userIdsArr,
+                                          final String[] userIdsArrDeleted) {
+        int insert = 0;
+        int deleted = 0;
+        for (final String userId : userIdsArr) {
+            final TqAuthUserOrgRelationDO userOrgRelationDO =
+                    new TqAuthUserOrgRelationDO(orgId,
+                            Integer.parseInt(userId), AuthUtil.tenantId(), appId);
+            insert = dao.insert(userOrgRelationDO);
+        }
+        if (userIdsArrDeleted.length != 0) {
+            deleted = dao.delete(new QueryWrapper<TqAuthUserOrgRelationDO>().lambda()
+                    .eq(TqAuthUserOrgRelationDO::getOrgId, orgId)
+                    .in(TqAuthUserOrgRelationDO::getAppId, userIdsArrDeleted));
+        }
+
+        return deleted == userIdsArrDeleted.length && insert == userIdsArr.length;
+    }
+
+    @Override
+    public ResultEntity<List<TqAuthUserOrgRelationDO>> loadAuthorizedUserListByAppIdTenantIdAndOrgId(
+            final Integer tenantId, final Integer appId, final Integer orgId) {
+        final List<TqAuthUserOrgRelationDO> tqAuthUserOrgRelationDOS =
+                dao.selectList(new QueryWrapper<TqAuthUserOrgRelationDO>().lambda()
+                        .eq(TqAuthUserOrgRelationDO::getTenantId, tenantId)
+                        .eq(TqAuthUserOrgRelationDO::getAppId, appId)
+                        .eq(TqAuthUserOrgRelationDO::getOrgId, orgId));
+        return RestResult.<List<TqAuthUserOrgRelationDO>>builder().ok(true)
+                .withData(tqAuthUserOrgRelationDOS).withStatus(
+                        StatusEnum.OK).build();
     }
 }

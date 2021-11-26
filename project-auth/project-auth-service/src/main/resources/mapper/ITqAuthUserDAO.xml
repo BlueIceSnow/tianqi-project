@@ -23,7 +23,6 @@
         select *
         from tq_auth_user
         where username = #{username}
-          and tenant_id = #{tenantId}
     </select>
 
 </mapper>

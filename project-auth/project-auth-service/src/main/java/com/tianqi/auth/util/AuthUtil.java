@@ -54,6 +54,9 @@ public class AuthUtil {
         final JwtAuthenticationToken authentication =
                 (JwtAuthenticationToken) SecurityContextHolder.getContext()
                         .getAuthentication();
+        if (authentication == null) {
+            return new JwtUserClaims();
+        }
         return authentication.getDetails();
     }
 }

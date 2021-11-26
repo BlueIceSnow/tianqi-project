@@ -14,6 +14,20 @@
         ,app_id
 
     </sql>
+    <select id="listOrgByAppIdAndTenantIdAndCurrentLoginUserOrg" resultType="com.tianqi.auth.pojo.TqAuthOrgDO">
+        select *
+        from tq_auth_org t
+        where t.app_id = #{appId}
+          and t.tenant_id = #{tenantId}
+          and t.org_code like concat(#{orgCode}, '%')
+    </select>
+
+    <select id="listOrgByAppIdAndTenantId" resultType="com.tianqi.auth.pojo.TqAuthOrgDO">
+        select *
+        from tq_auth_org t
+        where t.app_id = #{appId}
+          and t.tenant_id = #{tenantId}
+    </select>
 
 </mapper>
 

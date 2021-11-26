@@ -27,16 +27,6 @@ public class TqAuthTenantApplicationRelationDO extends BaseDO
         implements Serializable {
     private static final long serialVersionUID = 886484085187335274L;
     /**
-     * 租户Key
-     */
-    @TableField(value = "tenant_key")
-    private String tenantKey;
-    /**
-     * 应用Key
-     */
-    @TableField(value = "application_key")
-    private String applicationKey;
-    /**
      * 租户ID
      */
     @TableField(value = "tenant_id")

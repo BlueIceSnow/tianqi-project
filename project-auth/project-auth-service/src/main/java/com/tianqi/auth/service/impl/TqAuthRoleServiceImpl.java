@@ -1,5 +1,6 @@
 package com.tianqi.auth.service.impl;
 
+import com.tianqi.auth.constant.AuthConstant;
 import com.tianqi.auth.dao.ITqAuthRoleDAO;
 import com.tianqi.auth.pojo.TqAuthRoleDO;
 import com.tianqi.auth.service.ITqAuthOrgRoleRelationService;
@@ -8,6 +9,8 @@ import com.tianqi.auth.service.ITqAuthRoleDataPermissionRelationService;
 import com.tianqi.auth.service.ITqAuthRoleResourceRelationService;
 import com.tianqi.auth.service.ITqAuthRoleService;
 import com.tianqi.auth.service.ITqAuthUserRoleGroupRelationService;
+import com.tianqi.auth.util.AuthUtil;
+import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,10 +82,12 @@ public class TqAuthRoleServiceImpl
         final Set<String> userRoleList =
                 userRoleGroupRelationService
                         .selectUserRoleListByUserIdAndAppId(userId, appId);
-        // 查询该应用下，用户所加入组织后拥有的角色
-        final List<String> orgRoleList =
-                orgRoleRelationService.selectOrgRoleListByOrgId(orgId);
-        userRoleList.addAll(orgRoleList);
+        if (orgId != null) {
+            // 查询该应用下，用户所加入组织后拥有的角色
+            final List<String> orgRoleList =
+                    orgRoleRelationService.selectOrgRoleListByOrgId(orgId);
+            userRoleList.addAll(orgRoleList);
+        }
         return userRoleList;
     }
 
@@ -97,5 +102,42 @@ public class TqAuthRoleServiceImpl
             final Set<String> roleList) {
         return roleDataPermissionRelationService
                 .selectDataPermissionListByRoleList(roleList);
+    }
+
+    @Override
+    public ResultEntity<TqAuthRoleDO> save(final TqAuthRoleDO entity) {
+        if (!AuthUtil.tenantId().equals(AuthConstant.ADMIN_TENANT_ID)) {
+            entity.setTenantId(AuthUtil.tenantId());
+        }
+        return super.save(entity);
+    }
+
+    @Override
+    public ResultEntity<TqAuthRoleDO> update(final TqAuthRoleDO entity) {
+        if (!AuthUtil.tenantId().equals(AuthConstant.ADMIN_TENANT_ID)) {
+            entity.setTenantId(AuthUtil.tenantId());
+        }
+        return super.update(entity);
+    }
+
+    @Override
+    public ResultEntity<List<TqAuthRoleDO>> listEntity(final TqAuthRoleDO entity) {
+        if (AuthUtil.tenantId().equals(AuthConstant.ADMIN_TENANT_ID)) {
+            entity.setTenantId(null);
+        } else {
+            entity.setTenantId(AuthUtil.tenantId());
+        }
+        return super.listEntity(entity);
+    }
+
+    @Override
+    public ResultEntity<List<TqAuthRoleDO>> listPageEntity(final TqAuthRoleDO entity,
+                                                           final int page, final int size) {
+        if (AuthUtil.tenantId().equals(AuthConstant.ADMIN_TENANT_ID)) {
+            entity.setTenantId(null);
+        } else {
+            entity.setTenantId(AuthUtil.tenantId());
+        }
+        return super.listPageEntity(entity, page, size);
     }
 }

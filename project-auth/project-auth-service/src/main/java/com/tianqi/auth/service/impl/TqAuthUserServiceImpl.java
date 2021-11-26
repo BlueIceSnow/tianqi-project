@@ -2,7 +2,9 @@ package com.tianqi.auth.service.impl;
 
 import com.tianqi.auth.config.security.authentication.JwtAuthenticationToken;
 import com.tianqi.auth.config.security.authorization.JwtConfigAttribute;
+import com.tianqi.auth.constant.AuthConstant;
 import com.tianqi.auth.dao.ITqAuthUserDAO;
+import com.tianqi.auth.pojo.TqAuthApplicationDO;
 import com.tianqi.auth.pojo.TqAuthOrgDO;
 import com.tianqi.auth.pojo.TqAuthUserDO;
 import com.tianqi.auth.pojo.bo.TqAuthUserLoginBO;
@@ -11,15 +13,18 @@ import com.tianqi.auth.service.ITqAuthOrgService;
 import com.tianqi.auth.service.ITqAuthRoleResourceRelationService;
 import com.tianqi.auth.service.ITqAuthRoleService;
 import com.tianqi.auth.service.ITqAuthUserService;
+import com.tianqi.auth.util.AuthUtil;
 import com.tianqi.common.constant.SystemConstant;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.pojo.JwtUserClaims;
+import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,7 +49,20 @@ public class TqAuthUserServiceImpl
     private ITqAuthRoleService roleService;
     private ITqAuthRoleResourceRelationService roleResourceRelationService;
     private RedisTemplate<String, List<JwtConfigAttribute>> redisTemplate;
+    private PasswordEncoder passwordEncoder;
+    private TqAuthApplicationServiceImpl applicationService;
 
+    @Autowired
+    public void setApplicationService(
+            final TqAuthApplicationServiceImpl applicationService) {
+        this.applicationService = applicationService;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(
+            final PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Autowired
     public void setRedisTemplate(
@@ -75,11 +93,10 @@ public class TqAuthUserServiceImpl
 
     @Override
     public TqAuthUserLoginBO loadUserInfo(final String username,
-                                          final Integer tenantId,
                                           final String appKey) {
         // 根据用户名及租户ID查询用户
         final TqAuthUserDO tqAuthUserDO =
-                userDAO.selectUserByUsernameAndTenantId(username, tenantId);
+                userDAO.selectUserByUsernameAndTenantId(username);
         if (tqAuthUserDO == null) {
             throw new BaseException("user is not exist");
         }
@@ -87,16 +104,23 @@ public class TqAuthUserServiceImpl
         // 查询用户组织Code
         final TqAuthOrgDO userOrg =
                 orgService.selectUserOrgByUserIdAndTenantIdAndAppKey(userId,
-                        tenantId,
+                        tqAuthUserDO.getTenantId(),
                         appKey);
-        if (userOrg == null) {
-            throw new BaseException("user not allocation org");
+        // 根据appKey查询应用ID
+        final ResultEntity<List<TqAuthApplicationDO>> application =
+                applicationService.listEntity(new TqAuthApplicationDO().setAppKey(appKey));
+        if (application.getData().doOrDto().size() == 0) {
+            throw new BaseException("application is not exists");
         }
-        final Integer orgId = userOrg.getId();
-        final String orgCode = userOrg.getOrgCode();
-        final Integer appId = userOrg.getAppId();
+        Integer orgId = null;
+        String orgCode = null;
+        if (userOrg != null) {
+            orgId = userOrg.getId();
+            orgCode = userOrg.getOrgCode();
+        }
         final Set<String> userRoleList =
-                roleService.selectRoleListByCondition(userId, orgId, appId);
+                roleService.selectRoleListByCondition(userId, orgId,
+                        application.getData().doOrDto().get(0).getId());
         // 封装用户权限
         final List<JwtAuthority> userAuthorities =
                 userRoleList.stream().map(JwtAuthority::new)
@@ -109,7 +133,7 @@ public class TqAuthUserServiceImpl
         final TqAuthUserLoginBO resultBO = TqAuthUserLoginBO.builder()
                 .userId(userId)
                 .orgCode(orgCode)
-                .appId(appId)
+                .appId(application.getData().doOrDto().get(0).getId())
                 .appKey(appKey)
                 .orgId(orgId)
                 .authorities(userAuthorities)
@@ -121,7 +145,9 @@ public class TqAuthUserServiceImpl
 
     @Override
     public List<String> loadIgnoringAuthorities() {
-        return new ArrayList<>();
+        final List<String> ignoringUrls = new ArrayList<>();
+        ignoringUrls.add("/tqAuthTenantApplicationRelation/loadApplicationByUsername");
+        return ignoringUrls;
     }
 
     @Override
@@ -152,17 +178,17 @@ public class TqAuthUserServiceImpl
                     entry.getValue().stream().map(JwtConfigAttribute::new)
                             .collect(Collectors.toList()));
             final Map<String, List<ConfigAttribute>> stringListMap =
-                    group.get(entry.getKey().split(SystemConstant.REDIS_SPLIT)[1] +
+                    group.get(entry.getKey().split(SystemConstant.REDIS_SPLIT)[2] +
                             SystemConstant.REDIS_SPLIT +
-                            entry.getKey().split(SystemConstant.REDIS_SPLIT)[2]);
+                            entry.getKey().split(SystemConstant.REDIS_SPLIT)[1]);
             if (stringListMap == null) {
                 final Map<String, List<ConfigAttribute>> mapping = new HashMap<>();
                 mapping.put(entry.getKey().split(SystemConstant.REDIS_SPLIT)[0],
                         entry.getValue().stream().map(JwtConfigAttribute::new)
                                 .collect(Collectors.toList()));
-                group.put(entry.getKey().split(SystemConstant.REDIS_SPLIT)[1] +
+                group.put(entry.getKey().split(SystemConstant.REDIS_SPLIT)[2] +
                                 SystemConstant.REDIS_SPLIT +
-                                entry.getKey().split(SystemConstant.REDIS_SPLIT)[2],
+                                entry.getKey().split(SystemConstant.REDIS_SPLIT)[1],
                         mapping);
             } else {
                 stringListMap
@@ -183,5 +209,33 @@ public class TqAuthUserServiceImpl
                             stringMapEntry.getValue());
         }
         return result;
+    }
+
+
+    @Override
+    public ResultEntity<TqAuthUserDO> save(final TqAuthUserDO entity) {
+        if (entity.getTenantId() == null) {
+            entity.setTenantId(AuthUtil.tenantId());
+        }
+        if (entity.getPassword() != null) {
+            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        }
+        return super.save(entity);
+    }
+
+    @Override
+    public ResultEntity<List<TqAuthUserDO>> listPageEntity(final TqAuthUserDO entity,
+                                                           final int page, final int size) {
+        if (!AuthUtil.tenantId().equals(AuthConstant.ADMIN_TENANT_ID)) {
+            entity.setTenantId(AuthUtil.tenantId());
+        } else {
+            entity.setType("T");
+        }
+        return super.listPageEntity(entity, page, size);
+    }
+
+    @Override
+    public ResultEntity<List<TqAuthUserDO>> listEntity(final TqAuthUserDO entity) {
+        return super.listEntity(entity);
     }
 }

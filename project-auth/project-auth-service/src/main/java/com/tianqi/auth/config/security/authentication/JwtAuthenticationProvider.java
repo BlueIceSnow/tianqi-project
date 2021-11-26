@@ -44,10 +44,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         final String username = jwtToken.getDetails().getUsername();
         final String credentials = String.valueOf(jwtToken.getPassword());
         final String appKey = jwtToken.getDetails().getAppKey();
-        final Integer tenantId = jwtToken.getDetails().getTenantId();
         // 加载用户信息
         final TqAuthUserLoginBO
-                realUserBO = securityMetaService.loadUserInfo(username, tenantId, appKey);
+                realUserBO = securityMetaService.loadUserInfo(username, appKey);
         final List<JwtAuthority> authorities = realUserBO.getAuthorities();
         if (passwordEncoder.matches(credentials, realUserBO.getPassword())) {
             final JwtAuthenticationToken authenticationToken =

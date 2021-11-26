@@ -20,4 +20,5 @@ public class TqAuthApplicationControllerImpl
         BaseControllerImpl<ITqAuthApplicationService, TqAuthApplicationDO>
         implements ITqAuthApplicationController {
 
+
 }

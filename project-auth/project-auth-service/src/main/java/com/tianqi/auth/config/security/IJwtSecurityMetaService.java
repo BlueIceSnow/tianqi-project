@@ -17,11 +17,10 @@ public interface IJwtSecurityMetaService {
      * 加载用户信息
      *
      * @param username 用户唯一标识
-     * @param tenantId 租户ID
      * @param appKey   应用key
      * @return
      */
-    TqAuthUserLoginBO loadUserInfo(String username, Integer tenantId, String appKey);
+    TqAuthUserLoginBO loadUserInfo(String username, String appKey);
 
     /**
      * 无效校验权限的路径

@@ -20,7 +20,6 @@
         ,resource_id
 
     </sql>
-
     <select id="selectResourceRoleMapping" resultMap="roleResourceMap">
         select ar.url,ar.app_id,m.tenant_id, r.*
         from tq_auth_role_resource_relation m
@@ -36,6 +35,14 @@
             and r.tenant_id = m.tenant_id
         </if>
         WHERE ar.type = 'U'
+    </select>
+    <select id="loadAuthorisedResByRoleIdAndType" resultType="com.tianqi.auth.pojo.TqAuthRoleResourceRelationDO">
+        SELECT t.*
+        FROM tq_auth_role_resource_relation t
+                 left join tq_auth_resource a on t.resource_id = a.id
+        WHERE t.role_id = #{roleId}
+          and a.type = #{type}
+
     </select>
 </mapper>
 

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.tianqi.common.enums.BaseEnum;
+import com.tianqi.common.enums.BusinessEnum;
+import com.tianqi.common.enums.DatabaseEnum;
 import com.tianqi.common.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,8 +28,8 @@ public class CustomSerializer {
      */
     public static class StatusSerializer extends JsonSerializer<BaseEnum> {
         @Override
-        public void serialize(BaseEnum status, JsonGenerator jsonGenerator,
-                              SerializerProvider serializerProvider) throws IOException {
+        public void serialize(final BaseEnum status, final JsonGenerator jsonGenerator,
+                              final SerializerProvider serializerProvider) throws IOException {
             final Field[] declaredFields = status.getClass().getDeclaredFields();
             final List<Field> fields = Arrays.asList(declaredFields).stream()
                     .filter(field -> !field.getType().getName().replaceAll("\\[L", "")
@@ -35,18 +37,24 @@ public class CustomSerializer {
                                     status.getClass().getName()))
                     .collect(Collectors.toList());
 
-            jsonGenerator.writeStartObject();
-            for (final Field field : fields) {
-                field.setAccessible(true);
-                try {
-                    jsonGenerator.writeObjectField(field.getName(), field.get(status));
-                } catch (Exception ex) {
-                    if (log.isErrorEnabled()) {
-                        log.error("serializer enum is fail");
+            if (status instanceof BusinessEnum) {
+                jsonGenerator.writeStartObject();
+                for (final Field field : fields) {
+                    field.setAccessible(true);
+                    try {
+                        jsonGenerator.writeObjectField(field.getName(), field.get(status));
+                    } catch (final Exception ex) {
+                        if (log.isErrorEnabled()) {
+                            log.error("serializer enum is fail");
+                        }
                     }
                 }
+                jsonGenerator.writeEndObject();
             }
-            jsonGenerator.writeEndObject();
+            if (status instanceof DatabaseEnum) {
+                jsonGenerator.writeObject(status.getKey());
+            }
+
         }
     }
 
@@ -55,15 +63,15 @@ public class CustomSerializer {
      */
     public static class BaseExceptionSerializer extends JsonSerializer<BaseException> {
         @Override
-        public void serialize(BaseException baseException, JsonGenerator jsonGenerator,
-                              SerializerProvider serializerProvider) throws IOException {
+        public void serialize(final BaseException baseException, final JsonGenerator jsonGenerator,
+                              final SerializerProvider serializerProvider) throws IOException {
             jsonGenerator.writeStartObject();
             jsonGenerator.writeStringField("message",
                     baseException.getMessage() == null ? "" : baseException.getMessage());
             jsonGenerator.writeArrayFieldStart("stackTrace");
             if (baseException.getStackTrace() != null &&
                     baseException.getStackTrace().length != 0) {
-                for (StackTraceElement stackTraceElement : baseException
+                for (final StackTraceElement stackTraceElement : baseException
                         .getStackTrace()) {
                     jsonGenerator.writeObject(stackTraceElement);
                 }

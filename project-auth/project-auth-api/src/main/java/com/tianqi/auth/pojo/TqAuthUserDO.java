@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -24,6 +25,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName(value = "tq_auth_user")
+@Accessors(chain = true)
 public class TqAuthUserDO extends BaseDO implements Serializable {
     private static final long serialVersionUID = -45694702402437481L;
     /**

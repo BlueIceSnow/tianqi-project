@@ -33,8 +33,8 @@ public class ConditionUtil {
         CONDITION.get().put(ORG_CODE, orgCode);
     }
 
-    public static void setOrgCode(final BooleanEnum isDeleted) {
-        CONDITION.get().put(IS_DELETE, isDeleted.getName());
+    public static void setIsDelete(final BooleanEnum isDeleted) {
+        CONDITION.get().put(IS_DELETE, isDeleted.getValue());
     }
 
     public static Map<String, Integer> getAppIdCond() {
@@ -48,7 +48,7 @@ public class ConditionUtil {
     public static Map<String, Integer> getIsDeletedCond() {
         final Map<String, Integer> idCond = getIdCond(IS_DELETE);
         if (idCond.size() == 0) {
-            idCond.put(IS_DELETE, BooleanEnum.FALSE.getName());
+            idCond.put(IS_DELETE, BooleanEnum.FALSE.getValue());
         }
         return idCond;
     }

@@ -26,6 +26,11 @@ import java.io.Serializable;
 public class TqAuthOrgDO extends BaseDO implements Serializable {
     private static final long serialVersionUID = 175570996454584607L;
     /**
+     * 上级组织ID
+     */
+    @TableField(value = "parent_id")
+    private Integer parentId;
+    /**
      * 组织编码
      */
     @TableField(value = "org_code")

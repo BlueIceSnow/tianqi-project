@@ -5,6 +5,7 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-enums-package: com.tianqi.common.enums
   type-handlers-package: com.tianqi.common.handler.type
+
 spring:
   application:
     name: @project.artifactId@
