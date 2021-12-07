@@ -1,7 +1,7 @@
 package com.tianqi.common.advice;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;

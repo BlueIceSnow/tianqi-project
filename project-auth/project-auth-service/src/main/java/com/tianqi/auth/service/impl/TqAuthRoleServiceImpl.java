@@ -1,15 +1,19 @@
 package com.tianqi.auth.service.impl;
 
-import com.tianqi.auth.constant.AuthConstant;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tianqi.auth.dao.ITqAuthRoleDAO;
+import com.tianqi.auth.pojo.TqAuthOrgRoleRelationDO;
 import com.tianqi.auth.pojo.TqAuthRoleDO;
+import com.tianqi.auth.pojo.TqAuthRoleResourceRelationDO;
+import com.tianqi.auth.pojo.TqAuthUserRoleRelationDO;
 import com.tianqi.auth.service.ITqAuthOrgRoleRelationService;
-import com.tianqi.auth.service.ITqAuthResourceService;
 import com.tianqi.auth.service.ITqAuthRoleDataPermissionRelationService;
 import com.tianqi.auth.service.ITqAuthRoleResourceRelationService;
 import com.tianqi.auth.service.ITqAuthRoleService;
 import com.tianqi.auth.service.ITqAuthUserRoleGroupRelationService;
-import com.tianqi.auth.util.AuthUtil;
+import com.tianqi.auth.service.ITqAuthUserRoleRelationService;
+import com.tianqi.client.util.AuthUtil;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +37,18 @@ public class TqAuthRoleServiceImpl
     private ITqAuthRoleDataPermissionRelationService
             roleDataPermissionRelationService;
     private ITqAuthRoleResourceRelationService roleResourceRelationService;
-    private ITqAuthResourceService resourceService;
+    private ITqAuthUserRoleRelationService userRoleRelationService;
+    private TqAuthRoleGroupServiceImpl roleGroupService;
 
     @Autowired
-    public void setResourceService(
-            final ITqAuthResourceService resourceService) {
-        this.resourceService = resourceService;
+    public void setRoleGroupService(final TqAuthRoleGroupServiceImpl roleGroupService) {
+        this.roleGroupService = roleGroupService;
+    }
+
+    @Autowired
+    public void setUserRoleRelationService(
+            final ITqAuthUserRoleRelationService userRoleRelationService) {
+        this.userRoleRelationService = userRoleRelationService;
     }
 
     @Autowired
@@ -106,7 +116,7 @@ public class TqAuthRoleServiceImpl
 
     @Override
     public ResultEntity<TqAuthRoleDO> save(final TqAuthRoleDO entity) {
-        if (!AuthUtil.tenantId().equals(AuthConstant.ADMIN_TENANT_ID)) {
+        if (!AuthUtil.isAdmin()) {
             entity.setTenantId(AuthUtil.tenantId());
         }
         return super.save(entity);
@@ -114,7 +124,7 @@ public class TqAuthRoleServiceImpl
 
     @Override
     public ResultEntity<TqAuthRoleDO> update(final TqAuthRoleDO entity) {
-        if (!AuthUtil.tenantId().equals(AuthConstant.ADMIN_TENANT_ID)) {
+        if (!AuthUtil.isAdmin()) {
             entity.setTenantId(AuthUtil.tenantId());
         }
         return super.update(entity);
@@ -122,9 +132,7 @@ public class TqAuthRoleServiceImpl
 
     @Override
     public ResultEntity<List<TqAuthRoleDO>> listEntity(final TqAuthRoleDO entity) {
-        if (AuthUtil.tenantId().equals(AuthConstant.ADMIN_TENANT_ID)) {
-            entity.setTenantId(null);
-        } else {
+        if (!AuthUtil.isAdmin()) {
             entity.setTenantId(AuthUtil.tenantId());
         }
         return super.listEntity(entity);
@@ -133,11 +141,51 @@ public class TqAuthRoleServiceImpl
     @Override
     public ResultEntity<List<TqAuthRoleDO>> listPageEntity(final TqAuthRoleDO entity,
                                                            final int page, final int size) {
-        if (AuthUtil.tenantId().equals(AuthConstant.ADMIN_TENANT_ID)) {
-            entity.setTenantId(null);
-        } else {
+        if (!AuthUtil.isAdmin()) {
             entity.setTenantId(AuthUtil.tenantId());
         }
         return super.listPageEntity(entity, page, size);
+    }
+
+    @Override
+    public void removeRelationData(final String[] ids) {
+        // 角色与资源
+        roleResourceRelationService.removeByCondition(
+                new QueryWrapper<TqAuthRoleResourceRelationDO>().lambda()
+                        .in(TqAuthRoleResourceRelationDO::getRoleId, ids));
+        // 角色与用户
+        userRoleRelationService.removeByCondition(new QueryWrapper<TqAuthUserRoleRelationDO>()
+                .lambda().in(TqAuthUserRoleRelationDO::getRoleId, ids));
+        // 角色与组织
+        orgRoleRelationService
+                .removeByCondition(new QueryWrapper<TqAuthOrgRoleRelationDO>().lambda()
+                        .in(TqAuthOrgRoleRelationDO::getRoleId, ids));
+        // 角色与角色组
+        roleGroupService.removeRelationRoleField(ids);
+    }
+
+    @Override
+    public ResultEntity<List<TqAuthRoleDO>> remove(final TqAuthRoleDO entity, final String id) {
+        invalidateAuthorityCacheByRoleId(id);
+        return super.remove(entity, id);
+    }
+
+    @Override
+    public ResultEntity<List<TqAuthRoleDO>> removeByPage(final TqAuthRoleDO entity, final int page,
+                                                         final int size, final String id) {
+        invalidateAuthorityCacheByRoleId(id);
+        return super.removeByPage(entity, page, size, id);
+    }
+
+    /**
+     * 失效缓存，通过角色ID
+     *
+     * @param id
+     */
+    private void invalidateAuthorityCacheByRoleId(final String id) {
+        final TqAuthRoleDO tqAuthRoleDO = dao.selectById(id);
+        if (tqAuthRoleDO != null) {
+            AuthUtil.invalidateAuthorityCache(tqAuthRoleDO.getTenantId(), tqAuthRoleDO.getAppId());
+        }
     }
 }

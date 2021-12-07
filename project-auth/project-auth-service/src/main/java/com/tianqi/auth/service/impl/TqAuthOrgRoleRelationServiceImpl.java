@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tianqi.auth.dao.ITqAuthOrgRoleRelationDAO;
 import com.tianqi.auth.pojo.TqAuthOrgRoleRelationDO;
 import com.tianqi.auth.service.ITqAuthOrgRoleRelationService;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.impl.BaseServiceImpl;

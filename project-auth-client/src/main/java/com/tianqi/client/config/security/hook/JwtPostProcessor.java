@@ -4,6 +4,7 @@ import com.tianqi.client.config.security.IJwtSecurityMetaService;
 import com.tianqi.client.config.security.authorization.JwtAccessDecidedManager;
 import com.tianqi.client.config.security.authorization.JwtRoleVoter;
 import com.tianqi.client.config.security.authorization.JwtSecurityInterceptorFilter;
+import com.tianqi.client.constant.AuthConstant;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.util.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,6 @@ import java.util.List;
 @Slf4j
 public class JwtPostProcessor
         implements ObjectPostProcessor<Object> {
-    public static final String SUPPORT_PREFIX = "TQ:ROLE:";
     private AccessDecisionManager accessDecisionManager;
     private JwtSecurityInterceptorFilter securityInterceptorFilter;
 
@@ -46,13 +46,13 @@ public class JwtPostProcessor
         }
         if (object instanceof DefaultWebSecurityExpressionHandler) {
             ((DefaultWebSecurityExpressionHandler) object)
-                    .setDefaultRolePrefix(SUPPORT_PREFIX);
+                    .setDefaultRolePrefix(AuthConstant.ROLE_AUTHORITY_PREFIX);
         }
         return object;
     }
 
     public AccessDecisionManager accessDecisionManager(
-            List<AccessDecisionVoter<?>> voters) {
+            final List<AccessDecisionVoter<?>> voters) {
         if (this.accessDecisionManager == null) {
             this.accessDecisionManager =
                     new JwtAccessDecidedManager(voters);
@@ -61,12 +61,12 @@ public class JwtPostProcessor
     }
 
     public AbstractSecurityInterceptor securityInterceptor(
-            SecurityMetadataSource securityMetadataSource) {
+            final SecurityMetadataSource securityMetadataSource) {
         final IJwtSecurityMetaService metaService;
         try {
             metaService = SpringUtil.getBean(
                     IJwtSecurityMetaService.class);
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             log.error("meta service not configuration");
             throw new BaseException("meta service not configuration");
         }

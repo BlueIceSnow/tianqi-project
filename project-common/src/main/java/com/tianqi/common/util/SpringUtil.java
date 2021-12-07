@@ -4,9 +4,11 @@ import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.ArrayUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -19,10 +21,6 @@ public class SpringUtil {
 
     private static ApplicationContext applicationContext;
 
-    public static void setApplicationContext(ApplicationContext applicationContext) {
-        SpringUtil.applicationContext = applicationContext;
-    }
-
     /**
      * 获取applicationContext
      *
@@ -30,6 +28,10 @@ public class SpringUtil {
      */
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
+    }
+
+    public static void setApplicationContext(final ApplicationContext applicationContext) {
+        SpringUtil.applicationContext = applicationContext;
     }
 
     //通过name获取 Bean.
@@ -42,7 +44,7 @@ public class SpringUtil {
      * @return Bean
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getBean(String name) {
+    public static <T> T getBean(final String name) {
         return (T) applicationContext.getBean(name);
     }
 
@@ -53,7 +55,7 @@ public class SpringUtil {
      * @param clazz Bean类
      * @return Bean对象
      */
-    public static <T> T getBean(Class<T> clazz) {
+    public static <T> T getBean(final Class<T> clazz) {
         return applicationContext.getBean(clazz);
     }
 
@@ -65,7 +67,7 @@ public class SpringUtil {
      * @param clazz bean类型
      * @return Bean对象
      */
-    public static <T> T getBean(String name, Class<T> clazz) {
+    public static <T> T getBean(final String name, final Class<T> clazz) {
         return applicationContext.getBean(name, clazz);
     }
 
@@ -78,13 +80,21 @@ public class SpringUtil {
      * @since 5.4.0
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getBean(TypeReference<T> reference) {
+    public static <T> T getBean(final ParameterizedTypeReference<T> reference) {
+        final ParameterizedType type = (ParameterizedType) reference.getType();
+        final Class<T> rawType = (Class<T>) type.getRawType();
+        final String[] beanNamesForType =
+                applicationContext.getBeanNamesForType(ResolvableType.forType(reference));
+        return getBean(beanNamesForType[0], rawType);
+    }
+
+    public static <T> T getBean(final TypeReference<T> typeReference) {
         final ParameterizedType parameterizedType =
-                (ParameterizedType) reference.getType();
+                (ParameterizedType) typeReference.getType();
         final Class<T> rawType = (Class<T>) parameterizedType.getRawType();
         final Class<?>[] genericTypes =
                 Arrays.stream(parameterizedType.getActualTypeArguments())
-                        .map(type -> (Class<?>) type).toArray(Class[]::new);
+                        .map(Type::getClass).toArray(Class[]::new);
         final String[] beanNames = applicationContext.getBeanNamesForType(
                 ResolvableType.forClassWithGenerics(rawType, genericTypes));
         return getBean(beanNames[0], rawType);
@@ -98,7 +108,7 @@ public class SpringUtil {
      * @return 类型对应的bean，key是bean注册的name，value是Bean
      * @since 5.3.3
      */
-    public static <T> Map<String, T> getBeansOfType(Class<T> type) {
+    public static <T> Map<String, T> getBeansOfType(final Class<T> type) {
         return applicationContext.getBeansOfType(type);
     }
 
@@ -109,7 +119,7 @@ public class SpringUtil {
      * @return bean名称
      * @since 5.3.3
      */
-    public static String[] getBeanNamesForType(Class<?> type) {
+    public static String[] getBeanNamesForType(final Class<?> type) {
         return applicationContext.getBeanNamesForType(type);
     }
 
@@ -120,7 +130,7 @@ public class SpringUtil {
      * @return 属性值
      * @since 5.3.3
      */
-    public static String getProperty(String key) {
+    public static String getProperty(final String key) {
         return applicationContext.getEnvironment().getProperty(key);
     }
 
@@ -156,8 +166,8 @@ public class SpringUtil {
      * @author shadow
      * @since 5.4.2
      */
-    public static <T> void registerBean(String beanName, T bean) {
-        ConfigurableApplicationContext context =
+    public static <T> void registerBean(final String beanName, final T bean) {
+        final ConfigurableApplicationContext context =
                 (ConfigurableApplicationContext) applicationContext;
         context.getBeanFactory().registerSingleton(beanName, bean);
     }

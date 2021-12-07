@@ -1,9 +1,11 @@
 package com.tianqi.auth.config.security.authentication;
 
-import com.tianqi.auth.config.security.IJwtSecurityMetaService;
-import com.tianqi.auth.pojo.bo.TqAuthUserLoginBO;
-import com.tianqi.auth.pojo.entity.JwtAuthority;
+import com.tianqi.client.config.security.IJwtSecurityMetaService;
+import com.tianqi.client.config.security.authorization.JwtAuthenticationToken;
+import com.tianqi.client.pojo.JwtAuthority;
+import com.tianqi.client.pojo.TqAuthUserLoginBO;
 import com.tianqi.common.pojo.JwtUserClaims;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -37,9 +39,12 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @SneakyThrows
     @Override
     public Authentication authenticate(final Authentication authentication)
             throws AuthenticationException {
+//        Thread.sleep(600000);
+//        final int i = 1 / 0;
         final JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authentication;
         final String username = jwtToken.getDetails().getUsername();
         final String credentials = String.valueOf(jwtToken.getPassword());

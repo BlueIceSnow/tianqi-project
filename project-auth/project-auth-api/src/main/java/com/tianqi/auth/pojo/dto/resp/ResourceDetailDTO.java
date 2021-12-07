@@ -1,7 +1,7 @@
 package com.tianqi.auth.pojo.dto.resp;
 
 import com.alibaba.fastjson.JSONObject;
-import com.tianqi.common.enums.BooleanEnum;
+import com.tianqi.common.enums.database.BooleanEnum;
 import lombok.Data;
 
 /**

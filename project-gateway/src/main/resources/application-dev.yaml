@@ -16,8 +16,6 @@ spring:
     username: root
     password: 123456
     url: jdbc:mysql://localhost:3306/Demo
-  profiles:
-    active: dev
   cloud:
     nacos:
       username: nacos
@@ -46,26 +44,21 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:9090
+      filter:
+        enabled: false
 
 logging:
   level:
     com.tianqi: debug
 feign:
-  hystrix:
-    enabled: true
   httpclient:
     connection-timeout: 30000
 
 
-hystrix:
-  command:
-    default:
-      fallback:
-        enabled: true
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 1000
+
 client:
   username: demo-gateway
   password: 123456

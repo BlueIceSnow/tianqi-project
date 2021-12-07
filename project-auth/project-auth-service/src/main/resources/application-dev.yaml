@@ -26,25 +26,24 @@ spring:
         namespace: def2c741-902f-4be8-b173-835204b0f6fd
       username: nacos
       password: nacos
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:9090
+        port: 8777
+      filter:
+        enabled: true
+        order: -1999999999
 logging:
   level:
     com.tianqi: debug
 feign:
-  hystrix:
-    enabled: false
   httpclient:
     connection-timeout: 30000
+  sentinel:
+    enabled: true
 
 
-hystrix:
-  command:
-    default:
-      fallback:
-        enabled: true
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 1000
+
 client:
   username: demo-auth
   password: 123456

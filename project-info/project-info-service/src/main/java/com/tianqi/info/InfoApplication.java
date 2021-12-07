@@ -15,7 +15,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication(scanBasePackages = {"com.tianqi.common",
         "com.tianqi.info"})
 @EnableFeignClients(basePackages = "com.tianqi.*.api")
-//@EnableCircuitBreaker
+
 @MapperScan("com.tianqi.info.dao")
 public class InfoApplication {
     public static void main(final String[] args) {

@@ -1,28 +1,20 @@
 package com.tianqi.auth.config.security;
 
-import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.tianqi.auth.config.security.authentication.JwtAuthenticationProvider;
-import com.tianqi.auth.config.security.authorization.JwtTokenVerifyAuthorizationFilter;
-import com.tianqi.auth.config.security.hook.FilterExceptionProcessor;
-import com.tianqi.auth.config.security.hook.JwtAccessDeniedHandler;
-import com.tianqi.auth.config.security.hook.JwtAuthenticationEntryPoint;
 import com.tianqi.auth.config.security.hook.JwtLoginHandler;
-import com.tianqi.auth.config.security.hook.JwtPostProcessor;
-import com.tianqi.auth.config.sql.AppIdHandler;
-import com.tianqi.auth.config.sql.ExtendSqlInterceptor;
-import com.tianqi.auth.config.sql.IsDeleteHandler;
-import com.tianqi.auth.config.sql.OrderExtendSqlInterceptor;
-import com.tianqi.auth.config.sql.OrgCodeHandler;
-import com.tianqi.auth.config.sql.TenantIdHandler;
+import com.tianqi.client.annotation.TqSecurityEnable;
+import com.tianqi.client.config.security.IJwtSecurityMetaService;
+import com.tianqi.client.config.security.WebSecurityConfiguration;
+import com.tianqi.client.config.security.authorization.JwtTokenVerifyAuthorizationFilter;
+import com.tianqi.client.config.security.hook.FilterExceptionProcessor;
+import com.tianqi.client.config.security.hook.JwtAccessDeniedHandler;
+import com.tianqi.client.config.security.hook.JwtAuthenticationEntryPoint;
+import com.tianqi.client.config.security.hook.JwtPostProcessor;
+import com.tianqi.client.constant.AuthConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
@@ -35,9 +27,8 @@ import java.util.List;
  * @Date: 2021/4/20 15:28
  * @Description: 权限管理配置
  */
-@EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    public static final String SUPPORT_PREFIX = "TQ:ROLE:";
+@TqSecurityEnable
+public class WebSecurityConfig extends WebSecurityConfiguration {
     private JwtLoginHandler loginHandler;
     private JwtAuthenticationProvider authenticationProvider;
     private JwtAccessDeniedHandler accessDeniedHandler;
@@ -45,7 +36,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private IJwtSecurityMetaService metaService;
     private JwtTokenVerifyAuthorizationFilter verifyAuthorizationFilter;
 
-    @Autowired
+    @Override
+    @Autowired(required = false)
     public void setVerifyAuthorizationFilter(
             final JwtTokenVerifyAuthorizationFilter verifyAuthorizationFilter) {
         this.verifyAuthorizationFilter = verifyAuthorizationFilter;
@@ -62,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.authenticationProvider = authenticationProvider;
     }
 
+    @Override
     @Autowired
     public void setAccessDeniedHandler(
             final JwtAccessDeniedHandler accessDeniedHandler) {
@@ -74,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
+    @Override
     @Autowired
     public void setMetaService(final IJwtSecurityMetaService metaService) {
         this.metaService = metaService;
@@ -86,7 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @throws Exception
      */
     @Override
-
     protected void configure(final HttpSecurity http) throws Exception {
         http.formLogin().disable()
                 .csrf().disable()
@@ -126,7 +119,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         final DefaultWebSecurityExpressionHandler expressionHandler =
                 (DefaultWebSecurityExpressionHandler) web
                         .getExpressionHandler();
-        expressionHandler.setDefaultRolePrefix(SUPPORT_PREFIX);
+        expressionHandler.setDefaultRolePrefix(AuthConstant.ROLE_AUTHORITY_PREFIX);
     }
 
     /**
@@ -134,27 +127,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return 使用代理加密器，可以适应不用加密方式
      */
+    @Override
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        final MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(
-                new PaginationInnerInterceptor(DbType.MYSQL));
-        interceptor.addInnerInterceptor(
-                new ExtendSqlInterceptor(new IsDeleteHandler()));
-        interceptor.addInnerInterceptor(
-                new ExtendSqlInterceptor(new OrgCodeHandler()));
-        interceptor.addInnerInterceptor(
-                new ExtendSqlInterceptor(new AppIdHandler()));
-        interceptor.addInnerInterceptor(
-                new ExtendSqlInterceptor(new TenantIdHandler()));
-        interceptor.addInnerInterceptor(new OrderExtendSqlInterceptor());
-        interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
-        return interceptor;
-    }
 
 }

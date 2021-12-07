@@ -15,4 +15,5 @@ public class RoleResourceRelationDTO {
     private String resIds;
     private String resIdsDeleted;
     private Integer tenantId;
+    private Integer appId;
 }

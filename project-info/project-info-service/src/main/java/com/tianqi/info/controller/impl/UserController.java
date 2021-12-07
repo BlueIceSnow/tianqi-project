@@ -3,7 +3,7 @@ package com.tianqi.info.controller.impl;
 import com.tianqi.auth.api.IDemoApi;
 import com.tianqi.client.controller.impl.BaseControllerImpl;
 import com.tianqi.common.enums.BaseEnum;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
@@ -45,5 +45,17 @@ public class UserController extends BaseControllerImpl<IUserService, UserDO>
 
         return RestResult.<List<com.tianqi.auth.pojo.TqAuthUserDO>>builder()
                 .withStatus(StatusEnum.OK).withData(result).build();
+    }
+
+    @Override
+    public ResultEntity<List<UserDO>> batchRemoveByPage(final UserDO entity, final int page,
+                                                        final int size,
+                                                        final String ids) {
+        return null;
+    }
+
+    @Override
+    public ResultEntity<List<UserDO>> batchRemove(final UserDO entity, final String ids) {
+        return null;
     }
 }

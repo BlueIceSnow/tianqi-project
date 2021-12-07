@@ -7,7 +7,7 @@ import com.tianqi.auth.pojo.TqAuthTenantApplicationRelationDO;
 import com.tianqi.auth.pojo.TqAuthUserDO;
 import com.tianqi.auth.service.ITqAuthTenantApplicationRelationService;
 import com.tianqi.auth.service.ITqAuthUserService;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.impl.BaseServiceImpl;

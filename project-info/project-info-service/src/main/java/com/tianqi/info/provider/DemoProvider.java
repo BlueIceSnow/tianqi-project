@@ -1,6 +1,6 @@
 package com.tianqi.info.provider;
 
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rpc.RpcResult;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
 import com.tianqi.info.api.IDemoApi;
@@ -24,13 +24,13 @@ public class DemoProvider implements IDemoApi {
     private IUserService userService;
 
     @Autowired
-    public void setUserService(IUserService userService) {
+    public void setUserService(final IUserService userService) {
         this.userService = userService;
     }
 
     @Override
     @PreAuthorize("hasRole('BLUE')")
-    public RpcResultEntity<List<UserDO>> listAll(UserDO userDO) {
+    public RpcResultEntity<List<UserDO>> listAll(final UserDO userDO) {
         final List<UserDO> userDOS = userService.listEntity(userDO)
                 .getData().doOrDto();
         return RpcResult.<List<UserDO>>builder()

@@ -1,11 +1,15 @@
 package com.tianqi.auth.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tianqi.auth.dao.ITqAuthOrgDAO;
 import com.tianqi.auth.pojo.TqAuthOrgDO;
+import com.tianqi.auth.pojo.TqAuthOrgRoleRelationDO;
+import com.tianqi.auth.pojo.TqAuthUserOrgRelationDO;
+import com.tianqi.auth.service.ITqAuthOrgRoleRelationService;
 import com.tianqi.auth.service.ITqAuthOrgService;
 import com.tianqi.auth.service.ITqAuthUserOrgRelationService;
-import com.tianqi.auth.util.AuthUtil;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.client.util.AuthUtil;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.impl.BaseServiceImpl;
@@ -25,6 +29,13 @@ public class TqAuthOrgServiceImpl
         extends BaseServiceImpl<ITqAuthOrgDAO, TqAuthOrgDO>
         implements ITqAuthOrgService {
     private ITqAuthUserOrgRelationService userOrgRelationService;
+    private ITqAuthOrgRoleRelationService orgRoleRelationService;
+
+    @Autowired
+    public void setOrgRoleRelationService(
+            final ITqAuthOrgRoleRelationService orgRoleRelationService) {
+        this.orgRoleRelationService = orgRoleRelationService;
+    }
 
     @Autowired
     public void setUserOrgRelationService(
@@ -80,5 +91,17 @@ public class TqAuthOrgServiceImpl
             entity.setTenantId(AuthUtil.tenantId());
         }
         return super.save(entity);
+    }
+
+    @Override
+    public void removeRelationData(final String[] ids) {
+        // 组织与角色关系
+        orgRoleRelationService
+                .removeByCondition(new QueryWrapper<TqAuthOrgRoleRelationDO>().lambda().in(
+                        TqAuthOrgRoleRelationDO::getOrgId, ids));
+        // 组织与用户关系
+        userOrgRelationService
+                .removeByCondition(new QueryWrapper<TqAuthUserOrgRelationDO>().lambda().in(
+                        TqAuthUserOrgRelationDO::getOrgId, ids));
     }
 }

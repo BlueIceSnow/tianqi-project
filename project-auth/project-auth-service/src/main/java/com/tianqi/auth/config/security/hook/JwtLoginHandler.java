@@ -1,7 +1,7 @@
 package com.tianqi.auth.config.security.hook;
 
 import cn.hutool.core.date.DateField;
-import com.tianqi.common.enums.AuthEnum;
+import com.tianqi.common.enums.business.AuthEnum;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.pojo.JwtUserClaims;
 import com.tianqi.common.result.rest.RestResult;

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.tianqi.common.enums.BaseEnum;
-import com.tianqi.common.enums.BusinessEnum;
-import com.tianqi.common.enums.DatabaseEnum;
+import com.tianqi.common.enums.business.BusinessEnum;
+import com.tianqi.common.enums.database.DatabaseEnum;
 import com.tianqi.common.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 

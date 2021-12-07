@@ -3,7 +3,7 @@ package com.tianqi.auth.controller.impl;
 import com.tianqi.auth.controller.ITqAuthOrgController;
 import com.tianqi.auth.pojo.TqAuthOrgDO;
 import com.tianqi.auth.service.ITqAuthOrgService;
-import com.tianqi.auth.util.AuthUtil;
+import com.tianqi.client.util.AuthUtil;
 import com.tianqi.common.controller.impl.BaseControllerImpl;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import org.springframework.web.bind.annotation.GetMapping;

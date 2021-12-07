@@ -2,13 +2,14 @@ package com.tianqi.auth.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.tianqi.common.enums.BooleanEnum;
+import com.tianqi.common.enums.database.BooleanEnum;
 import com.tianqi.common.pojo.BaseDO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -24,6 +25,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName(value = "tq_auth_resource")
+@Accessors(chain = true)
 public class TqAuthResourceDO extends BaseDO implements Serializable {
     private static final long serialVersionUID = 661381537264201321L;
     /**

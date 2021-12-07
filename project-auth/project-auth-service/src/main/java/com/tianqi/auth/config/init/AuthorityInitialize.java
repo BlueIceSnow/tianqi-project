@@ -1,6 +1,7 @@
 package com.tianqi.auth.config.init;
 
-import com.tianqi.auth.config.security.IJwtSecurityMetaService;
+
+import com.tianqi.client.config.security.IJwtSecurityMetaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
  * @Date: 2021/10/20 15:39:07
  */
 @Component
-public class AuthInitiallizer implements CommandLineRunner {
+public class AuthorityInitialize implements CommandLineRunner {
     IJwtSecurityMetaService metaService;
 
     @Autowired

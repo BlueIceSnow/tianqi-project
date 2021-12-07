@@ -1,8 +1,8 @@
-package com.tianqi.auth.config.sql;
+package com.tianqi.client.config.sql;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.tianqi.auth.util.AuthUtil;
+import com.tianqi.client.util.AuthUtil;
+import com.tianqi.common.config.MyBatisMetaDataFillHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-public class MyBatisAuthMetaDataFillHandler implements MetaObjectHandler {
+public class MyBatisAuthMetaDataFillHandler extends MyBatisMetaDataFillHandler {
     private static final String EXT_FIELD_NAME = "extField";
     private static final String CREATE_USER = "createUser";
     private static final String UPDATE_USER = "updateUser";

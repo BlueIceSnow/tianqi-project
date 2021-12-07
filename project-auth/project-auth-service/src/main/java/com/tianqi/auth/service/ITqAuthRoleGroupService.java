@@ -11,5 +11,10 @@ import com.tianqi.common.service.IBaseService;
  */
 public interface ITqAuthRoleGroupService
         extends IBaseService<TqAuthRoleGroupDO> {
-
+    /**
+     * 删除包含角色字段
+     *
+     * @param ids 删除角色IDS
+     */
+    void removeRelationRoleField(String[] ids);
 }

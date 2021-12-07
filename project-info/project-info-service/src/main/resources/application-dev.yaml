@@ -32,21 +32,11 @@ logging:
   level:
     com.tianqi: debug
 feign:
-  hystrix:
-    enabled: false
+
   httpclient:
     connection-timeout: 30000
 
 
-hystrix:
-  command:
-    default:
-      fallback:
-        enabled: true
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 1000
 client:
   username: demo-info
   password: 123456

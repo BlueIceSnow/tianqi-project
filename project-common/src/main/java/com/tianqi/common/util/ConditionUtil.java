@@ -1,6 +1,6 @@
 package com.tianqi.common.util;
 
-import com.tianqi.common.enums.BooleanEnum;
+import com.tianqi.common.enums.database.BooleanEnum;
 
 import java.util.HashMap;
 import java.util.Map;

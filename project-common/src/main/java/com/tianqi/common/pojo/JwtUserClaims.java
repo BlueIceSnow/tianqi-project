@@ -1,6 +1,6 @@
 package com.tianqi.common.pojo;
 
-import com.tianqi.common.enums.BooleanEnum;
+import com.tianqi.common.enums.database.BooleanEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

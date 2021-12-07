@@ -1,6 +1,6 @@
 package com.tianqi.client.interceptor;
 
-import com.tianqi.client.constant.SystemConstant;
+import com.tianqi.client.constant.AuthConstant;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +23,10 @@ public class FeignInterceptor implements RequestInterceptor {
     private String password;
 
     @Override
-    public void apply(RequestTemplate requestTemplate) {
-        HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder
+    public void apply(final RequestTemplate requestTemplate) {
+        final HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder
                 .currentRequestAttributes())).getRequest();
-        final String authorization = request.getHeader(SystemConstant.HEADER_TOKEN);
-        requestTemplate.header(SystemConstant.HEADER_TOKEN, authorization);
+        final String authorization = request.getHeader(AuthConstant.HEADER_TOKEN);
+        requestTemplate.header(AuthConstant.HEADER_TOKEN, authorization);
     }
 }

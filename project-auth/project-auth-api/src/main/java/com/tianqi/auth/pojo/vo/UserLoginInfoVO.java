@@ -1,7 +1,7 @@
 package com.tianqi.auth.pojo.vo;
 
 import com.tianqi.auth.pojo.dto.resp.ResourceDetailDTO;
-import com.tianqi.common.enums.BooleanEnum;
+import com.tianqi.common.enums.database.BooleanEnum;
 import lombok.Data;
 
 import java.util.List;
@@ -48,4 +48,9 @@ public class UserLoginInfoVO {
      * 用户菜单.
      */
     private List<ResourceDetailDTO> menus;
+
+    /**
+     * 应用ID
+     */
+    private Integer appId;
 }

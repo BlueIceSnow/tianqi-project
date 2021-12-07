@@ -6,8 +6,9 @@ import com.tianqi.auth.pojo.TqAuthRoleDO;
 import com.tianqi.auth.pojo.TqAuthRoleResourceRelationDO;
 import com.tianqi.auth.pojo.dto.resp.ResourceRoleDTO;
 import com.tianqi.auth.service.ITqAuthRoleResourceRelationService;
+import com.tianqi.client.util.AuthUtil;
 import com.tianqi.common.constant.SystemConstant;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.impl.BaseServiceImpl;
@@ -87,6 +88,7 @@ public class TqAuthRoleResourceRelationServiceImpl extends
 
     @Override
     public boolean insertRoleResourceRelations(final Integer tenantId, final String roleId,
+                                               final Integer appId,
                                                final String[] resIdsArr,
                                                final String[] resIdsDeleted) {
         int insert = 0;
@@ -102,7 +104,7 @@ public class TqAuthRoleResourceRelationServiceImpl extends
                     .eq(TqAuthRoleResourceRelationDO::getRoleId, roleId)
                     .in(TqAuthRoleResourceRelationDO::getResourceId, resIdsDeleted));
         }
-
+        AuthUtil.invalidateAuthorityCache(tenantId, appId);
         return deleted == resIdsDeleted.length && insert == resIdsArr.length;
     }
 }

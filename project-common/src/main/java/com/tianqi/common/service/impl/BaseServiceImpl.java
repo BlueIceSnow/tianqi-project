@@ -1,9 +1,10 @@
 package com.tianqi.common.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tianqi.common.dao.IBaseDAO;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.pojo.BaseDO;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
@@ -134,6 +135,7 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
 
         final int i = dao.deleteById(id);
         if (i != 0) {
+            removeRelationData(new String[] {id});
             return removeByPageOk(entity, page, size);
         }
         return RestResult.<List<DO>>builderPage()
@@ -148,6 +150,7 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
                                                     final String ids) {
         final int i = dao.deleteBatchIds(Arrays.asList(ids.split(",")));
         if (i != 0) {
+            removeRelationData(ids.split(","));
             return removeByPageOk(entity, page, size);
         }
         return RestResult.<List<DO>>builderPage()
@@ -167,6 +170,7 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
     public ResultEntity<List<DO>> remove(final DO entity, final String id) {
         final int i = dao.deleteById(id);
         if (i != 0) {
+            removeRelationData(new String[] {id});
             return removeOk(entity);
         }
         return RestResult.<List<DO>>builder()
@@ -180,6 +184,7 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
     public ResultEntity<List<DO>> batchRemove(final DO entity, final String ids) {
         final int i = dao.deleteBatchIds(Arrays.asList(ids.split(",")));
         if (i != 0) {
+            removeRelationData(ids.split(","));
             return removeOk(entity);
         }
         return RestResult.<List<DO>>builder()
@@ -208,5 +213,17 @@ public abstract class BaseServiceImpl<DAO extends IBaseDAO<DO>, DO extends BaseD
     protected ResultEntity<List<DO>> removeByPageOk(final DO entity, final Integer page,
                                                     final Integer size) {
         return listPageEntity(entity, page, size);
+    }
+
+    @Override
+    public int removeByCondition(final Wrapper<DO> entity) {
+        // 根据条件查出要删除的数据，然后调用删除关联数据方法
+        final String[] deleteIds =
+                dao.selectList(entity).stream().map(DO::getId).map(String::valueOf)
+                        .toArray(String[]::new);
+        if (deleteIds.length > 0) {
+            removeRelationData(deleteIds);
+        }
+        return dao.delete(entity);
     }
 }

@@ -1,5 +1,6 @@
-package com.tianqi.common.enums;
+package com.tianqi.common.enums.database;
 
+import com.tianqi.common.enums.BaseEnum;
 import lombok.AllArgsConstructor;
 
 /**

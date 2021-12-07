@@ -1,26 +1,30 @@
 package com.tianqi.auth.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.tianqi.auth.constant.AuthConstant;
 import com.tianqi.auth.convert.ResourceConvert;
 import com.tianqi.auth.dao.ITqAuthResourceDAO;
 import com.tianqi.auth.pojo.TqAuthResourceDO;
+import com.tianqi.auth.pojo.TqAuthRoleDO;
 import com.tianqi.auth.pojo.TqAuthRoleResourceRelationDO;
 import com.tianqi.auth.pojo.dto.resp.ResourceDetailDTO;
 import com.tianqi.auth.service.ITqAuthResourceService;
 import com.tianqi.auth.service.ITqAuthRoleResourceRelationService;
-import com.tianqi.auth.util.AuthUtil;
-import com.tianqi.common.enums.ResourceTypeEnum;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.auth.service.ITqAuthRoleService;
+import com.tianqi.auth.service.ITqAuthUserRoleGroupRelationService;
+import com.tianqi.client.constant.AuthConstant;
+import com.tianqi.client.util.AuthUtil;
+import com.tianqi.common.enums.business.StatusEnum;
+import com.tianqi.common.enums.database.ResourceTypeEnum;
+import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -36,6 +40,26 @@ public class TqAuthResourceServiceImpl
 
     private ResourceConvert resourceConvert;
     private ITqAuthRoleResourceRelationService roleResourceRelationService;
+    private ITqAuthRoleService roleService;
+    private TqAuthUserRoleRelationServiceImpl userRoleRelationService;
+    private ITqAuthUserRoleGroupRelationService userRoleGroupRelationService;
+
+    @Autowired
+    public void setUserRoleRelationService(
+            final TqAuthUserRoleRelationServiceImpl userRoleRelationService) {
+        this.userRoleRelationService = userRoleRelationService;
+    }
+
+    @Autowired
+    public void setUserRoleGroupRelationService(
+            final ITqAuthUserRoleGroupRelationService userRoleGroupRelationService) {
+        this.userRoleGroupRelationService = userRoleGroupRelationService;
+    }
+
+    @Autowired
+    public void setRoleService(final ITqAuthRoleService roleService) {
+        this.roleService = roleService;
+    }
 
     @Autowired
     public void setRoleResourceRelationService(
@@ -89,80 +113,42 @@ public class TqAuthResourceServiceImpl
     /**
      * 通过角色查询菜单资源
      *
-     * @param roles
      * @param tenantId
      * @param appId
      * @return
      */
     @Override
-    public List<TqAuthResourceDO> listResourceByRole(final List<String> roles,
-                                                     final TqAuthResourceDO tqAuthResourceDO,
-                                                     final Integer tenantId,
-                                                     final Integer appId) {
+    public List<TqAuthResourceDO> listResourceByRole(
+            final TqAuthResourceDO tqAuthResourceDO,
+            final Integer tenantId,
+            final Integer appId) {
+        // 获取当前登录用户ID
+        final List<String> roles = userRoleRelationService
+                .selectUserRoleListByUserIdAndAppId(AuthUtil.userClaims().getId(),
+                        appId);
+        final Set<String> rolesByGroup = userRoleGroupRelationService
+                .selectUserRoleListByUserIdAndAppId(AuthUtil.userClaims().getId(),
+                        appId);
+        roles.addAll(rolesByGroup);
         return dao.selectMenuResource(roles, tqAuthResourceDO, tenantId, appId);
-    }
-
-    /**
-     * 批量删除
-     *
-     * @param entity
-     * @param ids
-     * @return
-     */
-    @Override
-    public ResultEntity<List<TqAuthResourceDO>> batchRemove(final TqAuthResourceDO entity,
-                                                            final String ids) {
-        final int i = dao.deleteBatchIds(Arrays.asList(ids.split(",")));
-        if (i != 0) {
-            return removeOk(entity);
-        }
-        return RestResult.<List<TqAuthResourceDO>>builder()
-                .withStatus(StatusEnum.DELETE_ERROR)
-                .ok(false)
-                .withData(new ArrayList<>())
-                .build();
-    }
-
-    @Override
-    public ResultEntity<List<TqAuthResourceDO>> remove(final TqAuthResourceDO entity,
-                                                       final String id) {
-        final int i = dao.deleteById(id);
-        if (i != 0) {
-            return removeOk(entity);
-        }
-        return RestResult.<List<TqAuthResourceDO>>builder()
-                .withStatus(StatusEnum.DELETE_ERROR)
-                .ok(false)
-                .withData(new ArrayList<>())
-                .build();
-    }
-
-    /**
-     * 删除数据成功后核心代码
-     *
-     * @param entity 查询条件
-     * @return 删除数据后的数据列表
-     */
-    @Override
-    protected ResultEntity<List<TqAuthResourceDO>> removeOk(final TqAuthResourceDO entity) {
-        final List<TqAuthResourceDO> listRestResult =
-                listResourceByRole(AuthUtil.roles(), entity, AuthUtil.tenantId(),
-                        AuthUtil.appId());
-        return RestResult.<List<TqAuthResourceDO>>builder()
-                .withStatus(StatusEnum.OK)
-                .ok(true)
-                .withData(listRestResult)
-                .build();
     }
 
     @Override
     public ResultEntity<TqAuthResourceDO> save(final TqAuthResourceDO entity) {
         final int i = dao.insert(entity);
         if (i != 0) {
+            // 首先查询该应用下租户拥有的角色
+            final List<TqAuthRoleDO> tqAuthRoleDOS =
+                    roleService.listEntity(new TqAuthRoleDO().setAppId(entity.getAppId())
+                            .setCode(AuthConstant.ADMIN_ROLE_CODE)
+                            .setTenantId(AuthConstant.ADMIN_TENANT_ID)).getData().doOrDto();
             // 将该资源授权给管理员，管理员角色再决定授权给哪些用户
+            if (CollectionUtil.isEmpty(tqAuthRoleDOS)) {
+                throw new BaseException("请在该应用下创建管理账号");
+            }
             final TqAuthRoleResourceRelationDO relationDO = TqAuthRoleResourceRelationDO.builder()
                     .resourceId(entity.getId())
-                    .roleId(AuthConstant.ADMIN_ROLE_ID)
+                    .roleId(tqAuthRoleDOS.get(0).getId())
                     .tenantId(AuthConstant.ADMIN_TENANT_ID).build();
             final ResultEntity<TqAuthRoleResourceRelationDO> save =
                     roleResourceRelationService.save(relationDO);
@@ -179,5 +165,14 @@ public class TqAuthResourceServiceImpl
                 .ok(true)
                 .withStatus(StatusEnum.OPERATION_ERROR)
                 .build();
+    }
+
+    @Override
+    public void removeRelationData(final String[] ids) {
+        // 资源与角色的关联关系
+        roleResourceRelationService
+                .removeByCondition(new QueryWrapper<TqAuthRoleResourceRelationDO>().lambda()
+                        .in(TqAuthRoleResourceRelationDO::getResourceId, ids));
+
     }
 }

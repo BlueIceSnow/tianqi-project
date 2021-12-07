@@ -2,7 +2,7 @@ package com.tianqi.auth.service;
 
 import com.tianqi.auth.pojo.TqAuthResourceDO;
 import com.tianqi.auth.pojo.dto.resp.ResourceDetailDTO;
-import com.tianqi.common.enums.ResourceTypeEnum;
+import com.tianqi.common.enums.database.ResourceTypeEnum;
 import com.tianqi.common.service.IBaseService;
 
 import java.util.List;
@@ -40,14 +40,13 @@ public interface ITqAuthResourceService extends IBaseService<TqAuthResourceDO> {
     /**
      * 根据角色获取菜单列表
      *
-     * @param roles
      * @param tqAuthResourceDO
      * @param tenantId
      * @param appId
      * @return
      */
-    List<TqAuthResourceDO> listResourceByRole(final List<String> roles,
-                                              final TqAuthResourceDO tqAuthResourceDO,
-                                              final Integer tenantId,
-                                              final Integer appId);
+    List<TqAuthResourceDO> listResourceByRole(
+            final TqAuthResourceDO tqAuthResourceDO,
+            final Integer tenantId,
+            final Integer appId);
 }

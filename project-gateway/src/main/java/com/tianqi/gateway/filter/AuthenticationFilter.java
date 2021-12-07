@@ -1,11 +1,11 @@
 package com.tianqi.gateway.filter;
 
+import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tianqi.auth.api.IDemoApi;
-import com.tianqi.common.enums.AuthEnum;
+import com.tianqi.common.enums.business.AuthEnum;
 import com.tianqi.common.result.rest.RestResult;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -53,7 +53,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
                 .build())
                 .getBytes(StandardCharsets.UTF_8);
         final DataBuffer wrap = exchange.getResponse().bufferFactory().wrap(resultBytes);
-        if (StringUtils.isEmpty(authentication)) {
+        if (StrUtil.isEmpty(authentication)) {
             exchange.getResponse().getHeaders()
                     .setContentType(MediaType.APPLICATION_JSON);
             return exchange.getResponse().writeWith(Flux.just(wrap));

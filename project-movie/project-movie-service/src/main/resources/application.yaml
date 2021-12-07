@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: dev
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import: classpath:application-dev.yaml
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+    import: classpath:application-prod.yaml

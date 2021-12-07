@@ -1,11 +1,16 @@
 package com.tianqi.auth.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tianqi.auth.dao.ITqAuthTenantDAO;
+import com.tianqi.auth.pojo.TqAuthOrgDO;
+import com.tianqi.auth.pojo.TqAuthRoleDO;
+import com.tianqi.auth.pojo.TqAuthRoleGroupDO;
+import com.tianqi.auth.pojo.TqAuthTenantApplicationRelationDO;
 import com.tianqi.auth.pojo.TqAuthTenantDO;
 import com.tianqi.auth.pojo.TqAuthUserDO;
 import com.tianqi.auth.pojo.dto.req.TenantInfoDTO;
 import com.tianqi.auth.service.ITqAuthTenantService;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.impl.BaseServiceImpl;
@@ -24,6 +29,31 @@ public class TqAuthTenantServiceImpl
         implements ITqAuthTenantService {
 
     private TqAuthUserServiceImpl userService;
+    private TqAuthTenantApplicationRelationServiceImpl tenantApplicationRelationService;
+    private TqAuthRoleServiceImpl roleService;
+    private TqAuthRoleGroupServiceImpl roleGroupService;
+    private TqAuthOrgServiceImpl orgService;
+
+    @Autowired
+    public void setTenantApplicationRelationService(
+            final TqAuthTenantApplicationRelationServiceImpl tenantApplicationRelationService) {
+        this.tenantApplicationRelationService = tenantApplicationRelationService;
+    }
+
+    @Autowired
+    public void setRoleService(final TqAuthRoleServiceImpl roleService) {
+        this.roleService = roleService;
+    }
+
+    @Autowired
+    public void setRoleGroupService(final TqAuthRoleGroupServiceImpl roleGroupService) {
+        this.roleGroupService = roleGroupService;
+    }
+
+    @Autowired
+    public void setOrgService(final TqAuthOrgServiceImpl orgService) {
+        this.orgService = orgService;
+    }
 
     @Autowired
     public void setUserService(final TqAuthUserServiceImpl userService) {
@@ -44,7 +74,7 @@ public class TqAuthTenantServiceImpl
         tenantInfoDTO.setMgrId(save.getData().doOrDto().getId());
 
         // 将普通租户权限授予给他
-        
+
         final int update = dao.updateById(tenantInfoDTO);
         final boolean isOk = save.getStatus() == StatusEnum.OK && update == 1;
         return RestResult.<com.tianqi.auth.pojo.TqAuthTenantDO>builder()
@@ -52,5 +82,26 @@ public class TqAuthTenantServiceImpl
                 .withData(tenantInfoDTO)
                 .ok(isOk)
                 .build();
+    }
+
+    @Override
+    public void removeRelationData(final String[] ids) {
+        // 租户与应用授权关系
+        tenantApplicationRelationService
+                .removeByCondition(new QueryWrapper<TqAuthTenantApplicationRelationDO>().lambda()
+                        .in(TqAuthTenantApplicationRelationDO::getTenantId, ids));
+        // 租户下的用户
+        userService.removeByCondition(
+                new QueryWrapper<TqAuthUserDO>().lambda().in(TqAuthUserDO::getTenantId, ids));
+        // 租户下的角色
+        roleService.removeByCondition(
+                new QueryWrapper<TqAuthRoleDO>().lambda().in(TqAuthRoleDO::getTenantId, ids));
+        // 租户下的角色组
+        roleGroupService.removeByCondition(new QueryWrapper<TqAuthRoleGroupDO>().lambda()
+                .in(TqAuthRoleGroupDO::getTenantId, ids));
+        // 租户下的组织
+        orgService.removeByCondition(
+                new QueryWrapper<TqAuthOrgDO>().lambda().in(TqAuthOrgDO::getTenantId, ids));
+
     }
 }

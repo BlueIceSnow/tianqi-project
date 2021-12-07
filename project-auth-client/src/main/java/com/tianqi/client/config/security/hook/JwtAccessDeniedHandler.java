@@ -1,6 +1,6 @@
 package com.tianqi.client.config.security.hook;
 
-import com.tianqi.common.enums.AuthEnum;
+import com.tianqi.common.enums.business.AuthEnum;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;

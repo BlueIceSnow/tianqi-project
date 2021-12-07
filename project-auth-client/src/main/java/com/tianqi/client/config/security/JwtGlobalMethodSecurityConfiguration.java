@@ -1,5 +1,6 @@
 package com.tianqi.client.config.security;
 
+import com.tianqi.client.constant.AuthConstant;
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -29,15 +30,14 @@ import java.util.Map;
 public class JwtGlobalMethodSecurityConfiguration
         extends GlobalMethodSecurityConfiguration {
 
-    public static final String SUPPORT_PREFIX = "TQ:METHOD:";
 
     private AnnotationAttributes enableMethodSecurity;
 
     @Override
     protected AccessDecisionManager accessDecisionManager() {
-        List<AccessDecisionVoter<?>> decisionVoters = new ArrayList<>();
+        final List<AccessDecisionVoter<?>> decisionVoters = new ArrayList<>();
         if (prePostEnabled()) {
-            ExpressionBasedPreInvocationAdvice expressionAdvice =
+            final ExpressionBasedPreInvocationAdvice expressionAdvice =
                     new ExpressionBasedPreInvocationAdvice();
             expressionAdvice.setExpressionHandler(getExpressionHandler());
             decisionVoters
@@ -48,9 +48,9 @@ public class JwtGlobalMethodSecurityConfiguration
         }
 
         ((DefaultMethodSecurityExpressionHandler) this.getExpressionHandler())
-                .setDefaultRolePrefix(SUPPORT_PREFIX);
-        RoleVoter roleVoter = new RoleVoter();
-        roleVoter.setRolePrefix(SUPPORT_PREFIX);
+                .setDefaultRolePrefix(AuthConstant.METHOD_AUTHORITY_PREFIX);
+        final RoleVoter roleVoter = new RoleVoter();
+        roleVoter.setRolePrefix(AuthConstant.METHOD_AUTHORITY_PREFIX);
         decisionVoters.add(roleVoter);
         decisionVoters.add(new AuthenticatedVoter());
         return new AffirmativeBased(decisionVoters);
@@ -72,11 +72,11 @@ public class JwtGlobalMethodSecurityConfiguration
     private AnnotationAttributes enableMethodSecurity() {
         if (enableMethodSecurity == null) {
             // if it is null look at this instance (i.e. a subclass was used)
-            EnableGlobalMethodSecurity methodSecurityAnnotation = AnnotationUtils
+            final EnableGlobalMethodSecurity methodSecurityAnnotation = AnnotationUtils
                     .findAnnotation(getClass(), EnableGlobalMethodSecurity.class);
             Assert.notNull(methodSecurityAnnotation,
                     () -> EnableGlobalMethodSecurity.class.getName() + " is required");
-            Map<String, Object> methodSecurityAttrs = AnnotationUtils
+            final Map<String, Object> methodSecurityAttrs = AnnotationUtils
                     .getAnnotationAttributes(methodSecurityAnnotation);
             this.enableMethodSecurity = AnnotationAttributes.fromMap(methodSecurityAttrs);
         }

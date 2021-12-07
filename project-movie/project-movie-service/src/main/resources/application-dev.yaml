@@ -11,8 +11,8 @@ spring:
   application:
     name: @project.artifactId@
   redis:
-    host: 47.96.238.166
-    password: tq123456
+    host: 127.0.0.1
+    password: 123456
     database: 0
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -27,26 +27,20 @@ spring:
       discovery:
         group: dev
         namespace: def2c741-902f-4be8-b173-835204b0f6fd
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:9090
+      filter:
+        enabled: true
 
 logging:
   level:
     com.tianqi: debug
 feign:
-  hystrix:
-    enabled: false
   httpclient:
     connection-timeout: 30000
 
 
-hystrix:
-  command:
-    default:
-      fallback:
-        enabled: true
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 1000
 client:
   username: demo-movie
   password: 123456

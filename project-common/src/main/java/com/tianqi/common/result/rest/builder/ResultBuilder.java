@@ -1,7 +1,7 @@
 package com.tianqi.common.result.rest.builder;
 
 import com.tianqi.common.enums.BaseEnum;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.result.rest.entity.RestEntity;
 import com.tianqi.common.result.rest.entity.ResultEntity;

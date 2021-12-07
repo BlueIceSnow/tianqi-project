@@ -1,5 +1,6 @@
 package com.tianqi.client.config.security.authorization;
 
+import com.tianqi.client.constant.AuthConstant;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
@@ -14,13 +15,11 @@ import java.util.Collection;
  */
 public class JwtRoleVoter implements AccessDecisionVoter<Object> {
 
-    public static final String SUPPORT_PREFIX = "TQ:ROLE:";
-
     @Override
     public boolean supports(final ConfigAttribute attribute) {
         return attribute != null &&
                 attribute.getClass().isAssignableFrom(JwtConfigAttribute.class) &&
-                attribute.getAttribute().startsWith(SUPPORT_PREFIX);
+                attribute.getAttribute().startsWith(AuthConstant.ROLE_AUTHORITY_PREFIX);
     }
 
     @Override
@@ -35,15 +34,15 @@ public class JwtRoleVoter implements AccessDecisionVoter<Object> {
             return ACCESS_DENIED;
         }
         int result = ACCESS_ABSTAIN;
-        Collection<? extends GrantedAuthority> authorities =
+        final Collection<? extends GrantedAuthority> authorities =
                 authentication.getAuthorities();
 
-        for (ConfigAttribute attribute : attributes) {
+        for (final ConfigAttribute attribute : attributes) {
             if (this.supports(attribute)) {
                 result = ACCESS_DENIED;
 
                 // Attempt to find a matching granted authority
-                for (GrantedAuthority authority : authorities) {
+                for (final GrantedAuthority authority : authorities) {
                     if (attribute.getAttribute().equals(authority.getAuthority())) {
                         return ACCESS_GRANTED;
                     }

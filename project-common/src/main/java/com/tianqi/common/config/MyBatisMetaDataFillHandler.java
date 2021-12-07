@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
  * @Author: ytq
  * @Date: 2021/11/05 10:40:40
  */
-@Component
 @Slf4j
-@ConditionalOnMissingClass(value = {"com.tianqi.auth.config.sql.MyBatisAuthMetaDataFillHandler"})
+@Component
+@ConditionalOnMissingBean(value = MetaObjectHandler.class)
 public class MyBatisMetaDataFillHandler implements MetaObjectHandler {
     private static final String EXT_FIELD_NAME = "extField";
 

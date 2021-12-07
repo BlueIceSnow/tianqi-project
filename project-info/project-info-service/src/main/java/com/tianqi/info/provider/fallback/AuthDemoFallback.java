@@ -2,7 +2,7 @@ package com.tianqi.info.provider.fallback;
 
 import com.tianqi.auth.api.fallback.AbstractDemoFallback;
 import com.tianqi.auth.pojo.TqAuthUserDO;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rpc.RpcResult;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
 import org.springframework.stereotype.Component;

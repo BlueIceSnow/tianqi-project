@@ -2,7 +2,7 @@ package com.tianqi.auth.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.tianqi.common.enums.BooleanEnum;
+import com.tianqi.common.enums.database.BooleanEnum;
 import com.tianqi.common.pojo.BaseDO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,6 @@
-package com.tianqi.common.enums;
+package com.tianqi.common.enums.business;
+
+import com.tianqi.common.enums.BaseEnum;
 
 /**
  * @Author: yuantianqi

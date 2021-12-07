@@ -1,7 +1,6 @@
 package com.tianqi.info.api;
 
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
-import com.tianqi.info.api.fallback.AbstractDemoFallback;
 import com.tianqi.info.pojo.UserDO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +13,7 @@ import java.util.List;
  * @Date: 2021/4/17 17:46
  * @Description:
  */
-@FeignClient(name = "project-info-service", path = "service", fallback =
-        AbstractDemoFallback.class)
+@FeignClient(name = "project-info-service", url = "127.0.0.1:8080", path = "service")
 public interface IDemoApi {
 
     /**

@@ -5,8 +5,8 @@ import com.tianqi.auth.dao.ITqAuthUserOrgRelationDAO;
 import com.tianqi.auth.pojo.TqAuthOrgDO;
 import com.tianqi.auth.pojo.TqAuthUserOrgRelationDO;
 import com.tianqi.auth.service.ITqAuthUserOrgRelationService;
-import com.tianqi.auth.util.AuthUtil;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.client.util.AuthUtil;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.service.impl.BaseServiceImpl;
@@ -51,8 +51,8 @@ public class TqAuthUserOrgRelationServiceImpl
         int deleted = 0;
         for (final String userId : userIdsArr) {
             final TqAuthUserOrgRelationDO userOrgRelationDO =
-                    new TqAuthUserOrgRelationDO(orgId,
-                            Integer.parseInt(userId), AuthUtil.tenantId(), appId);
+                    new TqAuthUserOrgRelationDO(Integer.parseInt(userId),
+                            orgId, AuthUtil.tenantId(), appId);
             insert = dao.insert(userOrgRelationDO);
         }
         if (userIdsArrDeleted.length != 0) {

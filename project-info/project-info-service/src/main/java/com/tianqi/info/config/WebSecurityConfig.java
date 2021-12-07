@@ -2,7 +2,6 @@ package com.tianqi.info.config;
 
 import com.tianqi.client.annotation.TqSecurityEnable;
 import com.tianqi.client.config.security.WebSecurityConfiguration;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -24,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
     @Override
 
     protected void configure(final HttpSecurity http) throws Exception {
-        http.authorizeRequests();
+//        http.authorizeRequests();
         super.configure(http);
     }
 
@@ -41,7 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
     }
 
     @Bean
-    @LoadBalanced
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }

@@ -1,7 +1,7 @@
-package com.tianqi.auth.pojo.bo;
+package com.tianqi.client.pojo;
 
-import com.tianqi.auth.pojo.entity.JwtAuthority;
-import com.tianqi.common.enums.BooleanEnum;
+
+import com.tianqi.common.enums.database.BooleanEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -6,7 +6,7 @@ import com.tianqi.auth.pojo.TqAuthRoleResourceRelationDO;
 import com.tianqi.auth.pojo.dto.req.RoleResourceRelationDTO;
 import com.tianqi.auth.service.ITqAuthRoleResourceRelationService;
 import com.tianqi.common.controller.impl.BaseControllerImpl;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +47,7 @@ public class TqAuthRoleResourceRelationControllerImpl extends
         }
         final boolean isOk =
                 service.insertRoleResourceRelations(roleResourceRelationDTO.getTenantId(),
-                        roleResourceRelationDTO.getRoleId(),
+                        roleResourceRelationDTO.getRoleId(), roleResourceRelationDTO.getAppId(),
                         resIdsArr, resIdsArrDeleted);
         return RestResult.<Boolean>builder()
                 .withStatus(StatusEnum.OK)

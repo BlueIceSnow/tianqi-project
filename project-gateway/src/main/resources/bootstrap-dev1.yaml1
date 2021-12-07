@@ -43,16 +43,6 @@ spring:
 client:
   username: demo-gateway
   password: 123456
-feign:
-  hystrix:
-    enabled: true
 
-hystrix:
-  command:
-    default:
-      fallback:
-        enabled: true
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 1000
+
+

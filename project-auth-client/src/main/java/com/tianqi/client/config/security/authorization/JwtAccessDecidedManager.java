@@ -1,5 +1,6 @@
 package com.tianqi.client.config.security.authorization;
 
+import com.tianqi.client.constant.AuthConstant;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -57,7 +58,7 @@ public class JwtAccessDecidedManager extends AbstractAccessDecisionManager {
         setAllowIfAllAbstainDecisions(configAttributes.stream()
                 .anyMatch(config -> config.getAttribute() != null &&
                         config.getAttribute()
-                                .contains("TQ:METHOD")));
+                                .contains(AuthConstant.METHOD_AUTHORITY_PREFIX)));
         checkAllowIfAllAbstainDecisions();
     }
 

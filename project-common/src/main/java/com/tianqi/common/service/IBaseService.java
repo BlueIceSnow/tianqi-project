@@ -1,6 +1,7 @@
 package com.tianqi.common.service;
 
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.tianqi.common.pojo.BaseDO;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 
@@ -96,4 +97,20 @@ public interface IBaseService<DO extends BaseDO> {
      */
     ResultEntity<List<DO>> batchRemoveByPage(DO entity, int page, int size,
                                              String ids);
+
+    /**
+     * 条件删除资源
+     *
+     * @param entity 删除条件
+     * @return 删除数量
+     */
+    int removeByCondition(Wrapper<DO> entity);
+
+    /**
+     * 删除相关数据
+     *
+     * @param ids 删除实体IDS
+     */
+    default void removeRelationData(final String[] ids) {
+    }
 }

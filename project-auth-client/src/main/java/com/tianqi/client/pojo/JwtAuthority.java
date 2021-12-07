@@ -1,4 +1,4 @@
-package com.tianqi.auth.pojo.entity;
+package com.tianqi.client.pojo;
 
 import org.springframework.security.core.GrantedAuthority;
 

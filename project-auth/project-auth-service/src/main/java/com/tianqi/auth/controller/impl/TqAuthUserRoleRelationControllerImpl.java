@@ -6,7 +6,7 @@ import com.tianqi.auth.pojo.TqAuthUserRoleRelationDO;
 import com.tianqi.auth.pojo.dto.req.UserRoleRelationDTO;
 import com.tianqi.auth.service.ITqAuthUserRoleRelationService;
 import com.tianqi.common.controller.impl.BaseControllerImpl;
-import com.tianqi.common.enums.StatusEnum;
+import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

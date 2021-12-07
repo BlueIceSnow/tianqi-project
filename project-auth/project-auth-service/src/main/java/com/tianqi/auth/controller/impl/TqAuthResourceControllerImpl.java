@@ -5,10 +5,9 @@ import com.tianqi.auth.pojo.TqAuthResourceDO;
 import com.tianqi.auth.pojo.dto.resp.ResourceDetailDTO;
 import com.tianqi.auth.pojo.vo.UserLoginInfoVO;
 import com.tianqi.auth.service.ITqAuthResourceService;
-import com.tianqi.auth.util.AuthUtil;
+import com.tianqi.client.util.AuthUtil;
 import com.tianqi.common.controller.impl.BaseControllerImpl;
-import com.tianqi.common.enums.AuthEnum;
-import com.tianqi.common.enums.BooleanEnum;
+import com.tianqi.common.enums.business.AuthEnum;
 import com.tianqi.common.pojo.JwtUserClaims;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
@@ -52,6 +51,7 @@ public class TqAuthResourceControllerImpl
         userLoginInfoVO.setOrgId(details.getOrgId());
         userLoginInfoVO.setTenantId(details.getTenantId());
         userLoginInfoVO.setMenus(resourceDetailDTOS);
+        userLoginInfoVO.setAppId(details.getAppId());
         return RestResult.<UserLoginInfoVO>builder()
                 .withData(userLoginInfoVO)
                 .withStatus(AuthEnum.MENU_LOAD_OK)
@@ -68,10 +68,8 @@ public class TqAuthResourceControllerImpl
     @GetMapping("listResourceByRole")
     public ResultEntity<List<TqAuthResourceDO>> listResourceByRole(
             final TqAuthResourceDO tqAuthResourceDO) {
-        final List<String> roles = AuthUtil.roles();
-        tqAuthResourceDO.setCloseable(BooleanEnum.TRUE);
         final List<TqAuthResourceDO> resourceDOS =
-                service.listResourceByRole(roles, tqAuthResourceDO,
+                service.listResourceByRole(tqAuthResourceDO,
                         AuthUtil.tenantId(),
                         tqAuthResourceDO.getAppId() == null ? AuthUtil.appId() :
                                 tqAuthResourceDO.getAppId());

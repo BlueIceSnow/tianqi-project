@@ -3,7 +3,7 @@ package com.tianqi.movie.controller.impl;
 import com.tianqi.auth.api.IDemoApi;
 import com.tianqi.common.controller.impl.BaseControllerImpl;
 import com.tianqi.common.enums.BaseEnum;
-import com.tianqi.common.enums.BooleanEnum;
+import com.tianqi.common.enums.database.BooleanEnum;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;

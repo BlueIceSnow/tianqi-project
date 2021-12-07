@@ -1,7 +1,8 @@
 package com.tianqi.auth.service;
 
-import com.tianqi.auth.config.security.IJwtSecurityMetaService;
+
 import com.tianqi.auth.pojo.TqAuthUserDO;
+import com.tianqi.client.config.security.IJwtSecurityMetaService;
 import com.tianqi.common.service.IBaseService;
 
 /**

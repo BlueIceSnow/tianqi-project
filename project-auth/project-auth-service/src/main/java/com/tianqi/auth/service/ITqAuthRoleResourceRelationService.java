@@ -40,10 +40,12 @@ public interface ITqAuthRoleResourceRelationService
      *
      * @param tenantId      租户ID
      * @param roleId        角色ID
+     * @param appId         应用ID
      * @param resIdsArr     资源ID数组
      * @param resIdsDeleted 删除的关系
      * @return
      */
-    boolean insertRoleResourceRelations(Integer tenantId, String roleId, String[] resIdsArr,
+    boolean insertRoleResourceRelations(Integer tenantId, String roleId, final Integer appId,
+                                        String[] resIdsArr,
                                         String[] resIdsDeleted);
 }

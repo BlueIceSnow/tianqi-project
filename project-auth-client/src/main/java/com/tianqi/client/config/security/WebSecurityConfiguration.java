@@ -14,6 +14,7 @@ import com.tianqi.client.config.sql.IsDeleteHandler;
 import com.tianqi.client.config.sql.OrderExtendSqlInterceptor;
 import com.tianqi.client.config.sql.OrgCodeHandler;
 import com.tianqi.client.config.sql.TenantIdHandler;
+import com.tianqi.client.constant.AuthConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,7 +34,7 @@ import java.util.List;
  * @Description: 权限管理配置
  */
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-    public static final String SUPPORT_PREFIX = "TQ:ROLE:";
+
     private IJwtSecurityMetaService metaService;
     private JwtAccessDeniedHandler accessDeniedHandler;
     private AuthenticationEntryPoint authenticationEntryPoint;
@@ -101,7 +102,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         final DefaultWebSecurityExpressionHandler expressionHandler =
                 (DefaultWebSecurityExpressionHandler) web.getExpressionHandler();
-        expressionHandler.setDefaultRolePrefix(SUPPORT_PREFIX);
+        expressionHandler.setDefaultRolePrefix(AuthConstant.ROLE_AUTHORITY_PREFIX);
     }
 
     /**
