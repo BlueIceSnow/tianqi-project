@@ -1,6 +1,6 @@
 package com.tianqi.common.result.rpc.builder;
 
-import com.tianqi.common.enums.BaseEnum;
+import com.tianqi.common.enums.database.RpcStatusEnum;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
 
 /**
@@ -8,21 +8,21 @@ import com.tianqi.common.result.rpc.entity.RpcResultEntity;
  * @Date: 2021/4/18 21:55
  * @Description:
  */
-public class RpcResultBuilder<T> {
-    private BaseEnum status;
-    private T result;
+public class RpcResultBuilder<R> {
+    private RpcStatusEnum status;
+    private R result;
 
-    public RpcResultBuilder<T> withStatus(BaseEnum status) {
+    public RpcResultBuilder<R> withStatus(final RpcStatusEnum status) {
         this.status = status;
         return this;
     }
 
-    public RpcResultBuilder<T> withResult(T result) {
+    public RpcResultBuilder<R> withResult(final R result) {
         this.result = result;
         return this;
     }
 
-    public RpcResultEntity<T> build() {
-        return new RpcResultEntity<>(status, result);
+    public RpcResultEntity<R> build() {
+        return new RpcResultEntity<R>(status, result);
     }
 }

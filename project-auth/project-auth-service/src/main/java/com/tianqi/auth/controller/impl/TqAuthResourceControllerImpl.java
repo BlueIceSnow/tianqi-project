@@ -11,6 +11,8 @@ import com.tianqi.common.enums.business.AuthEnum;
 import com.tianqi.common.pojo.JwtUserClaims;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
+import com.tianqi.movie.api.IDemoApi;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,9 @@ import java.util.List;
 public class TqAuthResourceControllerImpl
         extends BaseControllerImpl<ITqAuthResourceService, TqAuthResourceDO>
         implements ITqAuthResourceController {
+
+    @Autowired
+    private IDemoApi demoApi;
 
     /**
      * 获取当前登录用户的菜单

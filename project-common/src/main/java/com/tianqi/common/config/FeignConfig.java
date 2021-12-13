@@ -3,6 +3,7 @@ package com.tianqi.common.config;
 import feign.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Feign日志打印
@@ -17,4 +18,9 @@ public class FeignConfig {
         return Logger.Level.FULL;
     }
 
+    @Bean
+//    @LoadBalanced
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 }

@@ -29,7 +29,8 @@ spring:
     sentinel:
       transport:
         dashboard: 127.0.0.1:9090
-        port: 8777
+        port: 8771
+        client-ip: 127.0.0.1
       filter:
         enabled: true
         order: -1999999999
@@ -39,6 +40,7 @@ logging:
 feign:
   httpclient:
     connection-timeout: 30000
+    read-timeout: 30000
   sentinel:
     enabled: true
 
@@ -47,3 +49,12 @@ feign:
 client:
   username: demo-auth
   password: 123456
+
+tq:
+  sentinel:
+    nacos:
+      address: 127.0.0.1:8848
+      namespace: def2c741-902f-4be8-b173-835204b0f6fd
+      group-id: dev
+      username: nacos
+      password: nacos

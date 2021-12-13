@@ -12,7 +12,6 @@ import lombok.Data;
 public final class RpcResult {
 
     public static <Entity> RpcResultBuilder<Entity> builder() {
-
-        return new RpcResultBuilder();
+        return new RpcResultBuilder<Entity>();
     }
 }

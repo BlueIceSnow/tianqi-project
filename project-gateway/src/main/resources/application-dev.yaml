@@ -47,6 +47,7 @@ spring:
     sentinel:
       transport:
         dashboard: 127.0.0.1:9090
+        client-ip: 127.0.0.1
       filter:
         enabled: false
 
@@ -56,6 +57,8 @@ logging:
 feign:
   httpclient:
     connection-timeout: 30000
+  sentinel:
+    enabled: true
 
 
 
@@ -63,3 +66,11 @@ client:
   username: demo-gateway
   password: 123456
 
+tq:
+  sentinel:
+    nacos:
+      address: 127.0.0.1:8848
+      namespace: def2c741-902f-4be8-b173-835204b0f6fd
+      group-id: dev
+      username: nacos
+      password: nacos

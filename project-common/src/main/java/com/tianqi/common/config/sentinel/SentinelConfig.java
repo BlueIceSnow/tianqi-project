@@ -1,4 +1,4 @@
-package com.tianqi.common.config;
+package com.tianqi.common.config.sentinel;
 
 import com.alibaba.csp.sentinel.adapter.spring.webmvc.callback.BlockExceptionHandler;
 import com.tianqi.common.enums.business.StatusEnum;
@@ -7,6 +7,7 @@ import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Slf4j
+@EnableConfigurationProperties(value = {SentinelNacosProperties.class})
 public class SentinelConfig {
     @Bean
     @ConditionalOnMissingBean(value = {BlockExceptionHandler.class})

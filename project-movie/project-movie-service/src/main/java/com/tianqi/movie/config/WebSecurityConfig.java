@@ -19,7 +19,6 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
      * @throws Exception
      */
     @Override
-
     protected void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests();
         super.configure(http);

@@ -25,7 +25,12 @@ public class CustomDeserializer {
                 throws IOException {
             BaseEnum[] enumConstants = null;
             Class<?> keyClass = null;
-            JsonStreamContext parseContext = jsonParser.getParsingContext().getParent();
+            final JsonToken currentToken = jsonParser.getCurrentToken();
+            if (currentToken == JsonToken.START_OBJECT) {
+                jsonParser.nextToken();
+                return null;
+            }
+            JsonStreamContext parseContext = jsonParser.getParsingContext();
             if (parseContext.getCurrentValue() == null) {
                 parseContext = jsonParser.getParsingContext();
             }
@@ -50,11 +55,7 @@ public class CustomDeserializer {
                     noSuchFieldException.printStackTrace();
                 }
             }
-            final JsonToken currentToken = jsonParser.getCurrentToken();
-            if (currentToken == JsonToken.START_OBJECT) {
-                jsonParser.nextToken();
-                return null;
-            }
+
             String key = "";
 
             switch (currentToken) {

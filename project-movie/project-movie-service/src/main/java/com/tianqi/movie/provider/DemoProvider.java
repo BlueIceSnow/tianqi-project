@@ -1,8 +1,8 @@
 package com.tianqi.movie.provider;
 
-import com.tianqi.common.enums.business.StatusEnum;
-import com.tianqi.common.result.rest.RestResult;
-import com.tianqi.common.result.rest.entity.ResultEntity;
+import com.tianqi.common.enums.database.RpcStatusEnum;
+import com.tianqi.common.result.rpc.RpcResult;
+import com.tianqi.common.result.rpc.entity.RpcResultEntity;
 import com.tianqi.movie.api.IDemoApi;
 import com.tianqi.movie.pojo.UserDO;
 import com.tianqi.movie.service.IUserService;
@@ -26,12 +26,11 @@ public class DemoProvider implements IDemoApi {
     }
 
     @Override
-    public ResultEntity<List<UserDO>> listAll(final UserDO userDO) {
+    public RpcResultEntity<List<UserDO>> listAll(final UserDO userDO) {
         final List<UserDO> userDOS = userService.listEntity(userDO)
                 .getData().doOrDto();
-        return RestResult.<List<UserDO>>builder()
-                .withStatus(StatusEnum.OK)
-                .withData(userDOS)
+        return RpcResult.<List<UserDO>>builder().withResult(userDOS)
+                .withStatus(RpcStatusEnum.OK)
                 .build();
     }
 }

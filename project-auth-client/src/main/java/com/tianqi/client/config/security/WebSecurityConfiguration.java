@@ -70,7 +70,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
      * @throws Exception
      */
     @Override
-
     protected void configure(final HttpSecurity http) throws Exception {
         http.formLogin().disable()
                 .csrf().disable()
