@@ -174,7 +174,7 @@ public class TqAuthUserServiceImpl
     public List<String> loadIgnoringAuthorities() {
         final List<String> ignoringUrls = new ArrayList<>();
         ignoringUrls.add("/tqAuthTenantApplicationRelation/loadApplicationByUsername");
-//        ignoringUrls.add("/metric/**");
+        ignoringUrls.add("/actuator/**");
         return ignoringUrls;
     }
 

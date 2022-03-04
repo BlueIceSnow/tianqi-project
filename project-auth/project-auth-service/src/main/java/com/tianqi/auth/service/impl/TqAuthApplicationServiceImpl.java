@@ -1,16 +1,20 @@
 package com.tianqi.auth.service.impl;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tianqi.auth.dao.ITqAuthApplicationDAO;
 import com.tianqi.auth.pojo.TqAuthApplicationDO;
 import com.tianqi.auth.pojo.TqAuthResourceDO;
 import com.tianqi.auth.pojo.TqAuthRoleDO;
 import com.tianqi.auth.pojo.TqAuthTenantApplicationRelationDO;
+import com.tianqi.auth.pojo.TqAuthUserRoleRelationDO;
 import com.tianqi.auth.service.ITqAuthApplicationService;
 import com.tianqi.auth.service.ITqAuthResourceService;
 import com.tianqi.auth.service.ITqAuthRoleService;
 import com.tianqi.auth.service.ITqAuthTenantApplicationRelationService;
+import com.tianqi.auth.service.ITqAuthTenantService;
+import com.tianqi.auth.service.ITqAuthUserRoleRelationService;
 import com.tianqi.client.constant.AuthConstant;
 import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rest.entity.ResultEntity;
@@ -31,6 +35,19 @@ public class TqAuthApplicationServiceImpl
     private ITqAuthTenantApplicationRelationService tenantApplicationRelationService;
     private ITqAuthResourceService tqAuthResourceService;
     private ITqAuthRoleService roleService;
+    private ITqAuthTenantService tenantService;
+    private ITqAuthUserRoleRelationService userRoleRelationService;
+
+    @Autowired
+    public void setUserRoleRelationService(
+            final ITqAuthUserRoleRelationService userRoleRelationService) {
+        this.userRoleRelationService = userRoleRelationService;
+    }
+
+    @Autowired
+    public void setTenantService(final ITqAuthTenantService tenantService) {
+        this.tenantService = tenantService;
+    }
 
     @Autowired
     public void setTqAuthResourceService(
@@ -58,6 +75,23 @@ public class TqAuthApplicationServiceImpl
                     .insertApplicationTenantRelations(String.valueOf(AuthConstant.ADMIN_TENANT_ID),
                             new String[] {String.valueOf(save.getData().doOrDto().getId())},
                             new String[] {});
+            // 创建顶级租户在该应用下的管理角色
+            final TqAuthRoleDO tqAuthRoleDO = new TqAuthRoleDO();
+            tqAuthRoleDO.setName(entity.getName() + AuthConstant.ADMIN_ROLE_SUFFIX);
+            final ResultEntity<TqAuthRoleDO> applicationAdminRole =
+                    roleService.save(tqAuthRoleDO
+                            .setTenantId(AuthConstant.ADMIN_TENANT_ID)
+                            .setCode(AuthConstant.ADMIN_ROLE_CODE)
+                            .setAppId(save.getData().doOrDto().getId())
+                            .setMutualExclusionRoles(new JSONArray()));
+            // 把顶级租户在该应用下的管理角色授权给租户管理者
+            final Integer mgrId =
+                    tenantService.getEntity(String.valueOf(AuthConstant.ADMIN_TENANT_ID)).getData()
+                            .doOrDto()
+                            .getMgrId();
+            userRoleRelationService.save(new TqAuthUserRoleRelationDO().setUserId(mgrId)
+                    .setRoleId(applicationAdminRole.getData().doOrDto().getId())
+                    .setAppId(save.getData().doOrDto().getId()));
         }
         return save;
     }

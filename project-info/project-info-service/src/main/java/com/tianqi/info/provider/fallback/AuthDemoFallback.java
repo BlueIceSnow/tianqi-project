@@ -1,15 +1,11 @@
 package com.tianqi.info.provider.fallback;
 
-import com.tianqi.auth.api.fallback.AbstractDemoFallback;
-import com.tianqi.auth.pojo.TqAuthUserDO;
-import com.tianqi.common.enums.business.StatusEnum;
-import com.tianqi.common.result.rpc.RpcResult;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
+import com.tianqi.info.api.fallback.AbstractDemoFallback;
+import com.tianqi.info.pojo.UserDO;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: yuantianqi
@@ -18,16 +14,10 @@ import java.util.Map;
  */
 @Component
 public class AuthDemoFallback extends AbstractDemoFallback {
-    @Override
-    public RpcResultEntity<List<TqAuthUserDO>> listAll() {
-        System.out.println("出现异常！");
-        return RpcResult.<List<TqAuthUserDO>>builder()
-                .withStatus(StatusEnum.OPERATION_ERROR)
-                .withResult(new ArrayList<>()).build();
-    }
+
 
     @Override
-    public Map<String, Object> checkToken(final String value) {
+    public RpcResultEntity<List<UserDO>> listAll(final UserDO userDO) {
         return null;
     }
 }

@@ -12,6 +12,8 @@
         <module>project-movie</module>
         <module>project-common</module>
         <module>project-gateway</module>
+        <module>project-auth-client</module>
+        <module>project-info</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -41,20 +43,9 @@
         <swagger.ui.version>2.9.2</swagger.ui.version>
         <mapper.struct.version>1.4.2.final</mapper.struct.version>
         <jwt.version>0.11.2</jwt.version>
+        <spring.boot.admin>2.5.4</spring.boot.admin>
     </properties>
-    <repositories>
-        <repository>
-            <id>nexus-aliyun</id>
-            <name>nexus-aliyun</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+
     <!--版本管理-->
     <dependencyManagement>
         <dependencies>
@@ -70,6 +61,11 @@
                 <version>${common.version}</version>
             </dependency>
             <!--第三方依赖版本管理-->
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${spring.boot.admin}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -209,7 +205,7 @@
                         <compilerArg>
                             -Amapstruct.suppressGeneratorVersionInfoComment=true
                         </compilerArg>
-                        <arg>--add-exports=java.base/sun.security.rsa=ALL-UNNAMED</arg>
+                        <compilerArg>--add-exports=java.base/sun.security.rsa=ALL-UNNAMED</compilerArg>
                     </compilerArgs>
                 </configuration>
             </plugin>

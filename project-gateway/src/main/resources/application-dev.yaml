@@ -24,6 +24,7 @@ spring:
       discovery:
         group: dev
         namespace: def2c741-902f-4be8-b173-835204b0f6fd
+        ip: 127.0.0.1
     gateway:
       routes:
         - id: project-auth-service
@@ -50,6 +51,22 @@ spring:
         client-ip: 127.0.0.1
       filter:
         enabled: false
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:9091
+        instance:
+          prefer-ip: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    gateway:
+      enabled: true
+
 
 logging:
   level:

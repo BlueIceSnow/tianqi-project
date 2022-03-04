@@ -1,12 +1,12 @@
 package com.tianqi.info.controller.impl;
 
-import com.tianqi.auth.api.IDemoApi;
 import com.tianqi.client.controller.impl.BaseControllerImpl;
 import com.tianqi.common.enums.BaseEnum;
 import com.tianqi.common.enums.business.StatusEnum;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
+import com.tianqi.info.api.IDemoApi;
 import com.tianqi.info.controller.IUserController;
 import com.tianqi.info.pojo.UserDO;
 import com.tianqi.info.service.IUserService;
@@ -36,14 +36,14 @@ public class UserController extends BaseControllerImpl<IUserService, UserDO>
     private HttpServletRequest request;
 
     @Override
-    public ResultEntity<List<com.tianqi.auth.pojo.TqAuthUserDO>> testFeign() {
+    public ResultEntity<List<UserDO>> testFeign() {
         log.debug("debug信息");
-        final RpcResultEntity<List<com.tianqi.auth.pojo.TqAuthUserDO>> rpcResultEntity =
-                demoApi.listAll();
-        final List<com.tianqi.auth.pojo.TqAuthUserDO> result = rpcResultEntity.getResult();
+        final RpcResultEntity<List<UserDO>> rpcResultEntity =
+                demoApi.listAll(new UserDO());
+        final List<UserDO> result = rpcResultEntity.getResult();
         final BaseEnum status = rpcResultEntity.getStatus();
 
-        return RestResult.<List<com.tianqi.auth.pojo.TqAuthUserDO>>builder()
+        return RestResult.<List<UserDO>>builder()
                 .withStatus(StatusEnum.OK).withData(result).build();
     }
 

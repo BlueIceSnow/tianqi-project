@@ -17,13 +17,13 @@ public enum AuthEnum implements BusinessEnum<Integer, String> {
     /**
      * 认证失败
      */
-    NOT_LOGIN(100003, "暂未登陆"),
-    LOGIN_FAIL(100004, "登录失败"),
-    AUTHORIZE_FAIL(100005, "无权访问"),
+    NOT_LOGIN(300003, "暂未登陆"),
+    LOGIN_FAIL(300004, "登录失败"),
+    AUTHORIZE_FAIL(400005, "无权访问"),
     LOGIN_SUCCESS(200001, "登录成功"),
     LOGOUT_SUCCESS(200002, "登出成功"),
-    MENU_LOAD_OK(300003, "菜单加载成功"),
-    LOGOUT_FAIL(100006, "登出失败");
+    MENU_LOAD_OK(200003, "菜单加载成功"),
+    LOGOUT_FAIL(300006, "登出失败");
     /**
      * 错误码
      */

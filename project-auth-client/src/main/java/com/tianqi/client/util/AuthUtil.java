@@ -1,5 +1,6 @@
 package com.tianqi.client.util;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.tianqi.client.config.security.authorization.JwtAuthenticationToken;
 import com.tianqi.client.config.security.authorization.JwtConfigAttribute;
 import com.tianqi.client.constant.AuthConstant;
@@ -89,7 +90,9 @@ public class AuthUtil {
         final String key = SystemConstant.REDIS_PREFIX + SystemConstant.REDIS_AUTH_PREFIX +
                 SystemConstant.REDIS_TENANT_PREFIX + tenantId +
                 SystemConstant.REDIS_APP_PREFIX + appId;
-        redisTemplate.opsForHash()
-                .delete(key, redisTemplate.opsForHash().keys(key).toArray(new String[] {}));
+        if (CollectionUtil.isNotEmpty(redisTemplate.opsForHash().values(key))) {
+            redisTemplate.opsForHash()
+                    .delete(key, redisTemplate.opsForHash().keys(key).toArray(new String[] {}));
+        }
     }
 }

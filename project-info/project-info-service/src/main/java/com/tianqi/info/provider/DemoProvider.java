@@ -1,6 +1,6 @@
 package com.tianqi.info.provider;
 
-import com.tianqi.common.enums.business.StatusEnum;
+import com.tianqi.common.enums.database.RpcStatusEnum;
 import com.tianqi.common.result.rpc.RpcResult;
 import com.tianqi.common.result.rpc.entity.RpcResultEntity;
 import com.tianqi.info.api.IDemoApi;
@@ -34,7 +34,7 @@ public class DemoProvider implements IDemoApi {
         final List<UserDO> userDOS = userService.listEntity(userDO)
                 .getData().doOrDto();
         return RpcResult.<List<UserDO>>builder()
-                .withStatus(StatusEnum.OK)
+                .withStatus(RpcStatusEnum.OK)
                 .withResult(userDOS)
                 .build();
     }

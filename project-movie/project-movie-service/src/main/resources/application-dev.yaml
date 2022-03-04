@@ -27,11 +27,24 @@ spring:
       discovery:
         group: dev
         namespace: def2c741-902f-4be8-b173-835204b0f6fd
+        ip: 127.0.0.1
     sentinel:
       transport:
         dashboard: 127.0.0.1:9090
       filter:
         enabled: true
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:9091
+        instance:
+          prefer-ip: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 logging:
   level:

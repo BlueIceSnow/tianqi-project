@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tianqi.client.config.security.authorization.JwtAuthenticationToken;
 import com.tianqi.common.enums.business.StatusEnum;
+import com.tianqi.common.exception.BaseException;
 import com.tianqi.common.pojo.JwtUserClaims;
 import com.tianqi.common.result.rest.RestResult;
 import com.tianqi.common.result.rest.entity.ResultEntity;
@@ -91,11 +92,14 @@ public class JwtTokenAuthenticationFilter extends UsernamePasswordAuthentication
      * @date: 2021/10/21 16:20:33
      */
     public List<ValidateEntity> validateParams(final JSONObject params) {
-
+        final List<ValidateEntity> validateEntities = new ArrayList<>();
+        if (params == null) {
+            throw new BaseException("please input you params, don't input null request body.");
+        }
         final String username = params.getString(USERNAME);
         final String password = params.getString(PASSWORD);
         final String appKey = params.getString(APP_KEY);
-        final List<ValidateEntity> validateEntities = new ArrayList<>();
+
         if (StrUtil.isEmpty(username)) {
             validateEntities.add(new ValidateEntity("username", "用户名不能为空!"));
         }

@@ -24,6 +24,7 @@ spring:
       discovery:
         group: dev
         namespace: def2c741-902f-4be8-b173-835204b0f6fd
+        ip: 127.0.0.1
       username: nacos
       password: nacos
     sentinel:
@@ -34,6 +35,17 @@ spring:
       filter:
         enabled: true
         order: -1999999999
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:9091
+        instance:
+          prefer-ip: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 logging:
   level:
     com.tianqi: debug

@@ -79,7 +79,7 @@ public class TqAuthTenantApplicationRelationServiceImpl extends
             final Integer tenantId = listResultEntity.getData().doOrDto().get(0).getTenantId();
             applicationDOS = loadApplicationListByTenantId(tenantId);
         }
-        return RestResult.<List<TqAuthApplicationDO>>builder().withData(applicationDOS)
+        return RestResult.<List<TqAuthApplicationDO>>builder().withData(applicationDOS).ok(true)
                 .withStatus(StatusEnum.OK).build();
     }
 }

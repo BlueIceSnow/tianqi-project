@@ -16,11 +16,11 @@ public enum StatusEnum implements BusinessEnum<Integer, String> {
     /**
      * 参数校验问题
      */
-    VALIDATE_PARAM_ERROR(100000, "参数校验存在问题"),
+    VALIDATE_PARAM_ERROR(300000, "参数校验存在问题"),
     /**
      * 参数解析错误
      */
-    PARAM_PARSE_ERROR(100002, "参数解析错误"),
+    PARAM_PARSE_ERROR(300002, "参数解析错误"),
     /**
      * 操作成功
      */
@@ -29,12 +29,12 @@ public enum StatusEnum implements BusinessEnum<Integer, String> {
     /**
      * 操作失败
      */
-    OPERATION_ERROR(500000, "操作失败"),
+    OPERATION_ERROR(300000, "操作失败"),
 
     /**
      * 删除失败
      */
-    DELETE_ERROR(500001, "删除失败"),
+    DELETE_ERROR(300001, "删除失败"),
 
     /**
      * 服务器错误
